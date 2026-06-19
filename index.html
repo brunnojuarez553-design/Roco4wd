@@ -472,7 +472,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   .h-h1{font-size:clamp(3.5rem,12vw,6rem)}
   .h-stats{display:none}
   .h-bot{flex-direction:column;align-items:center}
-  .h-btns{justify-content:center;width:100%}
+  .h-btns{justify-content:center;width:100%;margin-top:32px}
   .h-desc{text-align:center}
   /* Cards trabajos: foto completa en mobile */
   .pc-slider{aspect-ratio:4/3}
@@ -520,9 +520,9 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
       <source src="https://res.cloudinary.com/dpiavcukm/video/upload/f_auto,q_auto,w_960,ac_none/v1781839311/ScreenRecording_06-18-2026_15-10-47_1_kzlrdd.mov" type="video/mp4">
     </video>
     <!-- Canvas renderiza los frames sin nunca mostrar controles nativos -->
-    <canvas id="ll-canvas" style="width:100%;height:auto;display:block"></canvas>
+    <canvas id="ll-canvas" style="width:100%;height:auto;display:none"></canvas>
     <!-- Fallback logo — visible si el video no carga -->
-    <div id="ll-logo" style="display:none;justify-content:center;align-items:center;min-height:200px">
+    <div id="ll-logo" style="display:flex;justify-content:center;align-items:center;min-height:200px">
       <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_200/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd" style="width:min(180px,60vw);height:auto;opacity:.9">
     </div>
     <div class="ll-bar-wrap"><div class="ll-bar" id="lb"></div></div>
@@ -1206,7 +1206,14 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 </div>
 
 <script>
-gsap.registerPlugin(ScrollTrigger);
+// Guard: si GSAP no cargó (CDN fallback) no romper todo el script
+if(typeof gsap === 'undefined'){
+  window.gsap = {
+    to:()=>{}, fromTo:()=>{}, registerPlugin:()=>{}
+  };
+  window.ScrollTrigger = {};
+}
+try{ gsap.registerPlugin(ScrollTrigger); }catch(e){}
 
 // CURSOR
 const c=document.getElementById('cur'),cr=document.getElementById('cur-r');
@@ -1254,42 +1261,50 @@ function startCanvasLoop(){
   rafCanvas = requestAnimationFrame(drawFrame);
 }
 
-// ── Intentar reproducir el video inmediatamente ──────────────────────────────
-function tryPlayVideo(){
-  const p = llvid.play();
-  if(p && p.then){
-    p.then(()=>{
-      // Éxito: mostrar canvas, ocultar logo
-      llCanvas.style.display = 'block';
-      llLogo.style.display   = 'none';
-      startCanvasLoop();
-    }).catch(()=>{
-      // Bloqueado por política del navegador → mostrar logo
-      showLogoFallback();
-    });
-  }
-}
+// ── Detectar mobile/touch para decidir estrategia ────────────────────────────
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || ('ontouchstart' in window);
 
 function showLogoFallback(){
   llCanvas.style.display = 'none';
   llLogo.style.display   = 'flex';
 }
 
-// Arrancar tan pronto haya datos suficientes
-if(llvid.readyState >= 2){
-  tryPlayVideo();
-} else {
-  llvid.addEventListener('canplay', tryPlayVideo, { once: true });
-  // Si tras 1.5 s no hay señal del video, fallback inmediato
-  setTimeout(()=>{ if(llvid.paused && llCanvas.style.display !== 'block') showLogoFallback(); }, 1500);
+// ── Intentar reproducir el video inmediatamente ──────────────────────────────
+function tryPlayVideo(){
+  const p = llvid.play();
+  if(p && p.then){
+    p.then(()=>{
+      llCanvas.style.display = 'block';
+      llLogo.style.display   = 'none';
+      startCanvasLoop();
+    }).catch(()=>{
+      // Logo ya visible por defecto — no hacer nada
+    });
+  } else {
+    llCanvas.style.display = 'block';
+    llLogo.style.display   = 'none';
+    startCanvasLoop();
+  }
 }
 
-// ── Desbloqueo por interacción (iOS Safari, algunos Android) ─────────────────
-// Se intenta silenciosamente; si el usuario toca antes de que cargue,
-// el video arranca sin que nunca aparezca el botón de play nativo.
+// En mobile, el logo ya está visible por defecto — no hacer nada más
+// En desktop, intentar canvas/video de inmediato
+if(!isMobile){
+  if(llvid.readyState >= 2){
+    tryPlayVideo();
+  } else {
+    llvid.addEventListener('canplay', tryPlayVideo, { once: true });
+    setTimeout(()=>{ if(llvid.paused) { /* logo ya visible */ } }, 1500);
+  }
+}
+
+// ── Desbloqueo por interacción (iOS Safari / Android) ────────────────────────
 ['touchstart','pointerdown'].forEach(ev=>{
   document.addEventListener(ev, ()=>{
-    if(llvid.paused) tryPlayVideo();
+    // En mobile, si el usuario toca intentamos el video (puede que ya no lo necesitemos pero lo dejamos)
+    if(isMobile && llvid.paused && llLogo.style.display === 'flex'){
+      // Ya mostramos el logo, no interrumpir
+    }
     if(heroVid && heroVid.paused) heroVid.play().catch(()=>{});
   }, { once: true, passive: true });
 });
@@ -1340,7 +1355,8 @@ function openVid(){
   document.body.style.overflow='hidden';
 }
 function closeVid(e){
-  if(e&&e.target!==document.getElementById('sv-modal')&&!e.target.classList.contains('sv-close'))return;
+  // Permitir cerrar si: click directo en el overlay, en el botón close, o en hijos del botón close
+  if(e && e.target !== document.getElementById('sv-modal') && !e.target.closest('.sv-close')) return;
   const modal=document.getElementById('sv-modal');
   const vid=document.getElementById('sv-full');
   modal.classList.remove('open');
