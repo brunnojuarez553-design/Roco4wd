@@ -542,6 +542,16 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 .faq-item.open .faq-bar{width:100%}
 @media(max-width:768px){.faq-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.faq-item{padding:20px 22px}}
+
+/* ABOUT HERO IMAGE */
+.ab-hero{width:100%;margin-top:60px;position:relative;overflow:hidden}
+.ab-hero img{width:100%;height:clamp(280px,45vw,600px);object-fit:cover;object-position:center;display:block;filter:brightness(.88)}
+.ab-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,var(--ink2) 100%)}
+.ab-hero-label{position:absolute;bottom:28px;left:40px;font-family:var(--mono);font-size:.55rem;letter-spacing:.22em;color:rgba(240,237,232,.45);text-transform:uppercase;z-index:2}
+@media(max-width:768px){
+  .ab-hero img{height:clamp(220px,60vw,400px)}
+  .ab-hero-label{left:20px;bottom:20px}
+}
 </style>
 </head>
 <body>
@@ -641,6 +651,10 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   <div class="fu">
     <p class="ey">Nuestra historia</p>
     <h2 class="st">Quiénes<br><em>somos.</em></h2>
+  </div>
+  <div class="ab-hero fu">
+    <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1600/v1781847585/IMG_7968_hkzavq.jpg" alt="Taller Roco4wd Caracas" loading="lazy">
+    <span class="ab-hero-label">Taller Roco4wd · Av. de los Cortijos · Caracas</span>
   </div>
   <div class="ab-grid">
     <div class="ab-left">
