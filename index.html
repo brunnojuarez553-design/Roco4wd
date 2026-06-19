@@ -59,10 +59,10 @@ nav.s{padding:10px 60px;background:rgba(6,6,6,.92);backdrop-filter:blur(24px);bo
 
 /* HERO */
 #hero{height:100vh;min-height:700px;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
-.h-bg{position:absolute;inset:0;background:linear-gradient(135deg,#060606 0%,#120600 50%,#060606 100%)}
-.h-grid{position:absolute;inset:0;background-image:linear-gradient(var(--w06) 1px,transparent 1px),linear-gradient(90deg,var(--w06) 1px,transparent 1px);background-size:80px 80px;opacity:.4}
-.h-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 62% 38%,rgba(255,61,0,.07) 0%,transparent 60%)}
-.h-vign{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,.98) 0%,rgba(6,6,6,.4) 55%,rgba(6,6,6,.25) 100%)}
+.h-bg{position:absolute;inset:0;background:linear-gradient(135deg,#060606 0%,#120600 50%,#060606 100%);pointer-events:none}
+.h-grid{position:absolute;inset:0;background-image:linear-gradient(var(--w06) 1px,transparent 1px),linear-gradient(90deg,var(--w06) 1px,transparent 1px);background-size:80px 80px;opacity:.4;pointer-events:none}
+.h-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 62% 38%,rgba(255,61,0,.07) 0%,transparent 60%);pointer-events:none}
+.h-vign{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,.98) 0%,rgba(6,6,6,.4) 55%,rgba(6,6,6,.25) 100%);pointer-events:none}
 .h-content{position:relative;z-index:2;padding:0 60px 80px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center}
 .h-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.35em;color:var(--red);text-transform:uppercase;margin-bottom:28px;opacity:0;display:flex;align-items:center;justify-content:center;gap:14px}
 .h-tag::before{content:'';display:inline-block;width:28px;height:1px;background:var(--red)}
@@ -468,11 +468,13 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   .n-ham{display:flex}
   .sp{padding:72px 20px}
   #hero{align-items:flex-start;justify-content:flex-start}
-  .h-content{padding:120px 20px 72px;justify-content:space-between;align-items:center;text-align:center;min-height:70vh}
+  .h-content{padding:120px 20px 48px;align-items:center;text-align:center;min-height:100vh;justify-content:flex-start}
+  .h-bot{flex:1;display:flex;flex-direction:column;justify-content:space-between;width:100%;padding-bottom:20px}
+  .h-btns{justify-content:center;width:100%;position:static;padding:0;box-sizing:border-box;margin-top:auto;padding-top:32px}
   .h-h1{font-size:clamp(3.5rem,12vw,6rem)}
   .h-stats{display:none}
   .h-bot{flex-direction:column;align-items:center}
-  .h-btns{justify-content:center;width:100%;margin-top:32px}
+  .h-btns{justify-content:center;width:100%;position:absolute;bottom:48px;left:0;right:0;padding:0 20px;box-sizing:border-box}
   .h-desc{text-align:center}
   /* Cards trabajos: foto completa en mobile */
   .pc-slider{aspect-ratio:4/3}
@@ -520,9 +522,9 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
       <source src="https://res.cloudinary.com/dpiavcukm/video/upload/f_auto,q_auto,w_960,ac_none/v1781839311/ScreenRecording_06-18-2026_15-10-47_1_kzlrdd.mov" type="video/mp4">
     </video>
     <!-- Canvas renderiza los frames sin nunca mostrar controles nativos -->
-    <canvas id="ll-canvas" style="width:100%;height:auto;display:none"></canvas>
+    <canvas id="ll-canvas" style="width:100%;height:auto;display:block"></canvas>
     <!-- Fallback logo — visible si el video no carga -->
-    <div id="ll-logo" style="display:flex;justify-content:center;align-items:center;min-height:200px">
+    <div id="ll-logo" style="display:none;justify-content:center;align-items:center;min-height:200px">
       <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_200/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd" style="width:min(180px,60vw);height:auto;opacity:.9">
     </div>
     <div class="ll-bar-wrap"><div class="ll-bar" id="lb"></div></div>
@@ -1206,14 +1208,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 </div>
 
 <script>
-// Guard: si GSAP no cargó (CDN fallback) no romper todo el script
-if(typeof gsap === 'undefined'){
-  window.gsap = {
-    to:()=>{}, fromTo:()=>{}, registerPlugin:()=>{}
-  };
-  window.ScrollTrigger = {};
-}
-try{ gsap.registerPlugin(ScrollTrigger); }catch(e){}
+gsap.registerPlugin(ScrollTrigger);
 
 // CURSOR
 const c=document.getElementById('cur'),cr=document.getElementById('cur-r');
@@ -1261,50 +1256,42 @@ function startCanvasLoop(){
   rafCanvas = requestAnimationFrame(drawFrame);
 }
 
-// ── Detectar mobile/touch para decidir estrategia ────────────────────────────
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || ('ontouchstart' in window);
+// ── Intentar reproducir el video inmediatamente ──────────────────────────────
+function tryPlayVideo(){
+  const p = llvid.play();
+  if(p && p.then){
+    p.then(()=>{
+      // Éxito: mostrar canvas, ocultar logo
+      llCanvas.style.display = 'block';
+      llLogo.style.display   = 'none';
+      startCanvasLoop();
+    }).catch(()=>{
+      // Bloqueado por política del navegador → mostrar logo
+      showLogoFallback();
+    });
+  }
+}
 
 function showLogoFallback(){
   llCanvas.style.display = 'none';
   llLogo.style.display   = 'flex';
 }
 
-// ── Intentar reproducir el video inmediatamente ──────────────────────────────
-function tryPlayVideo(){
-  const p = llvid.play();
-  if(p && p.then){
-    p.then(()=>{
-      llCanvas.style.display = 'block';
-      llLogo.style.display   = 'none';
-      startCanvasLoop();
-    }).catch(()=>{
-      // Logo ya visible por defecto — no hacer nada
-    });
-  } else {
-    llCanvas.style.display = 'block';
-    llLogo.style.display   = 'none';
-    startCanvasLoop();
-  }
+// Arrancar tan pronto haya datos suficientes
+if(llvid.readyState >= 2){
+  tryPlayVideo();
+} else {
+  llvid.addEventListener('canplay', tryPlayVideo, { once: true });
+  // Si tras 1.5 s no hay señal del video, fallback inmediato
+  setTimeout(()=>{ if(llvid.paused && llCanvas.style.display !== 'block') showLogoFallback(); }, 1500);
 }
 
-// En mobile, el logo ya está visible por defecto — no hacer nada más
-// En desktop, intentar canvas/video de inmediato
-if(!isMobile){
-  if(llvid.readyState >= 2){
-    tryPlayVideo();
-  } else {
-    llvid.addEventListener('canplay', tryPlayVideo, { once: true });
-    setTimeout(()=>{ if(llvid.paused) { /* logo ya visible */ } }, 1500);
-  }
-}
-
-// ── Desbloqueo por interacción (iOS Safari / Android) ────────────────────────
+// ── Desbloqueo por interacción (iOS Safari, algunos Android) ─────────────────
+// Se intenta silenciosamente; si el usuario toca antes de que cargue,
+// el video arranca sin que nunca aparezca el botón de play nativo.
 ['touchstart','pointerdown'].forEach(ev=>{
   document.addEventListener(ev, ()=>{
-    // En mobile, si el usuario toca intentamos el video (puede que ya no lo necesitemos pero lo dejamos)
-    if(isMobile && llvid.paused && llLogo.style.display === 'flex'){
-      // Ya mostramos el logo, no interrumpir
-    }
+    if(llvid.paused) tryPlayVideo();
     if(heroVid && heroVid.paused) heroVid.play().catch(()=>{});
   }, { once: true, passive: true });
 });
@@ -1355,8 +1342,7 @@ function openVid(){
   document.body.style.overflow='hidden';
 }
 function closeVid(e){
-  // Permitir cerrar si: click directo en el overlay, en el botón close, o en hijos del botón close
-  if(e && e.target !== document.getElementById('sv-modal') && !e.target.closest('.sv-close')) return;
+  if(e&&e.target!==document.getElementById('sv-modal')&&!e.target.classList.contains('sv-close'))return;
   const modal=document.getElementById('sv-modal');
   const vid=document.getElementById('sv-full');
   modal.classList.remove('open');
