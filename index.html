@@ -201,7 +201,7 @@ nav.s{padding:10px 60px;background:rgba(6,6,6,.92);backdrop-filter:blur(24px);bo
 /* Overlay gradient */
 .pc-vign{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,.92) 0%,rgba(6,6,6,.3) 45%,transparent 100%);pointer-events:none;z-index:2}
 /* Controles slider */
-.pc-prev,.pc-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(6,6,6,.75);border:1px solid rgba(255,61,0,.3);color:var(--w);width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.65rem;cursor:pointer;z-index:4;opacity:0;transition:opacity .3s,background .2s;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}
+.pc-prev,.pc-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(6,6,6,.75);border:1px solid rgba(255,61,0,.3);color:var(--w);width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.65rem;cursor:pointer;z-index:4;opacity:0;transition:opacity .3s,background .2s;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .pc-prev{left:10px}
 .pc-next{right:10px}
 .pc:hover .pc-prev,.pc:hover .pc-next{opacity:1}
@@ -380,7 +380,8 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 }
 
 /* CONCIERGE */
-#cfab{position:fixed;bottom:32px;right:32px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+#cfab{position:fixed;bottom:32px;right:32px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:12px;pointer-events:none}
+#cc.o,#cfab-btn,.fab-proactive.show{pointer-events:auto}
 #cc{width:360px;background:var(--ink2);border:1px solid rgba(255,61,0,.2);box-shadow:0 24px 80px rgba(0,0,0,.7);display:flex;flex-direction:column;max-height:540px;opacity:0;transform:translateY(16px) scale(.97);transition:opacity .35s,transform .35s;pointer-events:none;visibility:hidden}
 #cc.o{opacity:1;transform:none;pointer-events:auto;visibility:visible}
 .cc-h{padding:16px 18px;background:var(--ink3);border-bottom:1px solid var(--w06);display:flex;align-items:center;gap:12px}
@@ -478,17 +479,23 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   .h-btns .btn-p,.h-btns .btn-g{width:100%;justify-content:center;padding:16px 20px;font-size:.65rem}
   .h-stats{display:none}
   /* Cards trabajos: foto completa en mobile */
-  .pc-slider{aspect-ratio:4/3}
-  .pc-slide img{object-fit:contain;background:#0a0a0a}
-  .pc-prev,.pc-next{opacity:1!important;width:36px;height:36px;font-size:.8rem}
+  .pw{gap:0}
+  .pc{border-radius:0;border:none;border-bottom:2px solid var(--ink)}
+  .pc-slider{aspect-ratio:1/1;width:100%}
+  .pc-track{width:100%;height:100%;display:flex;flex-wrap:nowrap;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+  .pc-slide{min-width:100%;width:100%;height:100%;flex-shrink:0;flex-grow:0}
+  .pc-slide img{width:100%;height:100%;object-fit:cover;display:block}
   .pc:hover .pc-slide img{transform:none}
+  .pc-prev,.pc-next{opacity:1!important;width:44px;height:44px;font-size:1rem;clip-path:none;border-radius:3px;background:rgba(6,6,6,.82)}
   .sg{grid-template-columns:1fr 1fr}
   .ba-l,.sim-w,.why-w,.ag-w,.ab-grid{grid-template-columns:1fr}
+  .sim-panel{min-height:auto;padding:28px 20px}
+  .sim-go{touch-action:manipulation}
   .gg{columns:2}
   .tg{grid-template-columns:repeat(3,1fr)}
   .ft{grid-template-columns:1fr 1fr;gap:32px}
   #cc{width:calc(100vw - 28px)}
-  .cc-inp,.fg textarea{font-size:16px!important}
+  .cc-inp,.fg textarea,.fg input,.fg select{font-size:16px!important}
   .fr{grid-template-columns:1fr}
   #cfab{bottom:calc(20px + env(safe-area-inset-bottom));right:20px}
   #cfab-btn{width:60px;height:60px}
@@ -501,6 +508,12 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   #cur,#cur-r{display:none}
   /* Fondos superpuestos más visibles en mobile */
   #srv::before,#sim::before,#about::before,#showroom::before{opacity:.22;background-attachment:scroll}
+  /* Botones touch */
+  .btn-p,.btn-g,.f-sub,.sh-cta,.n-book,.n-ham,.cc-send,.cc-s,.sv-close,.mm-close{touch-action:manipulation}
+  /* Swipe en el phone del video showroom */
+  .sv-phone{touch-action:manipulation}
+  /* Fix input fecha picker en mobile */
+  .fg input[type="date"]{color-scheme:dark}
 }
 @media(max-width:600px){
   .gg{columns:1}
@@ -510,6 +523,25 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   .ab-brands,.ab-brands-row2{grid-template-columns:repeat(2,1fr)}
   .ab-accent{font-size:8rem}
 }
+
+/* FAQ */
+#faq{background:var(--ink2);position:relative;overflow:hidden}
+#faq::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(255,61,0,.05) 0%,transparent 65%);pointer-events:none}
+.faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:80px}
+.faq-item{background:var(--ink3);border:1px solid var(--w06);padding:28px 32px;cursor:pointer;transition:border-color .3s,background .3s;position:relative}
+.faq-item.open{border-color:rgba(255,61,0,.25);background:var(--ink)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.faq-q-text{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--w);line-height:1.3;transition:color .3s}
+.faq-item.open .faq-q-text{color:var(--red)}
+.faq-icon{width:28px;height:28px;flex-shrink:0;border:1px solid var(--w20);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--w60);transition:all .3s;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}
+.faq-item.open .faq-icon{background:var(--red);border-color:var(--red);color:var(--w)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1),padding .3s}
+.faq-item.open .faq-a{max-height:300px;padding-top:18px}
+.faq-a-text{font-family:var(--sans);font-size:.88rem;font-weight:300;color:var(--w60);line-height:1.75;border-left:2px solid var(--red);padding-left:16px}
+.faq-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--red);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.faq-item.open .faq-bar{width:100%}
+@media(max-width:768px){.faq-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.faq-item{padding:20px 22px}}
 </style>
 </head>
 <body>
@@ -541,6 +573,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
     <li><a href="#sim">Simulador</a></li>
     <li><a href="#gal">Galería</a></li>
     <li><a href="#about">Nosotros</a></li>
+    <li><a href="#faq">FAQ</a></li>
   </ul>
   <a href="#agenda" class="n-book">Agendar Cita</a>
   <button class="n-ham" id="n-ham" aria-label="Menú" onclick="toggleMenu()">
@@ -811,7 +844,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 
 <!-- MODAL VIDEO FULLSCREEN -->
 <div id="sv-modal" onclick="closeVid(event)">
-  <button class="sv-close" onclick="closeVid()">✕</button>
+  <button class="sv-close" onclick="closeVidForce()">✕</button>
   <video id="sv-full" src="https://res.cloudinary.com/dpiavcukm/video/upload/v1781847418/insta_video_37312_vo0jjp.mp4" controls playsinline style="max-height:90vh;max-width:min(420px,95vw);border-radius:16px;box-shadow:0 40px 120px rgba(0,0,0,.8)"></video>
 </div>
 
@@ -1172,6 +1205,58 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   </div>
 </section>
 
+
+<!-- FAQ -->
+<section id="faq" class="sp">
+  <div class="fu">
+    <p class="ey">Preguntas frecuentes</p>
+    <h2 class="st">Todo lo que<br><em>necesitas saber.</em></h2>
+    <p class="sd">Resolvemos tus dudas antes de que llegues al taller. Si tu pregunta no está aquí, nuestro Roco Assistant está disponible 24/7.</p>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Cuánto tiempo tarda un detailing completo?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Dependiendo del estado del vehículo y el paquete elegido, un detailing completo puede tardar entre 4 y 8 horas. El pulido nanocerámico requiere al menos 1 día completo para garantizar la correcta aplicación y curado.</p></div>
+      <div class="faq-bar"></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿El PPF daña la pintura original del carro?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">No. El PPF (Paint Protection Film) que usamos es de grado OEM, diseñado para proteger sin dañar. Se adhiere con tecnología de presión y se puede remover sin dejar residuos ni afectar el acabado de fábrica cuando se hace correctamente.</p></div>
+      <div class="faq-bar"></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Cuánto dura la cerámica y qué mantenimiento requiere?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">La cerámica profesional que aplicamos dura entre 2 y 5 años según el uso y cuidado del vehículo. El mantenimiento es mínimo: lavado regular con productos pH neutro y una revisión anual para potenciar el hidrofobicidad.</p></div>
+      <div class="faq-bar"></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Trabajan con todos los tipos de vehículos?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Sí. Atendemos sedanes, SUVs, pickups, vehículos 4x4, deportivos y clásicos. Tenemos experiencia con marcas como Toyota, Ford, Chevrolet, BMW, Mercedes, Porsche y más. Cada vehículo recibe un diagnóstico personalizado.</p></div>
+      <div class="faq-bar"></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Cómo funciona el sistema de agendamiento?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Completa el formulario de cita en línea con tus datos, el vehículo y el servicio que necesitas. En menos de 2 horas recibirás una confirmación por WhatsApp con el horario, la dirección y las instrucciones de llegada al taller.</p></div>
+      <div class="faq-bar"></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Ofrecen garantía en sus servicios?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Todos nuestros servicios incluyen garantía de satisfacción. La cerámica y el PPF tienen garantía escrita de 12 meses. En mecánica, los repuestos y la mano de obra tienen cobertura de 90 días. Consulta detalles según el servicio.</p></div>
+      <div class="faq-bar"></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Puedo esperar en el taller mientras hacen el trabajo?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Sí, contamos con sala de espera climatizada con WiFi. Para trabajos cortos (hasta 2 horas) puedes quedarte sin problema. Para servicios más extensos como detailing o PPF, recomendamos dejar el vehículo y coordinamos la entrega por WhatsApp.</p></div>
+      <div class="faq-bar"></div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Cuáles son los métodos de pago aceptados?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Aceptamos pago en efectivo (bolívares y dólares), transferencia bancaria, Pago Móvil y Zelle. Para servicios mayores podemos coordinar pago en cuotas. Consulta disponibilidad con nuestro equipo al momento de agendar.</p></div>
+      <div class="faq-bar"></div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="ft">
@@ -1190,7 +1275,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
           </a>
         </div></div>
     <div><div class="fc-h">Servicios</div><div class="fc-l"><a href="#srv">Mecánica General</a><a href="#srv">Detailing Premium</a><a href="#srv">PPF</a><a href="#srv">Suspensión</a><a href="#srv">Cauchos & Rines</a><a href="#srv">Sonido & Iluminación</a></div></div>
-    <div><div class="fc-h">Empresa</div><div class="fc-l"><a href="#why">Nosotros</a><a href="#gal">Galería</a><a href="#ba">Antes & Después</a><a href="#trust">Por qué Roco4wd</a><a href="#agenda">Agendar Cita</a></div></div>
+    <div><div class="fc-h">Empresa</div><div class="fc-l"><a href="#why">Nosotros</a><a href="#gal">Galería</a><a href="#gal">Antes & Después</a><a href="#why">Por qué Roco4wd</a><a href="#faq">Preguntas Frecuentes</a><a href="#agenda">Agendar Cita</a></div></div>
     <div><div class="fc-h">Contacto</div><div class="fc-l"><a href="#">Av. de los Cortijos</a><a href="#">Caracas, Venezuela</a><a href="https://wa.me/584140248764">WhatsApp</a><a href="#">Lun–Vie: 8am – 6pm</a><a href="#">Sab: 8am – 2pm</a></div></div>
   </div>
   <div class="ft-bot"><p class="ft-c">© 2025 ROCO4WD · CARACAS, VENEZUELA · TODOS LOS DERECHOS RESERVADOS</p><p class="ft-b">AUSTRALWEBSTUDIO.COM</p></div>
@@ -1339,11 +1424,10 @@ function openVid(){
   const preview=document.getElementById('sv-preview');
   modal.classList.add('open');
   preview.pause();
-  vid.play();
+  vid.play().catch(()=>{});
   document.body.style.overflow='hidden';
 }
-function closeVid(e){
-  if(e&&e.target!==document.getElementById('sv-modal')&&!e.target.classList.contains('sv-close'))return;
+function closeVidForce(){
   const modal=document.getElementById('sv-modal');
   const vid=document.getElementById('sv-full');
   modal.classList.remove('open');
@@ -1351,7 +1435,12 @@ function closeVid(e){
   vid.currentTime=0;
   document.body.style.overflow='';
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVid({target:document.getElementById('sv-modal')})});
+function closeVid(e){
+  // Llamado desde overlay: solo cerrar si el target directo es el overlay mismo
+  if(e&&e.target!==document.getElementById('sv-modal'))return;
+  closeVidForce();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVidForce()});
 // Preview loop — primer frame visible en mobile
 const svp=document.getElementById('sv-preview');
 if(svp){svp.currentTime=0.1;}
@@ -1387,22 +1476,40 @@ function initSliders(){
     slider._cur=()=>cur;
     slider._n=n;
 
-    // Touch swipe
-    let tx=0;
-    track.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
-    track.addEventListener('touchend',e=>{
+    // Touch swipe — en el slider completo para mayor área
+    let tx=0,ty=0,swiping=false;
+    slider.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;swiping=false},{passive:true});
+    slider.addEventListener('touchmove',e=>{
+      const dx=Math.abs(e.touches[0].clientX-tx),dy=Math.abs(e.touches[0].clientY-ty);
+      if(dx>dy&&dx>10)swiping=true;
+    },{passive:true});
+    slider.addEventListener('touchend',e=>{
+      if(!swiping)return;
       const dx=tx-e.changedTouches[0].clientX;
       if(Math.abs(dx)>40)goTo(cur+(dx>0?1:-1));
+      swiping=false;
     },{passive:true});
   });
 }
 
 function slide(btn,dir){
+  // Evitar que el click propague al .pc card padre
+  if(event&&event.stopPropagation)event.stopPropagation();
   const slider=btn.closest('.pc-slider');
-  slider._go(slider._cur()+dir);
+  if(slider&&slider._go)slider._go(slider._cur()+dir);
 }
 
 initSliders();
+
+// Agenda — fecha mínima = hoy
+(function(){
+  const dateIn=document.getElementById('af');
+  if(dateIn){
+    const today=new Date();
+    const y=today.getFullYear(),m=String(today.getMonth()+1).padStart(2,'0'),d=String(today.getDate()).padStart(2,'0');
+    dateIn.min=`${y}-${m}-${d}`;
+  }
+})();
 
 // SIMULATOR DATA
 const vd={
@@ -1490,6 +1597,30 @@ function setBusy(b){
   const inp=document.getElementById('cinp'),btn=document.querySelector('.cc-send');
   inp.disabled=b;btn.disabled=b;btn.style.opacity=b?'.5':'1';
 }
+// Base de conocimiento local — responde aunque no haya backend en /api/chat
+const KB=[
+  {keys:['cerámic','ceramic','nanocerámic','nanoceramic'],ans:'La protección cerámica nanocerámica (Gyeon Quartz / IGL Coatings) dura entre 2 y 5 años según el producto y el cuidado que le den. Repele agua, suciedad y rayos UV, y mantiene el brillo con un lavado adecuado. ¿Quieres que te cotice la cerámica para tu vehículo?'},
+  {keys:['ppf','película de protec','pelicula de protec','paint protection'],ans:'El PPF (Paint Protection Film) es una película transparente que protege la pintura de piedras, rayones e impactos de carretera, y es autosanante con el calor. Lo ofrecemos en versión frontal o full body con marcas Xpel y LLumar.'},
+  {keys:['suspensi','amortiguador','lift kit','elevaci'],ans:'En suspensión trabajamos desde amortiguadores de confort (Bilstein B6) hasta lift kits de +2" a +4" (Old Man Emu) para uso off-road. Cuéntame qué vehículo tienes y para qué lo usas (ciudad, carretera u off-road) y te oriento mejor.'},
+  {keys:['cauchos','rines','llantas','neumátic','neumatic'],ans:'Tenemos cauchos para cada uso: Michelin Primacy 4 (ciudad), Michelin Pilot Sport 4 (carretera) y BFGoodrich All-Terrain KO2 (off-road). En rines trabajamos Método, Pro Comp, OZ Racing y BBS Forjado.'},
+  {keys:['sonido','equipo de audio','parlantes','bocinas','hi-fi','hifi'],ans:'Instalamos sistemas de sonido Hi-Fi (Focal, Alpine) y premium (JBL, Harman) con instalación limpia, sin comprometer el maletero ni dejar cables visibles.'},
+  {keys:['pantalla','android auto','carplay','multimedia'],ans:'Colocamos pantallas con Android Auto y Apple CarPlay desde 10" hasta sistemas premium de 12" con JBL/Harman, compatibles con la mayoría de marcas. Dime tu vehículo y te confirmo la opción exacta.'},
+  {keys:[' led','luces led','iluminaci','faros'],ans:'Hacemos conversión Bi-LED H7 (6000K) para mejor visibilidad nocturna en ciudad, y barras LED de hasta 30,000lm para senderos sin iluminación, sin modificaciones permanentes a la carrocería.'},
+  {keys:['detailing','pulido','lavado de auto'],ans:'Nuestro detailing premium incluye pulido, descontaminación de pintura y protección. También tenemos un Plan VIP mensual para mantener tu vehículo siempre impecable.'},
+  {keys:['latoner','pintura','choque','golpe','abolladura'],ans:'En latonería y pintura usamos equipo profesional y repuestos certificados, y siempre mostramos el diagnóstico con evidencia fotográfica antes de cualquier trabajo.'},
+  {keys:['mecánic','mecanic','motor','frenos','correa','aceite'],ans:'Hacemos mecánica general completa: motor, frenos, suspensión, correa de distribución, cambio de aceite y diagnóstico computarizado con el mismo equipo de un concesionario oficial.'},
+  {keys:['precio','cuánto cuesta','cuanto cuesta','cotiz','presupuesto'],ans:'Los precios varían según marca, modelo y el servicio exacto. Lo más rápido es escribirnos por WhatsApp con tu vehículo y lo que necesitas, y te cotizamos al instante.'},
+  {keys:['horario','a qué hora','a que hora','abren','atienden'],ans:'Atendemos Lunes a Viernes de 8:00 AM a 6:00 PM y Sábados de 8:00 AM a 2:00 PM. Domingos solo emergencias por WhatsApp.'},
+  {keys:['ubicaci','dónde quedan','donde quedan','dirección','direccion'],ans:'Estamos en la Av. de los Cortijos, Caracas — a 2 minutos del C.C. Los Cortijos, con estacionamiento amplio disponible.'},
+  {keys:['garantía','garantia'],ans:'Todos nuestros trabajos tienen garantía y usamos repuestos originales o aftermarket premium con procedencia verificada.'},
+  {keys:['cita','agendar','reservar','turno'],ans:'Puedes agendar tu cita en menos de 60 segundos desde la sección "Agenda online" de esta misma página, o directo por WhatsApp si prefieres.'}
+];
+const HUMAN_KEYS=['asesor','hablar con alguien','persona real','un humano','llamar','agente'];
+function localAnswer(t){
+  const low=t.toLowerCase();
+  const hit=KB.find(item=>item.keys.some(k=>low.includes(k)));
+  return hit?hit.ans:null;
+}
 async function sendC(){
   if(cBusy)return;
   const inp=document.getElementById('cinp'),txt=inp.value.trim();
@@ -1497,12 +1628,26 @@ async function sendC(){
   document.getElementById('csuggs').style.display='none';
   addM('user',txt);hist.push({role:'user',content:txt});
   showT();setBusy(true);
+
+  // Pedido explícito de hablar con un humano → handoff directo
+  const lowTxt=txt.toLowerCase();
+  if(HUMAN_KEYS.some(k=>lowTxt.includes(k))){
+    hideT();setBusy(false);
+    addM('bot','Claro, te conecto con un asesor ahora mismo:');
+    showHandoffCTA({vehiculo:'',servicio:'',nombre:'',whatsapp:'',resumen:''},true);
+    return;
+  }
+
   try{
+    const ctrl=new AbortController();
+    const tId=setTimeout(()=>ctrl.abort(),6000);
     const r=await fetch(CHAT_ENDPOINT,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:hist})
+      body:JSON.stringify({messages:hist}),
+      signal:ctrl.signal
     });
+    clearTimeout(tId);
     if(!r.ok)throw new Error('server');
     const d=await r.json();
     let rep=(d.reply||'').trim();
@@ -1520,9 +1665,16 @@ async function sendC(){
       addM('bot',rep);hist.push({role:'assistant',content:rep});
     }
   }catch{
+    // Sin backend disponible → respondemos con la base de conocimiento local
     hideT();setBusy(false);
-    addM('bot',`Tengo un problema de conexión en este momento. No te preocupes, podés hablar directo con un asesor:`);
-    showHandoffCTA({vehiculo:'',servicio:'',nombre:'',whatsapp:'',resumen:''},true);
+    const local=localAnswer(txt);
+    if(local){
+      addM('bot',local);
+      hist.push({role:'assistant',content:local});
+    }else{
+      addM('bot','No tengo el detalle exacto de eso a mano, pero un asesor puede ayudarte directo:');
+      showHandoffCTA({vehiculo:'',servicio:'',nombre:'',whatsapp:'',resumen:''},true);
+    }
   }
 }
 function waDisplay(){return '+'+WA_NUM.replace(/(\d{3})(\d{3})(\d{7})/,'$1 $2 $3')}
@@ -1599,6 +1751,32 @@ function enviar(){
   const msg=`🚗 *SOLICITUD DE CITA — ROCO4WD*\n\n👤 *Nombre:* ${n}\n📱 *WhatsApp:* ${w}\n🚙 *Vehículo:* ${v}\n🔧 *Servicio:* ${s}\n📅 *Fecha:* ${f}\n🕐 *Hora:* ${h}${x?`\n📝 *Notas:* ${x}`:''}\n\n_roco4wd.com_`;
   window.open(`https://wa.me/584140248764?text=${encodeURIComponent(msg)}`,'_blank');
 }
+
+// FAQ section header animation
+gsap.utils.toArray('#faq .fu').forEach(el=>{
+  ScrollTrigger.create({trigger:el,start:'top 82%',onEnter:()=>{
+    el.classList.add('r')||gsap.to(el,{opacity:1,y:0,duration:.8,ease:'power2.out'});
+  }});
+});
+
+// FAQ ACCORDION
+function toggleFaq(item){
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>{
+    el.classList.remove('open');
+    el.querySelector('.faq-icon').textContent='+';
+  });
+  if(!isOpen){
+    item.classList.add('open');
+    item.querySelector('.faq-icon').textContent='−';
+  }
+}
+// FAQ scroll animation
+gsap.utils.toArray('.faq-item').forEach((el,i)=>{
+  gsap.from(el,{opacity:0,y:30,duration:.6,delay:(i%2)*.12,ease:'power2.out',
+    scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}});
+});
+
 </script>
 </body>
 </html>
