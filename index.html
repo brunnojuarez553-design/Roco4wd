@@ -467,15 +467,16 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   .n-links,.n-book{display:none}
   .n-ham{display:flex}
   .sp{padding:72px 20px}
-  #hero{align-items:flex-start;justify-content:flex-start}
-  .h-content{padding:120px 20px 48px;align-items:center;text-align:center;min-height:100vh;justify-content:flex-start}
-  .h-bot{flex:1;display:flex;flex-direction:column;justify-content:space-between;width:100%;padding-bottom:20px}
-  .h-btns{justify-content:center;width:100%;position:static;padding:0;box-sizing:border-box;margin-top:auto;padding-top:32px}
-  .h-h1{font-size:clamp(3.5rem,12vw,6rem)}
+  #hero{align-items:stretch;justify-content:stretch;height:100dvh;min-height:100dvh}
+  .h-content{padding:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;box-sizing:border-box;padding-top:env(safe-area-inset-top)}
+  .h-tag{opacity:1!important;margin-bottom:0;padding-top:calc(72px + 20px)}
+  .h-h1{font-size:clamp(3.2rem,11vw,5.5rem);padding:0 16px}
+  .h-rule{margin:20px 0}
+  .h-bot{width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 20px calc(48px + env(safe-area-inset-bottom));box-sizing:border-box}
+  .h-desc{opacity:1!important;font-size:.9rem;line-height:1.65;max-width:100%}
+  .h-btns{opacity:1!important;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:320px;position:static!important}
+  .h-btns .btn-p,.h-btns .btn-g{width:100%;justify-content:center;padding:16px 20px;font-size:.65rem}
   .h-stats{display:none}
-  .h-bot{flex-direction:column;align-items:center}
-  .h-btns{justify-content:center;width:100%;position:absolute;bottom:48px;left:0;right:0;padding:0 20px;box-sizing:border-box}
-  .h-desc{text-align:center}
   /* Cards trabajos: foto completa en mobile */
   .pc-slider{aspect-ratio:4/3}
   .pc-slide img{object-fit:contain;background:#0a0a0a}
