@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roco4wd — La Experiencia Automotriz Definitiva · Caracas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#060606;
+  --ink2:#0e0e0e;
+  --ink3:#161616;
+  --red:#FF3D00;
+  --red-dim:rgba(255,61,0,.12);
+  --gold:#9A7A3A;
+  --gold-l:#C4A35A;
+  --w:#F0EDE8;
+  --w60:rgba(240,237,232,.6);
+  --w20:rgba(240,237,232,.2);
+  --w06:rgba(240,237,232,.06);
+  --serif:'Cormorant Garamond',serif;
+  --sans:'Rajdhani',sans-serif;
+  --mono:'Share Tech Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--w);font-family:var(--sans);overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+#cur{position:fixed;width:6px;height:6px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s}
+#cur-r{position:fixed;width:32px;height:32px;border:1px solid rgba(255,61,0,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s}
+body:has(a:hover,button:hover) #cur{width:16px;height:16px;background:var(--gold-l)}
+body:has(a:hover,button:hover) #cur-r{width:48px;height:48px;border-color:var(--gold-l)}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:#000;z-index:10000;display:flex;align-items:center;justify-content:center}
+.ll-wrap{display:flex;flex-direction:column;align-items:center;gap:0;width:min(480px,88vw)}
+#ll-video{width:100%;height:auto;display:block;object-fit:contain}
+.ll-bar-wrap{width:100%;height:2px;background:rgba(240,237,232,.1)}
+.ll-bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--red))}
+.ll-pct{font-family:var(--mono);font-size:.55rem;color:rgba(240,237,232,.3);letter-spacing:.2em;margin-top:10px;align-self:flex-end}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 60px;display:flex;align-items:center;justify-content:space-between;transition:padding .5s,background .5s,backdrop-filter .5s}
+nav.s{padding:10px 60px;background:rgba(6,6,6,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--w06)}
+.n-logo{font-family:var(--serif);font-size:1.6rem;font-weight:400;letter-spacing:.12em;color:var(--w);text-decoration:none}
+.n-logo em{color:var(--red);font-style:normal}
+.n-links{display:flex;gap:40px;list-style:none}
+.n-links a{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--w60);text-decoration:none;position:relative;padding-bottom:4px;transition:color .3s}
+.n-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--red);transition:width .35s cubic-bezier(.4,0,.2,1)}
+.n-links a:hover{color:var(--w)}
+.n-links a:hover::after{width:100%}
+.n-book{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);background:var(--w);padding:11px 24px;text-decoration:none;transition:background .25s,color .25s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 100%,8px 100%)}
+.n-book:hover{background:var(--red);color:var(--w)}
+
+/* HERO */
+#hero{height:100vh;min-height:700px;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.h-bg{position:absolute;inset:0;background:linear-gradient(135deg,#060606 0%,#120600 50%,#060606 100%)}
+.h-grid{position:absolute;inset:0;background-image:linear-gradient(var(--w06) 1px,transparent 1px),linear-gradient(90deg,var(--w06) 1px,transparent 1px);background-size:80px 80px;opacity:.4}
+.h-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 62% 38%,rgba(255,61,0,.07) 0%,transparent 60%)}
+.h-vign{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,.98) 0%,rgba(6,6,6,.4) 55%,rgba(6,6,6,.25) 100%)}
+.h-content{position:relative;z-index:2;padding:0 60px 80px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center}
+.h-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.35em;color:var(--red);text-transform:uppercase;margin-bottom:28px;opacity:0;display:flex;align-items:center;justify-content:center;gap:14px}
+.h-tag::before{content:'';display:inline-block;width:28px;height:1px;background:var(--red)}
+.h-h1{font-family:var(--serif);font-size:clamp(4.5rem,10vw,9.5rem);font-weight:300;line-height:.88;letter-spacing:-.01em;color:var(--w)}
+.h-line{display:block;overflow:hidden}
+.h-inner{display:block;transform:translateY(110%);transition:transform 1.1s cubic-bezier(.16,1,.3,1)}
+.h-inner.r{transform:translateY(0)}
+.h-h1 em{font-style:italic;color:var(--red)}
+.h-rule{width:0;height:1px;background:linear-gradient(90deg,var(--red),transparent);margin:36px 0;transition:width 1.2s cubic-bezier(.4,0,.2,1) .8s}
+.h-rule.r{width:min(480px,60vw)}
+.h-bot{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;flex-wrap:wrap}
+.h-desc{font-size:1rem;font-weight:300;color:var(--w60);line-height:1.75;max-width:400px;opacity:0;text-align:center}
+.h-btns{display:flex;gap:16px;align-items:center;opacity:0;flex-wrap:wrap}
+.btn-p{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:var(--w);font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:15px 30px;text-decoration:none;border:none;cursor:pointer;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);transition:background .25s,transform .2s;position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.1);transform:translateX(-100%);transition:transform .4s}
+.btn-p:hover::before{transform:translateX(0)}
+.btn-p:hover{transform:translateY(-2px)}
+.btn-g{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--w60);font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:14px 30px;border:1px solid var(--w20);cursor:pointer;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);transition:color .25s,border-color .25s,transform .2s;text-decoration:none}
+.btn-g:hover{color:var(--w);border-color:var(--w60);transform:translateY(-2px)}
+.h-stats{position:absolute;bottom:0;right:0;display:flex;opacity:0}
+.hs{padding:20px 28px;background:rgba(6,6,6,.88);backdrop-filter:blur(12px);border-left:1px solid var(--w06);text-align:center}
+.hs-n{font-family:var(--serif);font-size:2.2rem;font-weight:300;color:var(--w);line-height:1}
+.hs-n em{font-style:normal;color:var(--red)}
+.hs-l{font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;color:var(--w60);text-transform:uppercase;margin-top:5px}
+
+/* MARQUEE */
+.mq-wrap{background:var(--red);padding:13px 0;overflow:hidden}
+.mq-track{display:flex;width:max-content;animation:mq 30s linear infinite}
+.mq-item{font-family:var(--mono);font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.85);padding:0 44px;white-space:nowrap;display:flex;align-items:center;gap:44px}
+.mq-item::after{content:'◆';font-size:.45rem;opacity:.55}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION COMMONS */
+.sp{padding:120px 60px}
+.ey{font-family:var(--mono);font-size:.6rem;letter-spacing:.3em;color:var(--red);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.ey::before{content:'';display:inline-block;width:18px;height:1px;background:var(--red)}
+.st{font-family:var(--serif);font-size:clamp(3rem,6vw,6rem);font-weight:300;line-height:.92;letter-spacing:-.01em;color:var(--w);margin-bottom:20px}
+.st em{font-style:italic;color:var(--red)}
+.sd{font-family:var(--sans);font-size:1rem;font-weight:300;color:var(--w60);line-height:1.75;max-width:500px}
+.fu{opacity:0;transform:translateY(40px)}
+
+/* SERVICES */
+#srv{background:var(--ink2);position:relative;overflow:hidden}
+#srv::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781839186/IMG_7949_yb2c2o.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
+#srv::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.6) 0%,rgba(14,14,14,.4) 50%,rgba(14,14,14,.6) 100%);z-index:1}
+#srv .fu,#srv .sg{position:relative;z-index:2}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--w06);margin-top:80px}
+.sc{background:var(--ink2);padding:44px 30px;position:relative;overflow:hidden;transition:background .4s;cursor:default}
+.sc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,61,0,.06) 0%,transparent 55%);opacity:0;transition:opacity .4s}
+.sc:hover{background:var(--ink3)}
+.sc:hover::after{opacity:1}
+.si{margin-bottom:28px}
+.si svg{width:26px;height:26px;stroke:var(--red);fill:none;stroke-width:1.5}
+.sn{font-family:var(--serif);font-size:1.35rem;font-weight:400;color:var(--w);margin-bottom:10px;line-height:1.1}
+.sd2{font-family:var(--sans);font-size:.84rem;font-weight:300;color:var(--w60);line-height:1.7}
+.sa{position:absolute;bottom:24px;right:24px;width:26px;height:26px;border:1px solid var(--w20);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--w60);transition:all .3s;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}
+.sc:hover .sa{background:var(--red);border-color:var(--red);color:var(--w)}
+.sb{position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--red);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.sc:hover .sb{width:100%}
+
+/* VIDEO SHOWROOM */
+#showvid{background:var(--ink);padding:120px 60px;position:relative;overflow:hidden}
+#showvid::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(255,61,0,.05) 0%,transparent 65%)}
+.sv-wrap{display:grid;grid-template-columns:1fr auto;gap:80px;align-items:center}
+.sv-left{display:flex;flex-direction:column;gap:40px}
+.sv-kpis{display:flex;flex-direction:column;gap:2px;margin-top:8px}
+.sv-kpi{display:flex;align-items:center;gap:18px;padding:18px 22px;background:var(--ink2);border:1px solid var(--w06);transition:border-color .3s}
+.sv-kpi:hover{border-color:rgba(255,61,0,.2)}
+.sv-kpi-icon{font-size:1.1rem;flex-shrink:0;width:28px;text-align:center}
+.sv-kpi-text{font-family:var(--sans);font-size:.9rem;font-weight:300;color:var(--w60);line-height:1.5}
+.sv-kpi-text strong{color:var(--w);font-weight:500;display:block;margin-bottom:2px}
+.sv-cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+/* Phone */
+.sv-phone{position:relative;width:260px;flex-shrink:0;cursor:pointer}
+.sv-phone-frame{width:100%;aspect-ratio:9/16;background:#111;border-radius:32px;overflow:hidden;border:2.5px solid rgba(240,237,232,.1);box-shadow:0 40px 100px rgba(0,0,0,.8),0 0 0 1px rgba(255,61,0,.12),inset 0 0 0 1px rgba(255,255,255,.04);position:relative}
+.sv-phone::before{content:'';position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:60px;height:6px;background:#1a1a1a;border-radius:0 0 6px 6px;z-index:10}
+.sv-phone::after{content:'';position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:80px;height:4px;background:rgba(240,237,232,.06);border-radius:2px}
+.sv-thumb-vid{width:100%;height:100%;object-fit:cover;display:block}
+.sv-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;background:rgba(0,0,0,.2);transition:background .3s}
+.sv-phone:hover .sv-play{background:rgba(0,0,0,.1)}
+.sv-play-btn{width:68px;height:68px;background:rgba(255,61,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;box-shadow:0 8px 32px rgba(255,61,0,.55),0 0 0 8px rgba(255,61,0,.12)}
+.sv-phone:hover .sv-play-btn{transform:scale(1.1);box-shadow:0 12px 48px rgba(255,61,0,.7),0 0 0 12px rgba(255,61,0,.1)}
+.sv-play-icon{width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:24px solid #fff;margin-left:5px}
+.sv-vign{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,.5) 0%,transparent 45%);z-index:1;pointer-events:none}
+.sv-label{position:absolute;bottom:16px;left:0;right:0;text-align:center;z-index:3;font-family:var(--mono);font-size:.52rem;letter-spacing:.18em;color:rgba(240,237,232,.45);text-transform:uppercase}
+/* Modal */
+#sv-modal{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:5000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
+#sv-modal.open{opacity:1;pointer-events:auto}
+#sv-modal video{max-height:90vh;max-width:min(420px,95vw);border-radius:16px;box-shadow:0 40px 120px rgba(0,0,0,.8)}
+.sv-close{position:absolute;top:24px;right:28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;width:46px;height:46px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:2}
+.sv-close:hover{background:var(--red);border-color:var(--red)}
+@media(max-width:960px){
+  .sv-wrap{grid-template-columns:1fr;gap:60px}
+  .sv-phone{width:min(260px,70vw);margin:0 auto}
+}
+@media(max-width:600px){#showvid{padding:80px 20px}}
+
+/* SIMULATOR */
+#sim{background:var(--ink2);position:relative;overflow:hidden}
+#sim::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781847432/IMG_7971_tmtcqi.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
+#sim::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.6) 0%,rgba(14,14,14,.4) 50%,rgba(14,14,14,.6) 100%);z-index:1}
+#sim .fu,#sim .sim-w{position:relative;z-index:2}
+.sim-w{display:grid;grid-template-columns:1fr 1.1fr;gap:80px;margin-top:80px;align-items:start}
+.sim-fs{display:flex;flex-direction:column;gap:2px}
+.sim-f{background:var(--ink3);border:1px solid var(--w06);padding:20px 24px;display:flex;flex-direction:column;gap:6px;transition:border-color .3s}
+.sim-f:focus-within{border-color:rgba(255,61,0,.3)}
+.sim-f label{font-family:var(--mono);font-size:.57rem;letter-spacing:.22em;color:var(--red);text-transform:uppercase}
+.sim-f select{background:transparent;border:none;color:var(--w);font-family:var(--serif);font-size:1.15rem;font-weight:300;outline:none;appearance:none;cursor:pointer;width:100%}
+.sim-f select option{background:var(--ink3);color:var(--w)}
+.sim-go{width:100%;margin-top:2px;background:var(--red);border:none;color:var(--w);font-family:var(--mono);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;padding:18px;cursor:pointer;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);transition:background .25s;position:relative;overflow:hidden}
+.sim-go::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.1);transform:translateX(-100%);transition:transform .4s}
+.sim-go:hover::before{transform:translateX(0)}
+.sim-panel{background:var(--ink);border:1px solid var(--w06);padding:48px;min-height:460px;display:flex;flex-direction:column;opacity:.22;transition:opacity .6s}
+.sim-panel.live{opacity:1}
+.sim-ph{font-family:var(--serif);font-size:2.2rem;font-weight:300;color:var(--red);margin-bottom:4px}
+.sim-pv{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--w60);margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--w06);text-transform:uppercase}
+.sim-recs{display:flex;flex-direction:column;gap:0}
+.sim-rec{display:flex;gap:20px;padding:18px 0;border-bottom:1px solid var(--w06)}
+.sim-rec:last-child{border-bottom:none}
+.sim-rc{font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:var(--red);text-transform:uppercase;flex-shrink:0;padding-top:3px;width:76px}
+.sim-rn{font-family:var(--serif);font-size:1.05rem;color:var(--w);margin-bottom:3px}
+.sim-rt{font-family:var(--sans);font-size:.85rem;font-weight:300;color:var(--w60);line-height:1.6}
+.sim-cta{margin-top:auto;padding-top:28px}
+
+/* PORTFOLIO — TRABAJOS POR MODELO */
+#gal{background:var(--ink)}
+.pw{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:80px}
+.pc{position:relative;background:var(--ink2);overflow:hidden;cursor:pointer;border:1px solid transparent;transition:border-color .4s}
+.pc:hover{border-color:rgba(255,61,0,.18)}
+/* Slider de fotos */
+.pc-slider{position:relative;aspect-ratio:4/3;overflow:hidden}
+.pc-track{display:flex;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.pc-slide{min-width:100%;height:100%;flex-shrink:0}
+.pc-slide img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.pc:hover .pc-slide img{transform:scale(1.05)}
+/* Overlay gradient */
+.pc-vign{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,.92) 0%,rgba(6,6,6,.3) 45%,transparent 100%);pointer-events:none;z-index:2}
+/* Controles slider */
+.pc-prev,.pc-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(6,6,6,.75);border:1px solid rgba(255,61,0,.3);color:var(--w);width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.65rem;cursor:pointer;z-index:4;opacity:0;transition:opacity .3s,background .2s;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}
+.pc-prev{left:10px}
+.pc-next{right:10px}
+.pc:hover .pc-prev,.pc:hover .pc-next{opacity:1}
+.pc-prev:hover,.pc-next:hover{background:var(--red);border-color:var(--red)}
+/* Dots */
+.pc-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:4}
+.pc-dot{width:4px;height:4px;border-radius:50%;background:rgba(240,237,232,.3);transition:background .3s,transform .3s;cursor:pointer}
+.pc-dot.on{background:var(--red);transform:scale(1.4)}
+/* Contador */
+.pc-count{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:rgba(240,237,232,.5);background:rgba(6,6,6,.6);padding:3px 8px;z-index:4}
+/* Info */
+.pc-info{padding:22px 24px 24px;position:relative;z-index:3}
+.pc-model{font-family:var(--serif);font-size:1.15rem;font-weight:400;color:var(--w);line-height:1.15;margin-bottom:6px}
+.pc-year{font-family:var(--mono);font-size:.52rem;letter-spacing:.18em;color:var(--gold-l);text-transform:uppercase;margin-bottom:14px}
+.pc-tags{display:flex;flex-wrap:wrap;gap:4px}
+.pc-tag{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:var(--w60);background:rgba(240,237,232,.04);border:1px solid var(--w06);padding:3px 9px;white-space:nowrap}
+/* Línea bottom roja en hover */
+.pc-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.pc:hover .pc-bar{width:100%}
+@media(max-width:960px){.pw{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.pw{grid-template-columns:1fr}}
+
+/* WHY */
+#why{background:var(--ink);overflow:hidden}
+.why-w{display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:center}
+.why-vis{position:relative;height:580px}
+.why-bg{position:absolute;top:0;left:0;right:40px;bottom:40px;background:linear-gradient(rgba(10,10,10,.55),rgba(10,10,10,.55)),url('https://res.cloudinary.com/dpiavcukm/image/upload/v1781843781/IMG_7964_dcpsqx.jpg') center/cover no-repeat,var(--ink2);border:1px solid var(--w06)}
+.why-ac{position:absolute;bottom:0;right:0;width:180px;height:140px;background:var(--red);opacity:.07}
+.why-giant{position:absolute;bottom:24px;left:24px;font-family:var(--serif);font-size:7rem;font-weight:300;color:rgba(240,237,232,.03);line-height:1;letter-spacing:-.02em}
+.why-ph{position:absolute;inset:18px 56px 56px 18px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.6rem;color:rgba(240,237,232,.1);letter-spacing:.12em;background:var(--ink3);border:1px solid var(--w06)}
+.why-items{display:flex;flex-direction:column}
+.wi{display:flex;gap:22px;padding:26px 0;border-bottom:1px solid var(--w06);align-items:flex-start}
+.wi:first-child{border-top:1px solid var(--w06)}
+.wn{font-family:var(--mono);font-size:.55rem;color:var(--red);letter-spacing:.1em;padding-top:4px;flex-shrink:0;width:24px}
+.wt-t{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--w);margin-bottom:5px}
+.wt-d{font-family:var(--sans);font-size:.86rem;font-weight:300;color:var(--w60);line-height:1.65}
+
+/* AGENDA */
+#agenda{background:var(--ink2)}
+#agenda{position:relative;overflow:hidden}
+#agenda::before{content:"";position:absolute;inset:0;background:url('https://res.cloudinary.com/dpiavcukm/image/upload/v1781847432/IMG_7971_tmtcqi.jpg') center/cover no-repeat;z-index:0}
+#agenda::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.92),rgba(10,10,10,.88));z-index:1}
+#agenda>*{position:relative;z-index:2}
+.ag-w{display:grid;grid-template-columns:1.1fr 1fr;gap:80px;margin-top:80px}
+.ag-form{display:flex;flex-direction:column;gap:2px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.fg{display:flex;flex-direction:column;background:var(--ink3);border:1px solid var(--w06);padding:18px 22px;gap:6px;transition:border-color .3s}
+.fg:focus-within{border-color:rgba(255,61,0,.3)}
+.fg label{font-family:var(--mono);font-size:.55rem;letter-spacing:.22em;color:var(--red);text-transform:uppercase}
+.fg input,.fg select,.fg textarea{background:transparent;border:none;color:var(--w);font-family:var(--serif);font-size:1.05rem;font-weight:300;outline:none;appearance:none;width:100%}
+.fg textarea{min-height:80px;resize:none;font-size:.9rem;font-family:var(--sans)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--w20)}
+.fg select option{background:var(--ink3)}
+.f-sub{width:100%;background:var(--red);border:none;color:var(--w);font-family:var(--mono);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;padding:20px;cursor:pointer;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 100%,12px 100%);transition:background .25s;position:relative;overflow:hidden;margin-top:2px}
+.f-sub::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.1);transform:translateX(-100%);transition:transform .4s}
+.f-sub:hover::before{transform:translateX(0)}
+.ag-info{display:flex;flex-direction:column;gap:2px}
+.ai-b{padding:30px 26px;background:var(--ink3);border:1px solid var(--w06)}
+.ai-l{font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;color:var(--gold-l);text-transform:uppercase;margin-bottom:12px}
+.ai-t{font-family:var(--sans);font-size:.88rem;font-weight:300;color:var(--w60);line-height:1.75}
+.ai-t strong{color:var(--w);font-weight:500}
+
+/* FOOTER */
+footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:64px}
+.fl{font-family:var(--serif);font-size:2.4rem;font-weight:300;letter-spacing:.1em;color:var(--w);margin-bottom:14px}
+.fl em{color:var(--red);font-style:normal}
+.ft-tag{font-family:var(--sans);font-size:.86rem;font-weight:300;color:var(--w60);line-height:1.7;max-width:260px;margin-bottom:26px}
+.ft-soc{display:flex;gap:8px}
+.fs-btn{width:40px;height:40px;border:1px solid var(--w20);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--w60);text-decoration:none;transition:all .3s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
+.fs-btn svg{width:18px;height:18px;fill:currentColor;transition:fill .25s}
+.fs-btn:hover{transform:scale(1.12)}
+.fs-btn.ig:hover{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285AEB 90%);border-color:transparent;color:#fff}
+.fs-btn.wa:hover{background:#25D366;border-color:#25D366;color:#fff}
+.fs-btn.tt:hover{background:#010101;border-color:#010101;color:#fff}
+.fs-btn.gm:hover{background:var(--red);border-color:var(--red);color:#fff}
+.fc-h{font-family:var(--mono);font-size:.56rem;letter-spacing:.22em;color:var(--red);text-transform:uppercase;margin-bottom:18px}
+.fc-l{display:flex;flex-direction:column;gap:10px}
+.fc-l a{font-family:var(--sans);font-size:.86rem;font-weight:300;color:var(--w60);text-decoration:none;transition:color .25s}
+.fc-l a:hover{color:var(--w)}
+.ft-bot{display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid var(--w06)}
+.ft-c{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;color:rgba(240,237,232,.22)}
+.ft-b{font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;color:rgba(255,61,0,.28)}
+
+/* QUIÉNES SOMOS */
+#about{background:var(--ink);position:relative;overflow:hidden}
+#about::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781843781/IMG_7964_dcpsqx.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
+#about::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,6,.6) 0%,rgba(6,6,6,.4) 50%,rgba(6,6,6,.6) 100%);z-index:1}
+#about .fu,#about .ab-grid{position:relative;z-index:2}
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:80px}
+.ab-left{position:relative}
+.ab-accent{font-family:var(--serif);font-size:clamp(7rem,14vw,14rem);font-weight:300;color:rgba(255,61,0,.04);position:absolute;top:-40px;left:-20px;line-height:1;pointer-events:none;letter-spacing:-.04em}
+.ab-body{font-family:var(--serif);font-size:clamp(1.1rem,1.8vw,1.35rem);font-weight:300;color:var(--w60);line-height:1.8;margin-bottom:32px}
+.ab-body strong{color:var(--w);font-weight:400}
+.ab-body em{color:var(--gold-l);font-style:italic}
+.ab-pillars{display:flex;flex-direction:column;gap:1px;margin-top:48px}
+.ab-pillar{display:flex;align-items:flex-start;gap:20px;padding:22px 0;border-bottom:1px solid var(--w06)}
+.ab-pillar:first-child{border-top:1px solid var(--w06)}
+.ab-pn{font-family:var(--mono);font-size:.52rem;letter-spacing:.2em;color:var(--red);min-width:24px;padding-top:3px}
+.ab-pt{font-family:var(--sans);font-size:.9rem;font-weight:500;color:var(--w);margin-bottom:4px}
+.ab-pd{font-family:var(--sans);font-size:.82rem;font-weight:300;color:var(--w60);line-height:1.65}
+.ab-right{display:flex;flex-direction:column;gap:40px}
+.ab-quote{padding:36px;background:var(--ink2);border-left:2px solid var(--gold);position:relative}
+.ab-quote::before{content:'"';font-family:var(--serif);font-size:5rem;color:rgba(154,122,58,.18);position:absolute;top:-10px;left:24px;line-height:1}
+.ab-qt{font-family:var(--serif);font-size:1.2rem;font-weight:300;color:var(--w);line-height:1.65;font-style:italic;position:relative;z-index:1}
+.ab-qa{font-family:var(--mono);font-size:.55rem;letter-spacing:.18em;color:var(--gold-l);text-transform:uppercase;margin-top:18px}
+/* Marcas */
+.ab-brands-wrap{margin-top:60px}
+.ab-brands-label{font-family:var(--mono);font-size:.56rem;letter-spacing:.28em;color:rgba(240,237,232,.28);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.ab-brands-label::before,.ab-brands-label::after{content:'';flex:1;height:1px;background:var(--w06)}
+.ab-brands{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--w06)}
+.ab-brand{background:var(--ink2);padding:20px 16px;display:flex;align-items:center;justify-content:center;transition:background .3s}
+.ab-brand:hover{background:var(--ink3)}
+.ab-brand span{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;color:rgba(240,237,232,.35);text-transform:uppercase;text-align:center;line-height:1.4;transition:color .3s}
+.ab-brand:hover span{color:var(--gold-l)}
+.ab-brands-row2{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--w06);margin-top:1px}
+
+/* SHOWROOM */
+#showroom{background:var(--ink2);position:relative;overflow:hidden}
+#showroom::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781839189/IMG_7942_azf1pa.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
+#showroom::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.6) 0%,rgba(14,14,14,.4) 50%,rgba(14,14,14,.6) 100%);z-index:1;box-shadow:inset 0 1px 0 0 rgba(154,122,58,.6)}
+#showroom .fu,#showroom .sh-intro,#showroom .sh-mosaic,#showroom .sh-bottom{position:relative;z-index:2}
+.sh-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px}
+.sh-tag-line{font-family:var(--serif);font-size:clamp(1rem,1.5vw,1.2rem);font-weight:300;color:var(--w60);line-height:1.8;max-width:440px}
+.sh-tag-line strong{color:var(--w);font-weight:400}
+.sh-cta-wrap{display:flex;justify-content:flex-end;align-items:flex-end}
+.sh-cta{display:inline-flex;align-items:center;gap:12px;background:transparent;color:var(--gold-l);font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;padding:14px 28px;border:1px solid rgba(154,122,58,.4);cursor:pointer;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);transition:all .3s;text-decoration:none}
+.sh-cta:hover{background:rgba(154,122,58,.08);border-color:var(--gold-l);color:var(--w)}
+/* Mosaic layout */
+.sh-mosaic{display:grid;grid-template-columns:1.45fr 1fr;grid-template-rows:380px 280px;gap:3px}
+.sh-tile{position:relative;overflow:hidden;cursor:pointer}
+.sh-tile img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.25,.46,.45,.94),filter .8s}
+.sh-tile:hover img{transform:scale(1.06);filter:brightness(1.1)}
+.sh-tile-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,.72) 0%,transparent 55%);opacity:0;transition:opacity .4s}
+.sh-tile:hover .sh-tile-overlay{opacity:1}
+.sh-tile-label{position:absolute;bottom:0;left:0;right:0;padding:22px 24px;transform:translateY(8px);opacity:0;transition:opacity .35s,transform .35s}
+.sh-tile:hover .sh-tile-label{opacity:1;transform:translateY(0)}
+.sh-tile-name{font-family:var(--serif);font-size:1.1rem;font-weight:300;color:var(--w);margin-bottom:4px}
+.sh-tile-sub{font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;color:var(--gold-l);text-transform:uppercase}
+/* Tile spans */
+.sh-tile:nth-child(1){grid-row:1/3}
+.sh-tile:nth-child(2){grid-row:1/2}
+.sh-tile:nth-child(3){grid-row:1/2}
+/* Bottom row — override to fit 2 tiles in col 2 */
+.sh-mosaic{grid-template-columns:1.45fr 1fr 1fr;grid-template-rows:420px}
+.sh-tile:nth-child(1){grid-column:1/2;grid-row:1/2}
+.sh-tile:nth-child(2){grid-column:2/3;grid-row:1/2}
+.sh-tile:nth-child(3){grid-column:3/4;grid-row:1/2}
+.sh-tile:nth-child(4){grid-column:2/4;grid-row:2/3;display:none}
+/* Simpler clean grid */
+.sh-mosaic{display:grid;grid-template-columns:1.6fr 1fr 1fr;grid-template-rows:440px 300px;gap:3px}
+.sh-tile:nth-child(1){grid-column:1/2;grid-row:1/3}
+.sh-tile:nth-child(2){grid-column:2/3;grid-row:1/2}
+.sh-tile:nth-child(3){grid-column:3/4;grid-row:1/2}
+.sh-tile:nth-child(4){grid-column:2/4;grid-row:2/3;display:block}
+/* Gold accent line bottom */
+.sh-bottom{margin-top:56px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;padding-top:40px;border-top:1px solid var(--w06)}
+.sh-stat{display:flex;flex-direction:column;gap:6px}
+.sh-stat-n{font-family:var(--serif);font-size:2.4rem;font-weight:300;color:var(--w);line-height:1}
+.sh-stat-n em{font-style:normal;color:var(--gold-l)}
+.sh-stat-l{font-family:var(--mono);font-size:.54rem;letter-spacing:.18em;color:var(--w60);text-transform:uppercase}
+.sh-divider{width:1px;height:48px;background:var(--w06);flex-shrink:0}
+.sh-stats-row{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+@media(max-width:960px){
+  .sh-intro{grid-template-columns:1fr}
+  .sh-cta-wrap{justify-content:flex-start}
+  .sh-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:260px 260px}
+  .sh-tile:nth-child(1){grid-column:1/3;grid-row:1/2}
+  .sh-tile:nth-child(2){grid-column:1/2;grid-row:2/3}
+  .sh-tile:nth-child(3){grid-column:2/3;grid-row:2/3}
+  .sh-tile:nth-child(4){grid-column:1/3;grid-row:3/4}
+}
+@media(max-width:600px){
+  .sh-mosaic{grid-template-columns:1fr;grid-template-rows:repeat(4,240px)}
+  .sh-tile:nth-child(n){grid-column:1;grid-row:auto}
+}
+
+/* CONCIERGE */
+#cfab{position:fixed;bottom:32px;right:32px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+#cc{width:360px;background:var(--ink2);border:1px solid rgba(255,61,0,.2);box-shadow:0 24px 80px rgba(0,0,0,.7);display:flex;flex-direction:column;max-height:540px;opacity:0;transform:translateY(16px) scale(.97);transition:opacity .35s,transform .35s;pointer-events:none;visibility:hidden}
+#cc.o{opacity:1;transform:none;pointer-events:auto;visibility:visible}
+.cc-h{padding:16px 18px;background:var(--ink3);border-bottom:1px solid var(--w06);display:flex;align-items:center;gap:12px}
+.cc-av{width:34px;height:34px;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--w);clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);flex-shrink:0}
+.cc-nm{font-family:var(--serif);font-size:.95rem;font-weight:400;color:var(--w)}
+.cc-st{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;color:#50d050}
+.cc-x{margin-left:auto;background:none;border:none;color:var(--w60);font-size:.95rem;cursor:pointer;padding:4px;transition:color .2s}
+.cc-x:hover{color:var(--red)}
+.cc-msgs{padding:18px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;max-height:290px}
+.cc-msgs::-webkit-scrollbar{width:3px}
+.cc-msgs::-webkit-scrollbar-thumb{background:rgba(255,61,0,.3)}
+.cm{display:flex;flex-direction:column;gap:4px;max-width:90%}
+.cm.b{align-self:flex-start}
+.cm.u{align-self:flex-end;align-items:flex-end}
+.cm-b{padding:10px 14px;font-family:var(--sans);font-size:.82rem;line-height:1.55;font-weight:300}
+.cm.b .cm-b{background:var(--ink3);color:var(--w);border-left:2px solid var(--red)}
+.cm.u .cm-b{background:var(--red);color:var(--w)}
+.cm-t{font-family:var(--mono);font-size:.5rem;color:rgba(240,237,232,.28);letter-spacing:.06em}
+.cc-suggs{padding:0 14px 10px;display:flex;flex-wrap:wrap;gap:5px}
+.cc-s{font-family:var(--mono);font-size:.56rem;padding:5px 10px;background:var(--ink3);border:1px solid var(--w06);color:var(--w60);cursor:pointer;transition:all .2s;letter-spacing:.07em}
+.cc-s:hover{border-color:var(--red);color:var(--red)}
+.cc-ir{padding:11px 14px;background:var(--ink3);border-top:1px solid var(--w06);display:flex;gap:8px;align-items:center}
+.cc-inp{flex:1;background:transparent;border:none;color:var(--w);font-family:var(--sans);font-size:.84rem;outline:none;font-weight:300}
+.cc-inp::placeholder{color:rgba(240,237,232,.28)}
+.cc-send{background:var(--red);border:none;color:var(--w);width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);flex-shrink:0;transition:background .2s}
+.cc-send:hover{background:#cc3100}
+#cfab-btn{width:68px;height:68px;background:var(--ink);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 0 1.5px rgba(255,61,0,.5);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;position:relative;padding:0;overflow:hidden}
+#cfab-btn::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--red),rgba(255,61,0,.3),var(--gold),rgba(255,61,0,.3),var(--red));animation:fab-spin 4s linear infinite;opacity:.7}
+#cfab-btn::after{content:'';position:absolute;inset:2px;border-radius:50%;background:var(--ink)}
+#cfab-btn img{width:42px;height:auto;display:block;object-fit:contain;position:relative;z-index:1;filter:brightness(1.05);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+#cfab-btn:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(0,0,0,.7),0 0 0 2px var(--red)}
+#cfab-btn:hover img{transform:scale(1.08)}
+@keyframes fab-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.fab-tip{position:absolute;right:76px;top:50%;transform:translateY(-50%);background:var(--ink2);border:1px solid rgba(255,61,0,.25);color:var(--w60);font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;padding:7px 14px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .25s;border-radius:2px}
+#cfab-btn:hover .fab-tip{opacity:1}
+.typing{display:flex;gap:4px;padding:10px 14px;background:var(--ink3);border-left:2px solid var(--red);align-self:flex-start}
+.cc-wa-btn{margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;background:#1faa4f;color:#fff;font-family:var(--sans);font-weight:500;font-size:.82rem;text-decoration:none;padding:11px 16px;border-radius:3px;transition:background .2s,transform .2s;box-shadow:0 4px 16px rgba(31,170,79,.25)}
+.cc-wa-btn:hover{background:#19913f;transform:translateY(-1px)}
+.cc-handoff-card{display:flex;flex-direction:column;gap:8px}
+.cc-handoff-chips{display:flex;flex-wrap:wrap;gap:6px}
+.cc-handoff-chips span{font-family:var(--mono);font-size:.58rem;letter-spacing:.04em;padding:4px 9px;background:rgba(255,61,0,.1);border:1px solid rgba(255,61,0,.25);color:var(--w);border-radius:2px}
+.cc-inp:disabled{opacity:.5}
+.cc-send:disabled{cursor:not-allowed}
+.td{width:5px;height:5px;background:var(--red);border-radius:50%;animation:tb 1.2s infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes tb{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+/* MOBILE */
+@media(max-width:960px){
+  nav,nav.s{padding:14px 20px}
+  .n-links,.n-book{display:none}
+  .sp{padding:72px 20px}
+  .h-content{padding:0 20px 72px}
+  .h-h1{font-size:clamp(3.5rem,12vw,6rem)}
+  .h-stats{display:none}
+  .h-bot{flex-direction:column;align-items:flex-start}
+  .sg{grid-template-columns:1fr 1fr}
+  .ba-l,.sim-w,.why-w,.ag-w,.ab-grid{grid-template-columns:1fr}
+  .gg{columns:2}
+  .tg{grid-template-columns:repeat(3,1fr)}
+  .ft{grid-template-columns:1fr 1fr;gap:32px}
+  #cc{width:calc(100vw - 28px)}
+  .fr{grid-template-columns:1fr}
+  body{cursor:auto}
+  #cur,#cur-r{display:none}
+}
+@media(max-width:600px){
+  .gg{columns:1}
+  .tg{grid-template-columns:repeat(2,1fr)}
+  .ft{grid-template-columns:1fr}
+  .sg{grid-template-columns:1fr}
+  .ab-brands,.ab-brands-row2{grid-template-columns:repeat(2,1fr)}
+  .ab-accent{font-size:8rem}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ll-wrap">
+    <video id="ll-video" autoplay muted playsinline>
+      <source src="https://res.cloudinary.com/dpiavcukm/video/upload/f_auto,q_auto,w_960,ac_none/v1781839311/ScreenRecording_06-18-2026_15-10-47_1_kzlrdd.mov" type="video/mp4">
+    </video>
+    <div class="ll-bar-wrap"><div class="ll-bar" id="lb"></div></div>
+    <div class="ll-pct" id="lp">0%</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="n-logo"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_200/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd" style="height:52px;width:auto;display:block"></a>
+  <ul class="n-links">
+    <li><a href="#srv">Servicios</a></li>
+    <li><a href="#sim">Simulador</a></li>
+    <li><a href="#gal">Galería</a></li>
+    <li><a href="#about">Nosotros</a></li>
+  </ul>
+  <a href="#agenda" class="n-book">Agendar Cita</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-bg">
+    <div class="h-grid"></div>
+    <div class="h-glow"></div>
+    <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45">
+      <source src="https://res.cloudinary.com/dpiavcukm/video/upload/f_auto,q_auto,w_1920,ac_none/v1781839213/insta_video_73599_zzep5h.mov" type="video/mp4">
+    </video>
+  </div>
+  <div class="h-vign"></div>
+  <div class="h-content">
+    <p class="h-tag" id="htag">Caracas · Venezuela · Av. de los Cortijos</p>
+    
+    <div class="h-bot">
+      <p class="h-desc" id="hdesc">Mecánica, detailing, repuestos, personalización y performance en un solo lugar. Con los más altos estándares de la industria automotriz.</p>
+      <div class="h-btns" id="hbtns">
+        <a href="#agenda" class="btn-p">⚡ Agendar Inspección</a>
+        <button class="btn-g" onclick="openC()">✦ Roco Assistant</button>
+      </div>
+    </div>
+  </div>
+  <div class="h-stats" id="hsr">
+    <div class="hs"><div class="hs-n">137<em>K</em></div><div class="hs-l">Seguidores</div></div>
+    <div class="hs"><div class="hs-n">15<em>+</em></div><div class="hs-l">Años exp.</div></div>
+    <div class="hs"><div class="hs-n">100<em>%</em></div><div class="hs-l">Garantizado</div></div>
+    <div class="hs"><div class="hs-n" style="font-size:1.5rem;letter-spacing:.05em">VIP</div><div class="hs-l">Atención</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-wrap"><div class="mq-track"><div class="mq-item">Mecánica General</div><div class="mq-item">Detailing Premium</div><div class="mq-item">Pulido Nanocerámico</div><div class="mq-item">PPF</div><div class="mq-item">Suspensión</div><div class="mq-item">Sonido Hi-Fi</div><div class="mq-item">Pantallas Digitales</div><div class="mq-item">Cauchos Premium</div><div class="mq-item">Rines Exclusivos</div><div class="mq-item">Iluminación LED</div><div class="mq-item">Latonería & Pintura</div><div class="mq-item">Repuestos Originales</div><div class="mq-item">Mecánica General</div><div class="mq-item">Detailing Premium</div><div class="mq-item">Pulido Nanocerámico</div><div class="mq-item">PPF</div><div class="mq-item">Suspensión</div><div class="mq-item">Sonido Hi-Fi</div><div class="mq-item">Pantallas Digitales</div><div class="mq-item">Cauchos Premium</div><div class="mq-item">Rines Exclusivos</div><div class="mq-item">Iluminación LED</div><div class="mq-item">Latonería & Pintura</div><div class="mq-item">Repuestos Originales</div></div></div>
+
+<!-- QUIÉNES SOMOS -->
+<section id="about" class="sp">
+  <div class="fu">
+    <p class="ey">Nuestra historia</p>
+    <h2 class="st">Quiénes<br><em>somos.</em></h2>
+  </div>
+  <div class="ab-grid">
+    <div class="ab-left">
+      <div class="ab-accent">R4</div>
+      <p class="ab-body fu">
+        Roco4wd nació de una <strong>obsesión real por los vehículos</strong> y de la convicción de que Venezuela merece un servicio automotriz al nivel de cualquier capital del mundo.<br><br>
+        Llevamos <strong>más de 15 años</strong> construyendo una reputación que no se compra: se gana trabajo a trabajo, cliente a cliente. Hoy somos <em>el referente automotriz de Caracas</em> — el lugar al que acuden quienes no aceptan compromisos cuando se trata de su vehículo.
+      </p>
+      <div class="ab-pillars fu">
+        <div class="ab-pillar">
+          <div class="ab-pn">01</div>
+          <div><div class="ab-pt">Excelencia sin negociación</div><div class="ab-pd">Cada trabajo sale de nuestro taller bajo un único estándar: impecable. No existe el "suficientemente bueno" en Roco4wd.</div></div>
+        </div>
+        <div class="ab-pillar">
+          <div class="ab-pn">02</div>
+          <div><div class="ab-pt">Transparencia total</div><div class="ab-pd">Diagnóstico con evidencia fotográfica, presupuesto cerrado antes de comenzar y aprobación tuya en cada etapa. Sin sorpresas.</div></div>
+        </div>
+        <div class="ab-pillar">
+          <div class="ab-pn">03</div>
+          <div><div class="ab-pt">Las mejores marcas del mercado</div><div class="ab-pd">Solo trabajamos con proveedores y marcas de primer nivel mundial. Si no cumple nuestro estándar, no entra al taller.</div></div>
+        </div>
+        <div class="ab-pillar">
+          <div class="ab-pn">04</div>
+          <div><div class="ab-pt">Comunidad de 137K</div><div class="ab-pd">Una comunidad que creció porque entregamos resultados reales, no promesas. Cada publicación es un trabajo real, sin filtros.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ab-right">
+      <div class="ab-quote fu">
+        <p class="ab-qt">No somos el taller más barato de Caracas. Somos el taller donde tu vehículo recibe el trato que merece — y donde tú sabes exactamente qué está pasando en todo momento.</p>
+        <div class="ab-qa">— Equipo Roco4wd · Caracas, Venezuela</div>
+      </div>
+      <div class="fu">
+        <div class="ab-brands-label">Marcas con las que trabajamos</div>
+        <div class="ab-brands">
+          <div class="ab-brand"><span>Michelin</span></div>
+          <div class="ab-brand"><span>Pirelli</span></div>
+          <div class="ab-brand"><span>Continental</span></div>
+          <div class="ab-brand"><span>BFGoodrich</span></div>
+        </div>
+        <div class="ab-brands-row2">
+          <div class="ab-brand"><span>Fox<br>Shocks</span></div>
+          <div class="ab-brand"><span>Bilstein</span></div>
+          <div class="ab-brand"><span>Old Man<br>Emu</span></div>
+          <div class="ab-brand"><span>KYB</span></div>
+        </div>
+        <div class="ab-brands-row2">
+          <div class="ab-brand"><span>Focal</span></div>
+          <div class="ab-brand"><span>JL Audio</span></div>
+          <div class="ab-brand"><span>Alpine</span></div>
+          <div class="ab-brand"><span>Osram</span></div>
+        </div>
+        <div class="ab-brands-row2">
+          <div class="ab-brand"><span>Hella</span></div>
+          <div class="ab-brand"><span>3M PPF</span></div>
+          <div class="ab-brand"><span>Gyeon</span></div>
+          <div class="ab-brand"><span>Koch<br>Chemie</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="srv" class="sp">
+  <div class="fu">
+    <p class="ey">Especialidades</p>
+    <h2 class="st">Cada servicio,<br>una <em>obsesión.</em></h2>
+  </div>
+  <div class="sg fu">
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="sn">Mecánica General</div><div class="sd2">Diagnóstico integral, reparación preventiva y correctiva con equipamiento europeo de nivel oficial.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg></div><div class="sn">Latonería & Pintura</div><div class="sd2">Acabados nivel concesionario en cabina climatizada. Corrección de abolladuras sin rastro visible.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div class="sn">Detailing Premium</div><div class="sd2">Descontaminación profunda, corrección de pintura y protección multicapa de alta durabilidad.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="sn">Pulido Nanocerámico</div><div class="sd2">Protección extrema cerámica 9H. Brillo profundo y repelencia garantizados por 3 a 5 años.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="sn">PPF — Film de Protección</div><div class="sd2">Película invisible con auto-sanación térmica. Tu pintura original intacta contra todo impacto.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><div class="sn">Suspensión</div><div class="sd2">Desde confort urbano hasta lift kit de competición. Fox, KYB, Bilstein, Old Man Emu.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg></div><div class="sn">Cauchos Premium</div><div class="sd2">Michelin, Pirelli, Continental, BFGoodrich. El caucho exacto para tu uso y condiciones de manejo.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="sn">Rines Exclusivos</div><div class="sd2">Diseños únicos en forjado y fundido premium. Desde OEM+ hasta propuestas totalmente custom.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div><div class="sn">Sistemas de Sonido</div><div class="sd2">Instalación Hi-Fi limpia. Focal, JL Audio, Alpine. Música como nunca antes la habías escuchado.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="sn">Pantallas Digitales</div><div class="sd2">Android Auto, Apple CarPlay, touch 10-12". Instalación nativa sin comprometer el cableado original.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg></div><div class="sn">Iluminación LED</div><div class="sd2">Conversión bi-LED, ambientación RGB, proyectores Hella y Osram. Visibilidad y estética al máximo.</div><div class="sa">→</div><div class="sb"></div></div>
+    <div class="sc"><div class="si"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div class="sn">Repuestos & Accesorios</div><div class="sd2">Importados originales y aftermarket de calidad certificada. Lo que tu vehículo necesita, disponible.</div><div class="sa">→</div><div class="sb"></div></div>
+  </div>
+</section>
+
+<!-- SHOWROOM -->
+<section id="showroom" class="sp">
+  <div class="fu">
+    <p class="ey">Showroom</p>
+    <h2 class="st">Elegí en<br><em>persona.</em></h2>
+  </div>
+  <div class="sh-intro fu">
+    <p class="sh-tag-line">
+      Nuestro showroom no es un catálogo — es una experiencia. <strong>Cada pieza está exhibida para que la veas, la toques y la compares</strong> antes de tomar cualquier decisión. Rines, cauchos, sistemas de sonido, pantallas, accesorios de suspensión y protección: todo disponible para que elijas con criterio, no con fotos.
+    </p>
+    <div class="sh-cta-wrap">
+      <a href="https://wa.me/584140248764" class="sh-cta" target="_blank">◆ Visitar el Showroom</a>
+    </div>
+  </div>
+  <div class="sh-mosaic fu">
+    <div class="sh-tile">
+      <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1200/v1781839178/IMG_7957_auinbs.jpg" alt="Showroom Roco4wd" loading="lazy">
+      <div class="sh-tile-overlay"></div>
+      <div class="sh-tile-label">
+        <div class="sh-tile-name">Rines & Cauchos</div>
+        <div class="sh-tile-sub">Exhibición permanente · Todas las marcas</div>
+      </div>
+    </div>
+    <div class="sh-tile">
+      <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_800/v1781839177/IMG_7959_ayoxvn.jpg" alt="Showroom Roco4wd" loading="lazy">
+      <div class="sh-tile-overlay"></div>
+      <div class="sh-tile-label">
+        <div class="sh-tile-name">Accesorios Premium</div>
+        <div class="sh-tile-sub">Todo disponible en stock</div>
+      </div>
+    </div>
+    <div class="sh-tile">
+      <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_800/v1781839181/IMG_7958_dos4np.jpg" alt="Showroom Roco4wd" loading="lazy">
+      <div class="sh-tile-overlay"></div>
+      <div class="sh-tile-label">
+        <div class="sh-tile-name">Sistemas de Audio</div>
+        <div class="sh-tile-sub">Focal · JL Audio · Alpine</div>
+      </div>
+    </div>
+    <div class="sh-tile">
+      <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1200/v1781839163/IMG_7960_nbyjyy.jpg" alt="Showroom Roco4wd" loading="lazy">
+      <div class="sh-tile-overlay"></div>
+      <div class="sh-tile-label">
+        <div class="sh-tile-name">Protección & PPF</div>
+        <div class="sh-tile-sub">3M · Xpel · Gyeon — muestras reales</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-bottom fu">
+    <div class="sh-stats-row">
+      <div class="sh-stat">
+        <div class="sh-stat-n">500<em>+</em></div>
+        <div class="sh-stat-l">Piezas exhibidas</div>
+      </div>
+      <div class="sh-divider"></div>
+      <div class="sh-stat">
+        <div class="sh-stat-n">16<em>+</em></div>
+        <div class="sh-stat-l">Marcas en stock</div>
+      </div>
+      <div class="sh-divider"></div>
+      <div class="sh-stat">
+        <div class="sh-stat-n">100<em>%</em></div>
+        <div class="sh-stat-l">Originales certificados</div>
+      </div>
+    </div>
+    <a href="https://wa.me/584140248764" class="btn-p" target="_blank">⚡ Coordinar visita</a>
+  </div>
+</section>
+
+<!-- VIDEO SHOWROOM EN ACCIÓN -->
+<section id="showvid">
+  <div class="sv-wrap">
+    <!-- LEFT: texto + KPIs -->
+    <div class="sv-left fu">
+      <div>
+        <p class="ey">En acción</p>
+        <h2 class="st">El showroom<br><em>por dentro.</em></h2>
+        <p class="sd" style="margin-top:20px">Más de 500 piezas disponibles para ver, tocar y comparar. Rines, cauchos, sistemas de sonido, PPF y accesorios premium — todo en un solo lugar.</p>
+      </div>
+      <div class="sv-kpis">
+        <div class="sv-kpi">
+          <div class="sv-kpi-icon">🏁</div>
+          <div class="sv-kpi-text"><strong>Piso de exhibición de 2 niveles</strong>Todo el catálogo expuesto en un showroom de alta gama en Caracas</div>
+        </div>
+        <div class="sv-kpi">
+          <div class="sv-kpi-icon">🔊</div>
+          <div class="sv-kpi-text"><strong>Sistemas de audio funcionando</strong>Focal, JL Audio y Alpine conectados para que los escuches antes de comprar</div>
+        </div>
+        <div class="sv-kpi">
+          <div class="sv-kpi-icon">🛞</div>
+          <div class="sv-kpi-text"><strong>Cauchos y rines en tamaño real</strong>Compará opciones side-by-side con tu vehículo en mente</div>
+        </div>
+        <div class="sv-kpi">
+          <div class="sv-kpi-icon">🛡️</div>
+          <div class="sv-kpi-text"><strong>Muestras reales de PPF y cerámica</strong>Tocá la diferencia entre cada producto antes de decidir</div>
+        </div>
+      </div>
+      <div class="sv-cta-row">
+        <a href="https://wa.me/584140248764" class="btn-p" target="_blank">⚡ Coordinar visita</a>
+        <a href="#agenda" class="btn-g">Agendar cita</a>
+      </div>
+    </div>
+    <!-- RIGHT: celular con video -->
+    <div class="sv-phone fu" onclick="openVid()">
+      <div class="sv-phone-frame">
+        <video id="sv-preview" src="https://res.cloudinary.com/dpiavcukm/video/upload/f_auto,q_auto,w_560/v1781847418/insta_video_37312_vo0jjp.mp4" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"></video>
+        <div class="sv-vign"></div>
+        <div class="sv-play">
+          <div class="sv-play-btn"><div class="sv-play-icon"></div></div>
+        </div>
+        <div class="sv-label">Tocá para ver el video</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL VIDEO FULLSCREEN -->
+<div id="sv-modal" onclick="closeVid(event)">
+  <button class="sv-close" onclick="closeVid()">✕</button>
+  <video id="sv-full" src="https://res.cloudinary.com/dpiavcukm/video/upload/v1781847418/insta_video_37312_vo0jjp.mp4" controls playsinline style="max-height:90vh;max-width:min(420px,95vw);border-radius:16px;box-shadow:0 40px 120px rgba(0,0,0,.8)"></video>
+</div>
+
+<!-- SIMULADOR -->
+<section id="sim" class="sp">
+  <div class="fu">
+    <p class="ey">Plan personalizado</p>
+    <h2 class="st">Configura tu<br><em>vehículo.</em></h2>
+    <p class="sd">Selecciona tu auto y el sistema genera un plan de mejoras exacto para tu caso de uso.</p>
+  </div>
+  <div class="sim-w">
+    <div class="sim-fs fu">
+      <div class="sim-f"><label>Marca</label><select id="s-m" onchange="updMod()"><option value="">Seleccionar…</option><option>Toyota</option><option>Ford</option><option>Chevrolet</option><option>Jeep</option><option>Mitsubishi</option><option>BMW</option><option>Mercedes-Benz</option><option>Lexus</option><option>Nissan</option><option>Hyundai</option></select></div>
+      <div class="sim-f"><label>Modelo</label><select id="s-mo" onchange="updAnio()"><option value="">Primero selecciona marca…</option></select></div>
+      <div class="sim-f"><label>Año</label><select id="s-y"><option value="">Seleccionar año…</option></select></div>
+      <div class="sim-f"><label>Uso principal</label><select id="s-u"><option value="ciudad">Ciudad / Diario</option><option value="carretera">Carretera / Viajes</option><option value="offroad">Off Road / Aventura</option><option value="performance">Sport / Performance</option><option value="lujo">Representación / Lujo</option></select></div>
+      <button class="sim-go" onclick="genPlan()">✦ Generar Plan Personalizado</button>
+    </div>
+    <div class="sim-panel" id="sp">
+      <div style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:16px;opacity:.22"><p style="font-family:var(--serif);font-size:3.5rem;font-weight:300;color:var(--w)">—</p><p style="font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;color:var(--w60);text-align:center;">Selecciona tu vehículo<br>para ver el plan</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO — TRABAJOS POR MODELO -->
+<section id="gal" class="sp">
+  <div class="fu" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px">
+    <div><p class="ey">Portfolio</p><h2 class="st">Trabajos<br><em>realizados.</em></h2></div>
+    <p class="sd" style="max-width:320px">Cada proyecto es un caso único. Hacé click en las flechas para ver todas las fotos del trabajo.</p>
+  </div>
+  <div class="pw fu" id="pw">
+
+    <!-- 1. Land Cruiser Prado -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839169/IMG_7914_yub5ns.jpg" alt="Land Cruiser Prado" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839167/IMG_7915_yhwphi.jpg" alt="Land Cruiser Prado" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839167/IMG_7916_fqmblu.jpg" alt="Land Cruiser Prado" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839170/IMG_7917_erxcno.jpg" alt="Land Cruiser Prado" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839167/IMG_7918_iutq3r.jpg" alt="Land Cruiser Prado" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 5</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Land Cruiser Prado</div>
+        <div class="pc-year">2024</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Suspensión MT64</span>
+          <span class="pc-tag">PPF alto tráfico</span>
+          <span class="pc-tag">Cauchos Nitto Ridge</span>
+          <span class="pc-tag">Papel ahumado</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 2. Mercedes Benz G500 -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839181/IMG_7911_larrgn.jpg" alt="Mercedes G500" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839174/IMG_7912_mgmvh2.jpg" alt="Mercedes G500" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839172/IMG_7913_hsdc1h.jpg" alt="Mercedes G500" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 3</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Mercedes-Benz G500</div>
+        <div class="pc-year">G-Class</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Detailing Completo</span>
+          <span class="pc-tag">PPF Completo</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 3. Land Cruiser Machito -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839164/IMG_7924_y2egua.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7925_n7eypm.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7926_zp3jqa.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7927_gwjk14.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7928_thmg89.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7929_p8iewe.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839206/IMG_7930_npucvp.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839207/IMG_7931_xsh5nj.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839205/IMG_7932_qn8hfr.jpg" alt="Land Cruiser Machito" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 9</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Toyota Land Cruiser <em style="color:var(--gold-l);font-style:italic">"Machito"</em></div>
+        <div class="pc-year">2024 · Build completo</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Suspensión BP51</span>
+          <span class="pc-tag">Doble amortiguador dirección</span>
+          <span class="pc-tag">Parachoque ARB</span>
+          <span class="pc-tag">Winche ARB</span>
+          <span class="pc-tag">Cauchos Nitto 315</span>
+          <span class="pc-tag">JL Audio</span>
+          <span class="pc-tag">Tapicería 100% cuero</span>
+          <span class="pc-tag">PPF · Papel ahumado</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 4. Toyota Tacoma 2024 -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839182/IMG_7910_sgt4ep.jpg" alt="Toyota Tacoma" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839181/IMG_7908_smjkmu.jpg" alt="Toyota Tacoma" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839181/IMG_7909_ixxkoy.jpg" alt="Toyota Tacoma" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 3</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Toyota Tacoma</div>
+        <div class="pc-year">2024</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Suspensión ICON completa</span>
+          <span class="pc-tag">Cauchos Nitto</span>
+          <span class="pc-tag">Tapa dura</span>
+          <span class="pc-tag">Papel ahumado 3M</span>
+          <span class="pc-tag">Estribos</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 5. Mitsubishi Montero -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839165/IMG_7919_xakjxe.jpg" alt="Mitsubishi Montero" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839166/IMG_7920_kktpk8.jpg" alt="Mitsubishi Montero" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839166/IMG_7921_takdtj.jpg" alt="Mitsubishi Montero" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839166/IMG_7922_e0fn7c.jpg" alt="Mitsubishi Montero" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839165/IMG_7923_uq7kix.jpg" alt="Mitsubishi Montero" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 5</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Mitsubishi Montero</div>
+        <div class="pc-year">Off Road Build</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Suspensión OME</span>
+          <span class="pc-tag">Cauchos BFG KO2</span>
+          <span class="pc-tag">Detailing completo</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 6. Toyota Tacoma TRD Sport -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839209/IMG_7933_ieqpzi.jpg" alt="Tacoma TRD Sport" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839204/IMG_7934_ziig1e.jpg" alt="Tacoma TRD Sport" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839205/IMG_7935_hyxirq.jpg" alt="Tacoma TRD Sport" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839202/IMG_7936_im216j.jpg" alt="Tacoma TRD Sport" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839200/IMG_7937_nhedkk.jpg" alt="Tacoma TRD Sport" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 5</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Toyota Tacoma TRD Sport</div>
+        <div class="pc-year">Sport Edition</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Detailing completo</span>
+          <span class="pc-tag">Accesorios</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 7. Range Rover -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839202/IMG_7938_ezdlee.jpg" alt="Range Rover" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839199/IMG_7939_msoleu.jpg" alt="Range Rover" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839198/IMG_7940_oulhsm.jpg" alt="Range Rover" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839190/IMG_7941_vezbgn.jpg" alt="Range Rover" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 4</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Range Rover</div>
+        <div class="pc-year">Luxury SUV</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Cauchos nuevos</span>
+          <span class="pc-tag">Detailing completo</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 8. Ford F-150 Raptor -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839189/IMG_7942_azf1pa.jpg" alt="Ford F-150 Raptor" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839195/IMG_7943_jhbwlr.jpg" alt="Ford F-150 Raptor" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839191/IMG_7944_gwvful.jpg" alt="Ford F-150 Raptor" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 3</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Ford F-150 Raptor</div>
+        <div class="pc-year">Performance Truck</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Rines Rockstar 20''</span>
+          <span class="pc-tag">Cauchos Nitto</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 9. Toyota GR Yaris -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839188/IMG_7945_nx9mmk.jpg" alt="Toyota GR Yaris" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839187/IMG_7946_igwolo.jpg" alt="Toyota GR Yaris" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839184/IMG_7947_kmgdln.jpg" alt="Toyota GR Yaris" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839186/IMG_7948_btap8o.jpg" alt="Toyota GR Yaris" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 4</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Toyota GR Yaris</div>
+        <div class="pc-year">Ken Block Edition</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Rines Rotiform Ken Block 19''</span>
+          <span class="pc-tag">Cauchos Nitto</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 10. Mini Cooper JW -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839186/IMG_7949_yb2c2o.jpg" alt="Mini Cooper JW" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839186/IMG_7950_sxcd9n.jpg" alt="Mini Cooper JW" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839185/IMG_7951_xirare.jpg" alt="Mini Cooper JW" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839185/IMG_7952_cy1jwb.jpg" alt="Mini Cooper JW" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 4</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Mini Cooper JW</div>
+        <div class="pc-year">Custom Edition</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Rines Enkei JW</span>
+          <span class="pc-tag">Cauchos nuevos</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TRUST -->
+<!-- WHY -->
+<section id="why" class="sp">
+  <div class="why-w">
+    <div class="why-vis fu">
+      <div class="why-bg"></div>
+      <div class="why-ac"></div>
+      <div class="why-giant">R4</div>
+      <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781843782/IMG_7963_h9fztw.jpg" alt="Roco4wd" style="position:absolute;inset:18px 56px 56px 18px;width:calc(100% - 74px);height:calc(100% - 74px);object-fit:cover;display:block;">
+    </div>
+    <div>
+      <div class="fu"><p class="ey">La diferencia</p><h2 class="st">¿Por qué<br>vuelven<br><em>siempre?</em></h2></div>
+      <div class="why-items fu">
+        <div class="wi"><div class="wn">01</div><div><div class="wt-t">Atención Personalizada</div><div class="wt-d">Un consultor dedicado de inicio a fin. Nada ocurre sin tu aprobación explícita.</div></div></div>
+        <div class="wi"><div class="wn">02</div><div><div class="wt-t">Diagnóstico Transparente</div><div class="wt-d">Mostramos el problema con evidencia fotográfica. Sin sorpresas, sin costos ocultos.</div></div></div>
+        <div class="wi"><div class="wn">03</div><div><div class="wt-t">Equipamiento Profesional</div><div class="wt-d">Las mismas herramientas del concesionario oficial, pero con un servicio incomparablemente mejor.</div></div></div>
+        <div class="wi"><div class="wn">04</div><div><div class="wt-t">Repuestos Certificados</div><div class="wt-d">Originales y aftermarket premium con procedencia verificada. Nunca genérico, nunca sin garantía.</div></div></div>
+        <div class="wi"><div class="wn">05</div><div><div class="wt-t">Entrega Impecable</div><div class="wt-d">Tu vehículo regresa más limpio de como llegó. No es excepción — es nuestro piso mínimo.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section id="agenda" class="sp">
+  <div class="fu">
+    <p class="ey">Reserva tu cita</p>
+    <h2 class="st">Agenda<br><em>online.</em></h2>
+    <p class="sd">Menos de 60 segundos. Sin llamadas. La confirmación llega directo a tu WhatsApp.</p>
+  </div>
+  <div class="ag-w">
+    <div class="ag-form fu">
+      <div class="fr"><div class="fg"><label>Nombre</label><input type="text" placeholder="Nombre completo" id="an"></div><div class="fg"><label>WhatsApp</label><input type="tel" placeholder="+58 4XX XXX XXXX" id="aw"></div></div>
+      <div class="fg"><label>Vehículo</label><input type="text" placeholder="Marca, modelo y año" id="av"></div>
+      <div class="fg"><label>Servicio</label><select id="as"><option value="">Seleccionar…</option><option>Mecánica General</option><option>Detailing Premium</option><option>Pulido Nanocerámico</option><option>PPF</option><option>Latonería y Pintura</option><option>Suspensión</option><option>Cauchos y Rines</option><option>Sistema de Sonido</option><option>Pantallas Digitales</option><option>Iluminación LED</option><option>Repuestos / Accesorios</option><option>Inspección General</option></select></div>
+      <div class="fr"><div class="fg"><label>Fecha preferida</label><input type="date" id="af"></div><div class="fg"><label>Hora preferida</label><select id="ah"><option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option></select></div></div>
+      <div class="fg"><label>Notas adicionales</label><textarea id="ax" placeholder="Describe brevemente el problema o lo que necesitas…"></textarea></div>
+      <button class="f-sub" onclick="enviar()">⚡ Confirmar por WhatsApp</button>
+    </div>
+    <div class="ag-info fu">
+      <div class="ai-b"><div class="ai-l">📍 Ubicación</div><div class="ai-t">Av. de los Cortijos, Caracas, Venezuela.<br>A 2 minutos del C.C. Los Cortijos.<br><strong>Estacionamiento amplio disponible.</strong></div></div>
+      <div class="ai-b"><div class="ai-l">🕐 Horario</div><div class="ai-t"><strong>Lun–Vie:</strong> 8:00 AM – 6:00 PM<br><strong>Sábados:</strong> 8:00 AM – 2:00 PM<br>Domingos: Solo emergencias por WhatsApp</div></div>
+      <div class="ai-b"><div class="ai-l">📱 Contacto directo</div><div class="ai-t"><strong>WhatsApp:</strong> +58 414 0248764<br><strong>Instagram:</strong> @roco4wd<br><strong>Email:</strong> info@roco4wd.com</div></div>
+      <div class="ai-b" style="background:rgba(255,61,0,.05);border-color:rgba(255,61,0,.18)"><div class="ai-l">⚡ Respuesta Garantizada</div><div class="ai-t">Confirmación en menos de <strong>2 horas</strong> durante horario de atención. Tu reserva asegurada al instante.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_260/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd" style="height:80px;width:auto;display:block;margin-bottom:14px"><p class="ft-tag">La experiencia automotriz definitiva. Mecánica, personalización y detailing con obsesión total por el detalle.</p><div class="ft-soc">
+          <a href="https://instagram.com/roco4wd" class="fs-btn ig" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </a>
+          <a href="https://wa.me/584140248764" class="fs-btn wa" target="_blank" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          </a>
+          <a href="https://tiktok.com/@roco4wd" class="fs-btn tt" target="_blank" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+          <a href="https://maps.app.goo.gl/yoToQrgkd" class="fs-btn gm" target="_blank" aria-label="Google Maps">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7.802 0 4 3.403 4 7.602 4 11.8 7.469 16.812 12 24c4.531-7.188 8-12.2 8-16.398C20 3.403 16.199 0 12 0zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+          </a>
+        </div></div>
+    <div><div class="fc-h">Servicios</div><div class="fc-l"><a href="#srv">Mecánica General</a><a href="#srv">Detailing Premium</a><a href="#srv">PPF</a><a href="#srv">Suspensión</a><a href="#srv">Cauchos & Rines</a><a href="#srv">Sonido & Iluminación</a></div></div>
+    <div><div class="fc-h">Empresa</div><div class="fc-l"><a href="#why">Nosotros</a><a href="#gal">Galería</a><a href="#ba">Antes & Después</a><a href="#trust">Por qué Roco4wd</a><a href="#agenda">Agendar Cita</a></div></div>
+    <div><div class="fc-h">Contacto</div><div class="fc-l"><a href="#">Av. de los Cortijos</a><a href="#">Caracas, Venezuela</a><a href="https://wa.me/584140248764">WhatsApp</a><a href="#">Lun–Vie: 8am – 6pm</a><a href="#">Sab: 8am – 2pm</a></div></div>
+  </div>
+  <div class="ft-bot"><p class="ft-c">© 2025 ROCO4WD · CARACAS, VENEZUELA · TODOS LOS DERECHOS RESERVADOS</p><p class="ft-b">AUSTRALWEBSTUDIO.COM</p></div>
+</footer>
+
+<!-- CONCIERGE -->
+<div id="cfab">
+  <div id="cc">
+    <div class="cc-h"><div class="cc-av">R</div><div><div class="cc-nm">Roco Assistant</div><div class="cc-st">● En línea · Especialista Automotriz</div></div><button class="cc-x" onclick="closeC()">✕</button></div>
+    <div class="cc-msgs" id="cmsgs"><div class="cm b"><div class="cm-b">Hola, soy <strong>Roco Assistant</strong> — tu especialista automotriz. ¿En qué puedo orientarte hoy? Mecánica, detailing, PPF, suspensión, sonido, cauchos y más.</div><span class="cm-t">AHORA</span></div></div>
+    <div class="cc-suggs" id="csuggs"><button class="cc-s" onclick="qs(this)">¿Cuánto dura la cerámica?</button><button class="cc-s" onclick="qs(this)">Suspensión para Hilux</button><button class="cc-s" onclick="qs(this)">¿Qué es el PPF?</button><button class="cc-s" onclick="qs(this)">Pantalla para mi carro</button></div>
+    <div class="cc-ir"><input class="cc-inp" id="cinp" placeholder="Escribe tu consulta…" onkeydown="if(event.key==='Enter')sendC()"><button class="cc-send" onclick="sendC()">➤</button></div>
+  </div>
+  <button id="cfab-btn" onclick="toggleC()"><span class="fab-tip">ROCO ASSISTANT</span><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_120/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd"></button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// CURSOR
+const c=document.getElementById('cur'),cr=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;c.style.left=mx+'px';c.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(a)})();
+
+// LOADER — barra sincronizada con el video (5s)
+const loader=document.getElementById('loader');
+const lb=document.getElementById('lb');
+const lp=document.getElementById('lp');
+const llvid=document.getElementById('ll-video');
+const DURATION=5000;
+const start=performance.now();
+function tickLoader(now){
+  const elapsed=now-start;
+  const pct=Math.min((elapsed/DURATION)*100,100);
+  lb.style.width=pct+'%';
+  lp.textContent=Math.floor(pct)+'%';
+  if(pct<100){requestAnimationFrame(tickLoader);}
+  else{
+    setTimeout(()=>{
+      gsap.to(loader,{opacity:0,duration:.8,ease:'power2.inOut',onComplete:()=>{loader.style.display='none';}});
+      heroIn();
+    },200);
+  }
+}
+requestAnimationFrame(tickLoader);
+
+// HERO
+function heroIn(){
+  gsap.fromTo('#htag',{opacity:0,y:16},{opacity:1,y:0,duration:.7,delay:.15,ease:'power2.out'});
+  gsap.fromTo('#hdesc',{opacity:0,y:20},{opacity:1,y:0,duration:.8,delay:1.1,ease:'power2.out'});
+  gsap.fromTo('#hbtns',{opacity:0,y:20},{opacity:1,y:0,duration:.8,delay:1.3,ease:'power2.out'});
+  gsap.fromTo('#hsr',{opacity:0},{opacity:1,duration:.8,delay:1.5,ease:'power2.out'});
+}
+
+// NAV
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('s',scrollY>60));
+
+// SCROLL REVEALS
+document.querySelectorAll('.fu').forEach(el=>{
+  gsap.fromTo(el,{opacity:0,y:44},{opacity:1,y:0,duration:.95,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+});
+
+// BEFORE / AFTER removed
+
+// VIDEO SHOWROOM
+function openVid(){
+  const modal=document.getElementById('sv-modal');
+  const vid=document.getElementById('sv-full');
+  const preview=document.getElementById('sv-preview');
+  modal.classList.add('open');
+  preview.pause();
+  vid.play();
+  document.body.style.overflow='hidden';
+}
+function closeVid(e){
+  if(e&&e.target!==document.getElementById('sv-modal')&&!e.target.classList.contains('sv-close'))return;
+  const modal=document.getElementById('sv-modal');
+  const vid=document.getElementById('sv-full');
+  modal.classList.remove('open');
+  vid.pause();
+  vid.currentTime=0;
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVid({target:document.getElementById('sv-modal')})});
+// Preview loop — primer frame visible en mobile
+const svp=document.getElementById('sv-preview');
+if(svp){svp.currentTime=0.1;}
+
+// PORTFOLIO SLIDERS
+function initSliders(){
+  document.querySelectorAll('.pc-slider').forEach(slider=>{
+    const track=slider.querySelector('.pc-track');
+    const slides=slider.querySelectorAll('.pc-slide');
+    const dotsEl=slider.querySelector('.pc-dots');
+    const countEl=slider.querySelector('.pc-count');
+    const n=slides.length;
+    let cur=0;
+
+    // Build dots
+    dotsEl.innerHTML='';
+    slides.forEach((_,i)=>{
+      const d=document.createElement('div');
+      d.className='pc-dot'+(i===0?' on':'');
+      d.onclick=()=>goTo(i);
+      dotsEl.appendChild(d);
+    });
+
+    function goTo(i){
+      cur=(i+n)%n;
+      track.style.transform=`translateX(-${cur*100}%)`;
+      slider.querySelectorAll('.pc-dot').forEach((d,j)=>d.classList.toggle('on',j===cur));
+      countEl.textContent=`${cur+1} / ${n}`;
+    }
+
+    // Store goTo on slider for prev/next buttons
+    slider._go=goTo;
+    slider._cur=()=>cur;
+    slider._n=n;
+
+    // Touch swipe
+    let tx=0;
+    track.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+    track.addEventListener('touchend',e=>{
+      const dx=tx-e.changedTouches[0].clientX;
+      if(Math.abs(dx)>40)goTo(cur+(dx>0?1:-1));
+    },{passive:true});
+  });
+}
+
+function slide(btn,dir){
+  const slider=btn.closest('.pc-slider');
+  slider._go(slider._cur()+dir);
+}
+
+initSliders();
+
+// SIMULATOR DATA
+const vd={
+  Toyota:{Hilux:[2018,2019,2020,2021,2022,2023,2024],Fortuner:[2016,2018,2020,2021,2022,2023],'Land Cruiser':[2008,2010,2012,2015,2018,2020,2022],Corolla:[2017,2018,2019,2020,2021,2022,2023]},
+  Ford:{Ranger:[2017,2018,2019,2020,2021,2022,2023],Raptor:[2017,2019,2020,2021,2022,2023],Explorer:[2016,2018,2019,2020,2021,2022]},
+  Chevrolet:{Silverado:[2016,2018,2019,2020,2021,2022,2023],Tahoe:[2015,2017,2019,2020,2021],Captiva:[2017,2018,2019,2020]},
+  Jeep:{Wrangler:[2010,2012,2014,2016,2018,2019,2020,2021,2022,2023],'Grand Cherokee':[2014,2016,2018,2019,2020,2021,2022]},
+  Mitsubishi:{'L200 Triton':[2016,2018,2019,2020,2021,2022,2023],Montero:[2010,2012,2015,2017,2018,2019]},
+  BMW:{'Serie 3':[2016,2018,2019,2020,2021,2022],'Serie 5':[2016,2018,2019,2020,2021,2022,2023],X3:[2016,2018,2019,2020,2021,2022,2023],X5:[2014,2016,2018,2019,2020,2021,2022]},
+  'Mercedes-Benz':{'GLC 300':[2016,2018,2019,2020,2021,2022,2023],'GLE 450':[2016,2018,2019,2020,2021,2022],'Clase C':[2015,2016,2018,2019,2020,2021]},
+  Lexus:{'IS 350':[2014,2016,2018,2019,2020,2021],'GX 460':[2014,2016,2018,2019,2020,2021,2022]},
+  Nissan:{Frontier:[2016,2018,2019,2020,2021,2022,2023],Pathfinder:[2014,2016,2018,2019,2020,2021,2022]},
+  Hyundai:{'Santa Fe':[2015,2017,2018,2019,2020,2021,2022],Tucson:[2016,2018,2019,2020,2021,2022,2023]},
+};
+const rDB={
+  ciudad:[{cat:'CAUCHOS',name:'Michelin Primacy 4',txt:'Bajo ruido, máximo confort y eficiencia en tráfico. El referente para uso urbano diario.'},
+          {cat:'CERÁMICA',name:'Pulido Nanocerámico 9H',txt:'Pintura protegida y brillante sin esfuerzo. Ideal para el sol y polvo diario de la ciudad.'},
+          {cat:'PANTALLA',name:'Android Auto · Apple CarPlay 10"',txt:'Conectividad total con pantalla táctil de 10". Navegación, música y manos libres integrados.'},
+          {cat:'LED',name:'Conversión Bi-LED H7',txt:'Mejor visibilidad nocturna en ciudad. Temperatura 6000K óptima, instalación en 2 horas.'}],
+  carretera:[{cat:'CAUCHOS',name:'Michelin Pilot Sport 4',txt:'Alta velocidad con estabilidad superior en autopista. Agarre simétrico en seco y lluvia.'},
+             {cat:'SONIDO',name:'Sistema Hi-Fi Focal / Alpine',txt:'Las horas de carretera con audio de alta fidelidad. Instalación limpia, sin comprometer el maletero.'},
+             {cat:'PPF',name:'PPF Frontal — Xpel/LLumar',txt:'Frente y espejos protegidos de piedras y bichos en carretera. Tu pintura original intacta.'},
+             {cat:'SUSPENSIÓN',name:'Amortiguadores Bilstein B6',txt:'Mayor estabilidad a velocidades de autopista. Menos fatiga de conducción en viajes largos.'}],
+  offroad:[{cat:'CAUCHOS',name:'BFGoodrich All-Terrain KO2',txt:'El rey del terreno. Tracción máxima en barro, roca y arena. Flancos reforzados anti-corte.'},
+           {cat:'SUSPENSIÓN',name:'Lift Kit +2" a +4" — Old Man Emu',txt:'Altura libre para superar obstáculos. Absorción extrema certificada para terrenos irregulares.'},
+           {cat:'RINES',name:'Rines Método / Pro Comp',txt:'Resistentes a impactos directos en piedra. Menos masa no suspendida, más respuesta inmediata.'},
+           {cat:'LED',name:'Barra LED Frontal 30,000lm',txt:'Visibilidad total en senderos sin iluminación. Montaje sin modificaciones permanentes en la carrocería.'}],
+  performance:[{cat:'CAUCHOS',name:'Michelin PS4S / Pirelli P Zero',txt:'El máximo agarre en asfalto seco. Calentamiento rápido, feedback preciso de la dirección.'},
+               {cat:'SUSPENSIÓN',name:'Coilovers BC Racing / KW',txt:'Control total de altura y amortiguación. La mejora de desempeño más tangible posible.'},
+               {cat:'RINES',name:'OZ Racing / BBS Forjado',txt:'Reducir masa no suspendida es la mejora de desempeño más pura y directa disponible.'},
+               {cat:'FRENOS',name:'EBC Yellowstuff / Brembo',txt:'Mayor mordida y resistencia al fade en conducción agresiva. Temperatura óptima de trabajo garantizada.'}],
+  lujo:[{cat:'PPF FULL',name:'Carrocería completa — Xpel Ultimate',txt:'Pintura perfecta y auto-sanante en todo momento. La protección definitiva para tu inversión.'},
+        {cat:'CERÁMICA',name:'Gyeon Quartz / IGL Coatings',txt:'Brillo cristalino con repelencia perfecta durante 3-5 años. Mantenimiento mínimo garantizado.'},
+        {cat:'PANTALLA',name:'Sistema Premium 12" · JBL / Harman',txt:'Audio y tecnología de primera clase, instalada con acabado de fábrica. Sin cables visibles.'},
+        {cat:'DETAILING',name:'Plan VIP Mensual',txt:'Tu vehículo siempre impecable. Agenda prioritaria y servicio personalizado de por vida.'}]
+};
+function updMod(){
+  const m=document.getElementById('s-m').value,sel=document.getElementById('s-mo');
+  sel.innerHTML='<option value="">Seleccionar…</option>';
+  if(vd[m])Object.keys(vd[m]).forEach(x=>sel.innerHTML+=`<option>${x}</option>`);
+  document.getElementById('s-y').innerHTML='<option value="">Seleccionar año…</option>';
+}
+function updAnio(){
+  const m=document.getElementById('s-m').value,mo=document.getElementById('s-mo').value,sel=document.getElementById('s-y');
+  sel.innerHTML='<option value="">Seleccionar año…</option>';
+  if(vd[m]&&vd[m][mo])vd[m][mo].forEach(y=>sel.innerHTML+=`<option>${y}</option>`);
+}
+function genPlan(){
+  const m=document.getElementById('s-m').value,mo=document.getElementById('s-mo').value,y=document.getElementById('s-y').value,u=document.getElementById('s-u').value;
+  if(!m||!mo||!y){alert('Selecciona marca, modelo y año.');return;}
+  const recs=rDB[u]||rDB.ciudad;
+  const panel=document.getElementById('sp');
+  panel.innerHTML=`<div class="sim-ph">Plan Personalizado</div>
+    <div class="sim-pv">${m} ${mo} · ${y} · ${u.toUpperCase()}</div>
+    <div class="sim-recs">${recs.map(r=>`<div class="sim-rec"><div class="sim-rc">${r.cat}</div><div><div class="sim-rn">${r.name}</div><div class="sim-rt">${r.txt}</div></div></div>`).join('')}</div>
+    <div class="sim-cta"><button class="btn-p" style="width:100%;justify-content:center" onclick="cotSim()">Cotizar Este Plan por WhatsApp</button></div>`;
+  panel.classList.add('live');
+}
+function cotSim(){
+  const m=document.getElementById('s-m').value,mo=document.getElementById('s-mo').value,y=document.getElementById('s-y').value,u=document.getElementById('s-u').value;
+  window.open(`https://wa.me/584140248764?text=${encodeURIComponent(`Hola Roco4wd! Generé un plan personalizado para mi ${m} ${mo} ${y} (uso: ${u}). ¿Pueden cotizarme los servicios recomendados?`)}`, '_blank');
+}
+
+// CONCIERGE
+let copen=false;
+let cBusy=false;
+const WA_NUM='584140248764';
+const CHAT_ENDPOINT='/api/chat';
+const hist=[];
+function toggleC(){copen?closeC():openC()}
+function openC(){copen=true;const el=document.getElementById('cc');el.classList.add('o')}
+function closeC(){copen=false;const el=document.getElementById('cc');el.classList.remove('o')}
+function addM(role,txt){
+  const ms=document.getElementById('cmsgs'),d=document.createElement('div');
+  d.className=`cm ${role==='user'?'u':'b'}`;
+  const t=new Date().toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'});
+  d.innerHTML=`<div class="cm-b">${escapeHtml(txt)}</div><span class="cm-t">${t}</span>`;
+  ms.appendChild(d);ms.scrollTop=ms.scrollHeight;
+}
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function showT(){const ms=document.getElementById('cmsgs'),d=document.createElement('div');d.id='tind';d.className='typing';d.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';ms.appendChild(d);ms.scrollTop=ms.scrollHeight}
+function hideT(){const t=document.getElementById('tind');if(t)t.remove()}
+function setBusy(b){
+  cBusy=b;
+  const inp=document.getElementById('cinp'),btn=document.querySelector('.cc-send');
+  inp.disabled=b;btn.disabled=b;btn.style.opacity=b?'.5':'1';
+}
+async function sendC(){
+  if(cBusy)return;
+  const inp=document.getElementById('cinp'),txt=inp.value.trim();
+  if(!txt)return;inp.value='';
+  document.getElementById('csuggs').style.display='none';
+  addM('user',txt);hist.push({role:'user',content:txt});
+  showT();setBusy(true);
+  try{
+    const r=await fetch(CHAT_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:hist})
+    });
+    if(!r.ok)throw new Error('server');
+    const d=await r.json();
+    let rep=(d.reply||'').trim();
+    hideT();setBusy(false);
+    if(!rep){
+      addM('bot',`No logré procesar eso. Probemos de nuevo, o escríbenos directo al ${waDisplay()}.`);
+      return;
+    }
+    const handoff=extractHandoff(rep);
+    if(handoff){
+      rep=rep.split('<<<HANDOFF>>>')[0].trim();
+      if(rep){addM('bot',rep);hist.push({role:'assistant',content:rep});}
+      showHandoffCTA(handoff);
+    }else{
+      addM('bot',rep);hist.push({role:'assistant',content:rep});
+    }
+  }catch{
+    hideT();setBusy(false);
+    addM('bot',`Tengo un problema de conexión en este momento. No te preocupes, podés hablar directo con un asesor:`);
+    showHandoffCTA({vehiculo:'',servicio:'',nombre:'',whatsapp:'',resumen:''},true);
+  }
+}
+function waDisplay(){return '+'+WA_NUM.replace(/(\d{3})(\d{3})(\d{7})/,'$1 $2 $3')}
+function extractHandoff(text){
+  const m=text.match(/<<<HANDOFF>>>([\s\S]*?)<<<END>>>/);
+  if(!m)return null;
+  try{return JSON.parse(m[1].trim())}catch{return null}
+}
+function showHandoffCTA(data,fallback){
+  const ms=document.getElementById('cmsgs');
+  const wrap=document.createElement('div');
+  wrap.className='cm b';
+  const intro=fallback?'Escríbenos directo y un asesor te atiende de inmediato:':(data.resumen||'Ya tengo lo necesario. Te conecto con un asesor.');
+  let msg=`Hola, vengo del chat de roco4wd.com.`;
+  if(data.nombre)msg+=`\n👤 Nombre: ${data.nombre}`;
+  if(data.vehiculo)msg+=`\n🚙 Vehículo: ${data.vehiculo}`;
+  if(data.servicio)msg+=`\n🔧 Interés: ${data.servicio}`;
+  if(data.whatsapp)msg+=`\n📱 WhatsApp: ${data.whatsapp}`;
+  msg+=`\n\nYa hablé con el asistente virtual, deseo continuar con un asesor.`;
+  const waUrl=`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`;
+  const chips=[];
+  if(data.vehiculo)chips.push(`🚙 ${data.vehiculo}`);
+  if(data.servicio)chips.push(`🔧 ${data.servicio}`);
+  const chipsHtml=chips.length?`<div class="cc-handoff-chips">${chips.map(c=>`<span>${escapeHtml(c)}</span>`).join('')}</div>`:'';
+  wrap.innerHTML=`<div class="cm-b cc-handoff-card">${escapeHtml(intro)}${chipsHtml}</div><a class="cc-wa-btn" href="${waUrl}" target="_blank" rel="noopener">📲 Hablar con un asesor por WhatsApp</a>`;
+  ms.appendChild(wrap);ms.scrollTop=ms.scrollHeight;
+}
+function qs(btn){if(cBusy)return;document.getElementById('cinp').value=btn.textContent;sendC()}
+
+// AGENDA
+function enviar(){
+  const n=document.getElementById('an').value||'Cliente',w=document.getElementById('aw').value||'No indicado',v=document.getElementById('av').value||'No indicado',s=document.getElementById('as').value||'Por definir',f=document.getElementById('af').value||'Flexible',h=document.getElementById('ah').value,x=document.getElementById('ax').value;
+  const msg=`🚗 *SOLICITUD DE CITA — ROCO4WD*\n\n👤 *Nombre:* ${n}\n📱 *WhatsApp:* ${w}\n🚙 *Vehículo:* ${v}\n🔧 *Servicio:* ${s}\n📅 *Fecha:* ${f}\n🕐 *Hora:* ${h}${x?`\n📝 *Notas:* ${x}`:''}\n\n_roco4wd.com_`;
+  window.open(`https://wa.me/584140248764?text=${encodeURIComponent(msg)}`,'_blank');
+}
+</script>
+</body>
+</html>

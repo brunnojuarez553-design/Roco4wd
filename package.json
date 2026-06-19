@@ -1,0 +1,9 @@
+{
+  "name": "roco4wd-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio web de Roco4wd con asistente IA (Roco Assistant) conectado a Groq vía función serverless de Vercel.",
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}
