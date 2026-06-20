@@ -189,7 +189,7 @@ nav.s{padding:10px 60px;background:rgba(6,6,6,.92);backdrop-filter:blur(24px);bo
 
 /* PORTFOLIO — TRABAJOS POR MODELO */
 #gal{background:var(--ink)}
-.pw{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:80px}
+.pw{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:80px}
 .pc{position:relative;background:var(--ink2);overflow:hidden;cursor:pointer;border:1px solid transparent;transition:border-color .4s}
 .pc:hover{border-color:rgba(255,61,0,.18)}
 /* Slider de fotos */
@@ -213,14 +213,15 @@ nav.s{padding:10px 60px;background:rgba(6,6,6,.92);backdrop-filter:blur(24px);bo
 /* Contador */
 .pc-count{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:rgba(240,237,232,.5);background:rgba(6,6,6,.6);padding:3px 8px;z-index:4}
 /* Info */
-.pc-info{padding:22px 24px 24px;position:relative;z-index:3}
-.pc-model{font-family:var(--serif);font-size:1.15rem;font-weight:400;color:var(--w);line-height:1.15;margin-bottom:6px}
-.pc-year{font-family:var(--mono);font-size:.52rem;letter-spacing:.18em;color:var(--gold-l);text-transform:uppercase;margin-bottom:14px}
-.pc-tags{display:flex;flex-wrap:wrap;gap:4px}
-.pc-tag{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:var(--w60);background:rgba(240,237,232,.04);border:1px solid var(--w06);padding:3px 9px;white-space:nowrap}
+.pc-info{padding:12px 16px 16px;position:relative;z-index:3}
+.pc-model{font-family:var(--serif);font-size:.9rem;font-weight:400;color:var(--w);line-height:1.15;margin-bottom:4px}
+.pc-year{font-family:var(--mono);font-size:.44rem;letter-spacing:.18em;color:var(--gold-l);text-transform:uppercase;margin-bottom:10px}
+.pc-tags{display:flex;flex-wrap:wrap;gap:3px}
+.pc-tag{font-family:var(--mono);font-size:.44rem;letter-spacing:.1em;color:var(--w60);background:rgba(240,237,232,.04);border:1px solid var(--w06);padding:2px 7px;white-space:nowrap}
 /* Línea bottom roja en hover */
 .pc-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .5s cubic-bezier(.4,0,.2,1)}
 .pc:hover .pc-bar{width:100%}
+@media(max-width:1100px){.pw{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:960px){.pw{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.pw{grid-template-columns:1fr}}
 
@@ -645,24 +646,25 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 
 /* ── VEHÍCULOS ENTREGADOS ── */
 #entregados{background:var(--ink);position:relative;overflow:hidden;padding:120px 60px}
-#entregados::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781843782/IMG_7963_h9fztw.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
+#entregados::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781839177/IMG_7959_ayoxvn.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
 #entregados::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.6) 0%,rgba(14,14,14,.4) 50%,rgba(14,14,14,.6) 100%);z-index:1}
 #entregados .fu,#entregados .ent-grid{position:relative;z-index:2}
-.ent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:60px;background:var(--w06)}
+.ent-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px;background:var(--w06)}
 .ent-card{background:var(--ink2);position:relative;overflow:hidden;cursor:default;transition:background .35s;border:1px solid transparent;transition:border-color .4s}
 .ent-card:hover{border-color:rgba(255,61,0,.18)}
-.ent-body{padding:16px 20px 20px;position:relative;z-index:3}
-.ent-model{font-family:var(--serif);font-size:1.05rem;font-weight:400;color:var(--w);margin-bottom:4px;line-height:1.15}
-.ent-service{font-family:var(--mono);font-size:.48rem;letter-spacing:.13em;color:var(--gold-l);text-transform:uppercase;margin-bottom:12px}
+.ent-body{padding:10px 14px 14px;position:relative;z-index:3}
+.ent-model{font-family:var(--serif);font-size:.88rem;font-weight:400;color:var(--w);margin-bottom:3px;line-height:1.15}
+.ent-service{font-family:var(--mono);font-size:.42rem;letter-spacing:.13em;color:var(--gold-l);text-transform:uppercase;margin-bottom:8px}
 .ent-meta{display:flex;flex-direction:column;gap:0}
-.ent-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--w06)}
+.ent-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--w06)}
 .ent-row:last-child{border-bottom:none}
-.ent-icon{width:14px;text-align:center;font-size:.7rem;flex-shrink:0;opacity:.7;padding-top:1px}
-.ent-row-label{font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;color:var(--w20);text-transform:uppercase;width:64px;flex-shrink:0;padding-top:2px}
-.ent-row-val{font-family:var(--sans);font-size:.78rem;font-weight:300;color:var(--w60);line-height:1.4}
-.ent-result{font-family:var(--sans);font-size:.76rem;font-weight:300;color:rgba(80,208,80,.8);line-height:1.4}
+.ent-icon{width:12px;text-align:center;font-size:.6rem;flex-shrink:0;opacity:.7;padding-top:1px}
+.ent-row-label{font-family:var(--mono);font-size:.4rem;letter-spacing:.15em;color:var(--w20);text-transform:uppercase;width:54px;flex-shrink:0;padding-top:2px}
+.ent-row-val{font-family:var(--sans);font-size:.68rem;font-weight:300;color:var(--w60);line-height:1.4}
+.ent-result{font-family:var(--sans);font-size:.66rem;font-weight:300;color:rgba(80,208,80,.8);line-height:1.4}
 .ent-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--red));transition:width .5s cubic-bezier(.4,0,.2,1)}
 .ent-card:hover .ent-bar{width:100%}
+@media(max-width:1100px){.ent-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:960px){.ent-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.ent-grid{grid-template-columns:1fr}}
 @media(max-width:768px){#entregados{padding:72px 20px}}
@@ -774,7 +776,7 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
   <span class="fcta-text">¿Listo para <em>mejorar tu vehículo?</em></span>
   <div class="fcta-btns">
     <a href="#agenda" class="btn-p" onclick="document.getElementById('float-cta').classList.remove('visible')">⚡ Agendar Inspección</a>
-    <button class="btn-g" style="background:rgba(255,90,20,.18);border-color:rgba(255,90,20,.45);color:rgba(255,200,160,.9);" onclick="openC();document.getElementById('float-cta').classList.remove('visible')">◆ Hablar con Concierge IA</button>
+    <a href="#sim" class="btn-g" onclick="document.getElementById('float-cta').classList.remove('visible')">◆ Configurá tu Vehículo</a>
   </div>
 </div>
 
@@ -782,7 +784,7 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
 <div id="loader">
   <div class="ll-wrap">
     <!-- Video oculto — solo se usa como fuente de frames para el canvas -->
-    <video id="ll-video" muted playsinline preload="auto" style="display:none;pointer-events:none" tabindex="-1">
+    <video id="ll-video" muted playsinline autoplay preload="auto" style="display:none;pointer-events:none" tabindex="-1">
       <source src="https://res.cloudinary.com/dpiavcukm/video/upload/f_auto,q_auto,w_960,ac_none/v1781839311/ScreenRecording_06-18-2026_15-10-47_1_kzlrdd.mov" type="video/mp4">
     </video>
     <!-- Canvas renderiza los frames sin nunca mostrar controles nativos -->
@@ -1777,17 +1779,16 @@ function startCanvasLoop(){
   rafCanvas = requestAnimationFrame(drawFrame);
 }
 
-// ── Intentar reproducir el video inmediatamente ──────────────────────────────
+// ── Reproducción automática sin interacción ──────────────────────────────────
 function tryPlayVideo(){
+  llvid.muted = true; // garantizado muted para permitir autoplay
   const p = llvid.play();
   if(p && p.then){
     p.then(()=>{
-      // Éxito: mostrar canvas, ocultar logo
       llCanvas.style.display = 'block';
       llLogo.style.display   = 'none';
       startCanvasLoop();
     }).catch(()=>{
-      // Bloqueado por política del navegador → mostrar logo
       showLogoFallback();
     });
   }
@@ -1798,21 +1799,23 @@ function showLogoFallback(){
   llLogo.style.display   = 'flex';
 }
 
-// Arrancar tan pronto haya datos suficientes
-if(llvid.readyState >= 2){
-  tryPlayVideo();
-} else {
-  llvid.addEventListener('canplay', tryPlayVideo, { once: true });
-  // Si tras 1.5 s no hay señal del video, fallback inmediato
-  setTimeout(()=>{ if(llvid.paused && llCanvas.style.display !== 'block') showLogoFallback(); }, 1500);
-}
+// Intentar play inmediatamente (funciona en desktop y Android Chrome)
+tryPlayVideo();
 
-// ── Desbloqueo por interacción (iOS Safari, algunos Android) ─────────────────
-// Se intenta silenciosamente; si el usuario toca antes de que cargue,
-// el video arranca sin que nunca aparezca el botón de play nativo.
-['touchstart','pointerdown'].forEach(ev=>{
+// Si el video aún no tiene datos, esperar canplay
+llvid.addEventListener('canplay', ()=>{
+  if(llvid.paused) tryPlayVideo();
+}, { once: true });
+
+// Fallback: si tras 1.5s el video no arrancó, mostrar logo
+setTimeout(()=>{
+  if(llvid.paused && llCanvas.style.display !== 'block') showLogoFallback();
+}, 1500);
+
+// Desbloqueo por primera interacción (iOS Safari estricto)
+['touchstart','pointerdown','click'].forEach(ev=>{
   document.addEventListener(ev, ()=>{
-    if(llvid.paused) tryPlayVideo();
+    if(llvid.paused && !loaderDone) tryPlayVideo();
     if(heroVid && heroVid.paused) heroVid.play().catch(()=>{});
   }, { once: true, passive: true });
 });
