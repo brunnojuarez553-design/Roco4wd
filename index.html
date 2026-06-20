@@ -6,7 +6,12 @@
 <title>Roco4wd — La Experiencia Automotriz Definitiva · Caracas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Conexión anticipada a Cloudinary — CDN del video loader -->
+<link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+<link rel="dns-prefetch" href="https://res.cloudinary.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<!-- Precarga agresiva del video del loader — prioridad máxima antes que todo -->
+<link rel="preload" as="video" href="https://res.cloudinary.com/dpiavcukm/video/upload/f_auto,q_auto,w_960,ac_none/v1781839311/ScreenRecording_06-18-2026_15-10-47_1_kzlrdd.mov" type="video/mp4" fetchpriority="high">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
@@ -783,13 +788,18 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
 <!-- LOADER -->
 <div id="loader">
   <div class="ll-wrap">
-    <!-- Video oculto — solo se usa como fuente de frames para el canvas -->
-    <video id="ll-video" muted playsinline autoplay preload="auto" style="display:none;pointer-events:none" tabindex="-1">
+    <!-- Video mostrado directamente — más rápido que canvas en todos los browsers modernos -->
+    <video id="ll-video"
+      muted playsinline autoplay preload="auto"
+      style="width:100%;height:auto;display:block;object-fit:contain"
+      tabindex="-1"
+      disablepictureinpicture
+      disableremoteplayback>
       <source src="https://res.cloudinary.com/dpiavcukm/video/upload/f_auto,q_auto,w_960,ac_none/v1781839311/ScreenRecording_06-18-2026_15-10-47_1_kzlrdd.mov" type="video/mp4">
     </video>
-    <!-- Canvas renderiza los frames sin nunca mostrar controles nativos -->
-    <canvas id="ll-canvas" style="width:100%;height:auto;display:block"></canvas>
-    <!-- Fallback logo — visible si el video no carga -->
+    <!-- Canvas solo como fallback si el video no arranca -->
+    <canvas id="ll-canvas" style="width:100%;height:auto;display:none"></canvas>
+    <!-- Fallback logo -->
     <div id="ll-logo" style="display:none;justify-content:center;align-items:center;min-height:200px">
       <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_200/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd" style="width:min(180px,60vw);height:auto;opacity:.9">
     </div>
@@ -820,18 +830,19 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
   <div class="mm-drawer">
 
     <div class="mm-header">
-      <span class="mm-title">ROCO4WD</span>
+      <a href="#" onclick="closeMenu()"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_200/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd" style="height:44px;width:auto;display:block"></a>
       <button class="mm-close" onclick="closeMenu()" aria-label="Cerrar menú">✕</button>
     </div>
 
     <div class="mm-inner">
       <ul class="mm-links">
+        <li><a href="#about" onclick="closeMenu()">Nosotros</a></li>
         <li><a href="#srv" onclick="closeMenu()">Servicios</a></li>
         <li><a href="#sim" onclick="closeMenu()">Configura tu Vehículo</a></li>
         <li><a href="#gal" onclick="closeMenu()">Galería</a></li>
-        <li><a href="#about" onclick="closeMenu()">Nosotros</a></li>
         <li><a href="#agenda" onclick="closeMenu()">Agendar Cita</a></li>
         <li><a href="#" onclick="openContactModal(event)">Contacto</a></li>
+        <li><a href="#faq" onclick="closeMenu()">FAQ</a></li>
       </ul>
     </div>
 
@@ -897,7 +908,7 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
     <div class="h-bot">
       <p class="h-desc" id="hdesc">Mecánica, detailing, repuestos, personalización y performance en un solo lugar. Con los más altos estándares de la industria automotriz.</p>
       <div class="h-btns" id="hbtns">
-        <a href="#agenda" class="btn-p">⚡ Agendar Inspección</a>
+        <a href="#agenda" class="btn-p">⚡ Agendar Cita</a>
         <a href="#sim" class="btn-g" style="background:rgba(255,90,20,.18);border-color:rgba(255,90,20,.45);color:rgba(255,200,160,.9);">⚙ Configura tu Vehículo</a>
       </div>
     </div>
@@ -1231,7 +1242,7 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
   </div>
   <div class="sim-w">
     <div class="sim-fs fu">
-      <div class="sim-f"><label>Marca</label><select id="s-m" onchange="updMod()"><option value="">Seleccionar…</option><option>Toyota</option><option>Ford</option><option>Chevrolet</option><option>Jeep</option><option>Mitsubishi</option><option>BMW</option><option>Mercedes-Benz</option><option>Lexus</option><option>Nissan</option><option>Hyundai</option></select></div>
+      <div class="sim-f"><label>Marca</label><select id="s-m" onchange="updMod()"><option value="">Seleccionar…</option><option>Toyota</option><option>Ford</option><option>Chevrolet</option><option>Jeep</option><option>Mitsubishi</option><option>Nissan</option><option>Hyundai</option><option>BMW</option><option>Mercedes-Benz</option><option>Lexus</option><option>Volkswagen</option><option>Audi</option><option>Land Rover</option><option>Kia</option><option>Honda</option><option>Dodge</option><option>Ram</option><option>Mazda</option><option>Porsche</option><option>Otro</option></select></div>
       <div class="sim-f"><label>Modelo</label><select id="s-mo" onchange="updAnio()"><option value="">Primero selecciona marca…</option></select></div>
       <div class="sim-f"><label>Año</label><select id="s-y"><option value="">Seleccionar año…</option></select></div>
       <div class="sim-f"><label>Uso principal</label><select id="s-u"><option value="ciudad">Ciudad / Diario</option><option value="carretera">Carretera / Viajes</option><option value="offroad">Off Road / Aventura</option><option value="performance">Sport / Performance</option><option value="lujo">Representación / Lujo</option></select></div>
@@ -1747,12 +1758,14 @@ const llvid    = document.getElementById('ll-video');
 const llCanvas = document.getElementById('ll-canvas');
 const llLogo   = document.getElementById('ll-logo');
 const heroVid  = document.getElementById('hero-video');
-const ctx      = llCanvas.getContext('2d');
 
-const LOADER_DURATION = 5000; // ms — duración de la barra de carga
+// Canvas context — solo si necesitamos fallback
+let ctx = null;
+
+const LOADER_DURATION = 5000;
 let   loaderDone      = false;
 
-// ── Barra de progreso (independiente del video) ──────────────────────────────
+// ── Barra de progreso ────────────────────────────────────────────────────────
 const barStart = performance.now();
 function tickBar(now){
   if(loaderDone) return;
@@ -1764,14 +1777,15 @@ function tickBar(now){
 }
 requestAnimationFrame(tickBar);
 
-// ── Canvas renderer — dibuja frames del video sin controles nativos ──────────
+// ── Canvas fallback renderer ─────────────────────────────────────────────────
 let rafCanvas = null;
 function startCanvasLoop(){
+  if(!ctx){ llCanvas.style.display='block'; ctx = llCanvas.getContext('2d'); }
   function drawFrame(){
     if(llvid.paused || llvid.ended){ rafCanvas = null; return; }
     if(llvid.readyState >= 2){
-      llCanvas.width  = llvid.videoWidth  || llCanvas.offsetWidth  || 480;
-      llCanvas.height = llvid.videoHeight || llCanvas.offsetHeight || 270;
+      llCanvas.width  = llvid.videoWidth  || 480;
+      llCanvas.height = llvid.videoHeight || 270;
       ctx.drawImage(llvid, 0, 0, llCanvas.width, llCanvas.height);
     }
     rafCanvas = requestAnimationFrame(drawFrame);
@@ -1779,49 +1793,76 @@ function startCanvasLoop(){
   rafCanvas = requestAnimationFrame(drawFrame);
 }
 
-// ── Reproducción automática sin interacción ──────────────────────────────────
+// ── Reproducción del video del loader ───────────────────────────────────────
 function tryPlayVideo(){
-  llvid.muted = true; // garantizado muted para permitir autoplay
+  llvid.muted = true;
+  // Forzar currentTime=0 para que el browser tenga el primer frame listo
+  try { llvid.currentTime = 0; } catch(e){}
   const p = llvid.play();
   if(p && p.then){
     p.then(()=>{
-      llCanvas.style.display = 'block';
-      llLogo.style.display   = 'none';
-      startCanvasLoop();
+      // Video nativo visible — nada más que hacer
     }).catch(()=>{
-      showLogoFallback();
+      // Fallback: ocultar video nativo, usar canvas
+      llvid.style.display = 'none';
+      startCanvasLoop();
+      // Segundo intento en canvas
+      llvid.play().catch(()=>{ showLogoFallback(); });
     });
   }
 }
 
 function showLogoFallback(){
+  llvid.style.display  = 'none';
   llCanvas.style.display = 'none';
   llLogo.style.display   = 'flex';
 }
 
-// Intentar play inmediatamente (funciona en desktop y Android Chrome)
+// ── Estrategia de inicio instantáneo ────────────────────────────────────────
+
+// 1. Precargar el source explícitamente via fetch para llenar la caché HTTP
+//    antes de que el browser lo solicite desde el tag <video>
+(function prefetchVideoCache(){
+  if('fetch' in window){
+    fetch(llvid.querySelector('source').src, {
+      method: 'GET',
+      headers: { Range: 'bytes=0-65535' } // primeros 64KB — suficiente para el primer frame
+    }).catch(()=>{});
+  }
+})();
+
+// 2. Play inmediato — funciona en Chrome, Edge, Firefox, Android
 tryPlayVideo();
 
-// Si el video aún no tiene datos, esperar canplay
-llvid.addEventListener('canplay', ()=>{
-  if(llvid.paused) tryPlayVideo();
+// 3. Si aún no hay datos, escuchar loadeddata (más temprano que canplay)
+llvid.addEventListener('loadeddata', ()=>{
+  if(llvid.paused && !loaderDone) tryPlayVideo();
 }, { once: true });
 
-// Fallback: si tras 1.5s el video no arrancó, mostrar logo
-setTimeout(()=>{
-  if(llvid.paused && llCanvas.style.display !== 'block') showLogoFallback();
-}, 1500);
+// 4. canplay como segundo safety net
+llvid.addEventListener('canplay', ()=>{
+  if(llvid.paused && !loaderDone) tryPlayVideo();
+}, { once: true });
 
-// Desbloqueo por primera interacción (iOS Safari estricto)
-['touchstart','pointerdown','click'].forEach(ev=>{
-  document.addEventListener(ev, ()=>{
-    if(llvid.paused && !loaderDone) tryPlayVideo();
+// 5. Fallback logo si tras 2s nada funcionó
+setTimeout(()=>{
+  if(llvid.paused && !loaderDone && llCanvas.style.display !== 'block'){
+    showLogoFallback();
+  }
+}, 2000);
+
+// 6. Desbloqueo por primer toque (iOS Safari estricto)
+['touchstart','pointerdown'].forEach(ev=>{
+  document.addEventListener(ev, function unlock(){
+    document.removeEventListener(ev, unlock);
+    if(llvid.paused && !loaderDone){ tryPlayVideo(); }
     if(heroVid && heroVid.paused) heroVid.play().catch(()=>{});
-  }, { once: true, passive: true });
+  }, { passive: true });
 });
 
 // Hero video
 if(heroVid){
+  heroVid.muted = true;
   heroVid.play().catch(()=>{});
   heroVid.addEventListener('canplay', ()=>heroVid.play().catch(()=>{}), { once: true });
 }
@@ -1967,16 +2008,26 @@ initSliders();
 
 // SIMULATOR DATA
 const vd={
-  Toyota:{Hilux:[2018,2019,2020,2021,2022,2023,2024],Fortuner:[2016,2018,2020,2021,2022,2023],'Land Cruiser':[2008,2010,2012,2015,2018,2020,2022],Corolla:[2017,2018,2019,2020,2021,2022,2023]},
-  Ford:{Ranger:[2017,2018,2019,2020,2021,2022,2023],Raptor:[2017,2019,2020,2021,2022,2023],Explorer:[2016,2018,2019,2020,2021,2022]},
-  Chevrolet:{Silverado:[2016,2018,2019,2020,2021,2022,2023],Tahoe:[2015,2017,2019,2020,2021],Captiva:[2017,2018,2019,2020]},
-  Jeep:{Wrangler:[2010,2012,2014,2016,2018,2019,2020,2021,2022,2023],'Grand Cherokee':[2014,2016,2018,2019,2020,2021,2022]},
-  Mitsubishi:{'L200 Triton':[2016,2018,2019,2020,2021,2022,2023],Montero:[2010,2012,2015,2017,2018,2019]},
-  BMW:{'Serie 3':[2016,2018,2019,2020,2021,2022],'Serie 5':[2016,2018,2019,2020,2021,2022,2023],X3:[2016,2018,2019,2020,2021,2022,2023],X5:[2014,2016,2018,2019,2020,2021,2022]},
-  'Mercedes-Benz':{'GLC 300':[2016,2018,2019,2020,2021,2022,2023],'GLE 450':[2016,2018,2019,2020,2021,2022],'Clase C':[2015,2016,2018,2019,2020,2021]},
-  Lexus:{'IS 350':[2014,2016,2018,2019,2020,2021],'GX 460':[2014,2016,2018,2019,2020,2021,2022]},
-  Nissan:{Frontier:[2016,2018,2019,2020,2021,2022,2023],Pathfinder:[2014,2016,2018,2019,2020,2021,2022]},
-  Hyundai:{'Santa Fe':[2015,2017,2018,2019,2020,2021,2022],Tucson:[2016,2018,2019,2020,2021,2022,2023]},
+  Toyota:{Hilux:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Fortuner:[2014,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Land Cruiser':[2008,2010,2012,2015,2018,2020,2021,2022,2023,2024,2025,2026],Corolla:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Yaris:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],RAV4:[2016,2018,2019,2020,2021,2022,2023,2024,2025,2026],Camry:[2015,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'4Runner':[2014,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026],Tacoma:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Land Cruiser Prado':[2010,2012,2014,2016,2018,2020,2021,2022,2023,2024,2025,2026]},
+  Ford:{Ranger:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Raptor:[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Explorer:[2014,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026],'F-150':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Mustang:[2015,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Bronco:[2021,2022,2023,2024,2025,2026],Escape:[2016,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Chevrolet:{Silverado:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Tahoe:[2014,2015,2017,2019,2020,2021,2022,2023,2024,2025,2026],Captiva:[2016,2017,2018,2019,2020],TrailBlazer:[2021,2022,2023,2024,2025,2026],Tracker:[2020,2021,2022,2023,2024,2025,2026],'Colorado':[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Suburban:[2015,2017,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Jeep:{Wrangler:[2010,2012,2014,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Grand Cherokee':[2013,2014,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Grand Cherokee L':[2021,2022,2023,2024,2025,2026],Gladiator:[2020,2021,2022,2023,2024,2025,2026],Compass:[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Renegade:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Mitsubishi:{'L200 Triton':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Montero:[2008,2010,2012,2015,2016,2017,2018,2019],'Montero Sport':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Outlander:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Eclipse:[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Nissan:{Frontier:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Pathfinder:[2013,2014,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026],'X-Trail':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Kicks:[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Sentra:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Navara:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Murano:[2015,2017,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Hyundai:{'Santa Fe':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Tucson:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Accent:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Elantra:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Creta:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  BMW:{'Serie 3':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Serie 5':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Serie 7':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],X1:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],X3:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],X5:[2013,2014,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],X6:[2015,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026],'M3':[2015,2017,2019,2021,2022,2023,2024,2025,2026],'M5':[2015,2018,2019,2021,2022,2023,2024,2025,2026]},
+  'Mercedes-Benz':{'GLC 300':[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'GLE 450':[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Clase C':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Clase E':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'GLA 250':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'AMG GT':[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],G63:[2015,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Lexus:{'IS 350':[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'GX 460':[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'RX 350':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'LX 570':[2012,2014,2015,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026],'ES 350':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Volkswagen:{Tiguan:[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Golf:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Jetta:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Amarok:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Touareg:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Polo:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Audi:{A3:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],A4:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],A6:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Q3:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Q5:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Q7:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],RS3:[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],RS5:[2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  'Land Rover':{'Defender':[2012,2015,2017,2019,2020,2021,2022,2023,2024,2025,2026],'Discovery':[2014,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Discovery Sport':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Range Rover':[2013,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Range Rover Sport':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Range Rover Evoque':[2013,2015,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Kia:{Sportage:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Sorento:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Stinger:[2018,2019,2020,2021,2022,2023,2024,2025,2026],Rio:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Carnival:[2020,2021,2022,2023,2024,2025,2026],Telluride:[2020,2021,2022,2023,2024,2025,2026]},
+  Honda:{'Civic':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'CR-V':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'HR-V':[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Pilot':[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Accord':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Dodge:{'RAM 1500':[2014,2015,2016,2017,2018,2019,2020],'RAM 2500':[2014,2015,2016,2017,2018,2019,2020],'Durango':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Challenger':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Charger':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Ram:{'1500':[2019,2020,2021,2022,2023,2024,2025,2026],'2500':[2019,2020,2021,2022,2023,2024,2025,2026],'3500':[2019,2020,2021,2022,2023,2024,2025,2026],'TRX':[2021,2022,2023,2024,2025,2026]},
+  Mazda:{CX5:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],CX9:[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Mazda 3':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'BT-50':[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Porsche:{Cayenne:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'Cayenne Coupé':[2020,2021,2022,2023,2024,2025,2026],Macan:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],'911':[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],Panamera:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
+  Otro:{'Otro modelo':[2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]},
 };
 const rDB={
   ciudad:[{cat:'CAUCHOS',name:'Michelin Primacy 4',txt:'Bajo ruido, máximo confort y eficiencia en tráfico. El referente para uso urbano diario.'},
@@ -2016,8 +2067,9 @@ function genPlan(){
   if(!m||!mo||!y){alert('Selecciona marca, modelo y año.');return;}
   const recs=rDB[u]||rDB.ciudad;
   const panel=document.getElementById('sp');
+  const label=(m==='Otro')?`${m} · ${y}`:`${m} ${mo} · ${y}`;
   panel.innerHTML=`<div class="sim-ph">Plan Personalizado</div>
-    <div class="sim-pv">${m} ${mo} · ${y} · ${u.toUpperCase()}</div>
+    <div class="sim-pv">${label} · ${u.toUpperCase()}</div>
     <div class="sim-recs">${recs.map(r=>`<div class="sim-rec"><div class="sim-rc">${r.cat}</div><div><div class="sim-rn">${r.name}</div><div class="sim-rt">${r.txt}</div></div></div>`).join('')}</div>
     <div class="sim-cta"><button class="btn-p" style="width:100%;justify-content:center" onclick="cotSim()">Cotizar Este Plan por WhatsApp</button></div>`;
   panel.classList.add('live');
