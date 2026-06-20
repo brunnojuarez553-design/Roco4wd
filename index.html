@@ -45,7 +45,7 @@ body:has(a:hover,button:hover) #cur-r{width:48px;height:48px;border-color:var(--
 .ll-pct{font-family:var(--mono);font-size:.55rem;color:rgba(240,237,232,.3);letter-spacing:.2em;margin-top:10px;align-self:flex-end}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 60px;display:flex;align-items:center;justify-content:space-between;transition:padding .5s,background .5s,backdrop-filter .5s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 60px;display:flex;align-items:center;justify-content:space-between;transition:padding .5s,background .5s,backdrop-filter .5s,transform .35s cubic-bezier(.4,0,.2,1)}
 nav.s{padding:10px 60px;background:rgba(6,6,6,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--w06)}
 .n-logo{font-family:var(--serif);font-size:1.6rem;font-weight:400;letter-spacing:.12em;color:var(--w);text-decoration:none}
 .n-logo em{color:var(--red);font-style:normal}
@@ -461,6 +461,48 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 .mm-close:hover{color:var(--w);border-color:var(--w60)}
 .mm-footer-wrap{padding:20px 28px;border-top:1px solid var(--w06);flex-shrink:0}
 
+/* MOBILE MENU TABS */
+.mm-tabs{display:flex;gap:0;border-bottom:1px solid var(--w06);flex-shrink:0}
+.mm-tab{flex:1;font-family:var(--mono);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--w60);background:none;border:none;padding:14px 0;cursor:pointer;transition:color .25s,border-color .25s;border-bottom:2px solid transparent;margin-bottom:-1px}
+.mm-tab.active{color:var(--red);border-bottom-color:var(--red)}
+.mm-panel{display:none;flex:1;overflow-y:auto}
+.mm-panel.active{display:flex;flex-direction:column}
+/* Contact panel */
+.mm-contact{padding:28px;display:flex;flex-direction:column;gap:20px;flex:1}
+/* CONTACT MODAL */
+.cmodal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.cmodal-overlay.open{opacity:1;pointer-events:all}
+.cmodal-box{background:#111;border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:36px 32px;width:90%;max-width:420px;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(20px);transition:transform .3s ease}
+.cmodal-overlay.open .cmodal-box{transform:translateY(0)}
+.cmodal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:rgba(255,255,255,.4);font-size:1.1rem;cursor:pointer;line-height:1;transition:color .2s}
+.cmodal-close:hover{color:#fff}
+.cmodal-tag{font-family:var(--mono);font-size:.5rem;letter-spacing:.25em;color:var(--red);text-transform:uppercase;margin:0 0 6px}
+.cmodal-title{font-family:var(--display);font-size:1.8rem;color:#fff;margin:0 0 28px;font-weight:700}
+.cmodal-title span{color:var(--red)}
+.cmodal-block{margin-bottom:20px}
+.cmodal-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;color:var(--red);text-transform:uppercase;display:block;margin-bottom:6px}
+.cmodal-val{font-family:var(--sans);font-size:.88rem;font-weight:300;color:rgba(255,255,255,.6);line-height:1.7;margin:0}
+.cmodal-val strong{color:#fff;font-weight:500}
+.cmodal-val a{color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s}
+.cmodal-val a:hover{color:#fff}
+.cmodal-map{margin-bottom:20px;border-radius:3px;overflow:hidden;height:160px}
+.cmodal-map iframe{width:100%;height:100%;border:0;display:block}
+.cmodal-wa{display:block;text-align:center;background:var(--red);color:#fff;font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;padding:14px;border-radius:2px;margin-top:24px;transition:opacity .2s}
+.cmodal-wa:hover{opacity:.85}
+.mm-contact-block{display:flex;flex-direction:column;gap:6px}
+.mm-contact-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.25em;color:var(--red);text-transform:uppercase}
+.mm-contact-val{font-family:var(--sans);font-size:.88rem;font-weight:300;color:var(--w60);line-height:1.6}
+.mm-contact-val a{color:var(--w60);text-decoration:none;transition:color .2s}
+.mm-contact-val a:hover{color:var(--w)}
+.mm-contact-val strong{color:var(--w);font-weight:500}
+.mm-map{width:100%;height:180px;border-radius:4px;overflow:hidden;border:1px solid var(--w06);flex-shrink:0}
+.mm-map iframe{width:100%;height:100%;border:none;display:block;filter:invert(.9) hue-rotate(180deg) saturate(.6) brightness(.85)}
+.mm-social-row{display:flex;gap:8px;flex-wrap:wrap}
+.mm-soc-btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--w60);text-decoration:none;padding:8px 12px;border:1px solid var(--w06);transition:all .25s}
+.mm-soc-btn:hover{color:var(--w);border-color:var(--w20)}
+.mm-wa-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:#1faa4f;color:#fff;font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;padding:14px;transition:background .2s}
+.mm-wa-btn:hover{background:#19913f}
+
 /* MOBILE */
 @media(max-width:960px){
   nav,nav.s{padding:14px 20px}
@@ -525,10 +567,9 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 
 /* FAQ */
 #faq{background:var(--ink2);position:relative;overflow:hidden}
-#faq::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781839179/IMG_7953_qzbuxi.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.07;z-index:0}
-#faq::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.7) 0%,rgba(14,14,14,.5) 50%,rgba(14,14,14,.7) 100%);z-index:1}
+#faq::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781839179/IMG_7953_qzbuxi.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
+#faq::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.6) 0%,rgba(14,14,14,.4) 50%,rgba(14,14,14,.6) 100%);z-index:1}
 #faq .fu,#faq .faq-grid{position:relative;z-index:2}
-#faq::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(255,61,0,.05) 0%,transparent 65%);pointer-events:none}
 .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:80px}
 .faq-item{background:var(--ink3);border:1px solid var(--w06);padding:28px 32px;cursor:pointer;transition:border-color .3s,background .3s;position:relative}
 .faq-item.open{border-color:rgba(255,61,0,.25);background:var(--ink)}
@@ -605,21 +646,21 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 /* ── VEHÍCULOS ENTREGADOS ── */
 #entregados{background:var(--ink);position:relative;overflow:hidden;padding:120px 60px}
 #entregados::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781843782/IMG_7963_h9fztw.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
-#entregados::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,6,.7) 0%,rgba(6,6,6,.5) 50%,rgba(6,6,6,.7) 100%);z-index:1}
+#entregados::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.6) 0%,rgba(14,14,14,.4) 50%,rgba(14,14,14,.6) 100%);z-index:1}
 #entregados .fu,#entregados .ent-grid{position:relative;z-index:2}
-.ent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:80px;background:var(--w06)}
+.ent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:60px;background:var(--w06)}
 .ent-card{background:var(--ink2);position:relative;overflow:hidden;cursor:default;transition:background .35s;border:1px solid transparent;transition:border-color .4s}
 .ent-card:hover{border-color:rgba(255,61,0,.18)}
-.ent-body{padding:22px 24px 24px;position:relative;z-index:3}
-.ent-model{font-family:var(--serif);font-size:1.25rem;font-weight:400;color:var(--w);margin-bottom:5px;line-height:1.15}
-.ent-service{font-family:var(--mono);font-size:.52rem;letter-spacing:.13em;color:var(--gold-l);text-transform:uppercase;margin-bottom:16px}
+.ent-body{padding:16px 20px 20px;position:relative;z-index:3}
+.ent-model{font-family:var(--serif);font-size:1.05rem;font-weight:400;color:var(--w);margin-bottom:4px;line-height:1.15}
+.ent-service{font-family:var(--mono);font-size:.48rem;letter-spacing:.13em;color:var(--gold-l);text-transform:uppercase;margin-bottom:12px}
 .ent-meta{display:flex;flex-direction:column;gap:0}
-.ent-row{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--w06)}
+.ent-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--w06)}
 .ent-row:last-child{border-bottom:none}
-.ent-icon{width:16px;text-align:center;font-size:.75rem;flex-shrink:0;opacity:.7;padding-top:1px}
-.ent-row-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.15em;color:var(--w20);text-transform:uppercase;width:72px;flex-shrink:0;padding-top:2px}
-.ent-row-val{font-family:var(--sans);font-size:.84rem;font-weight:300;color:var(--w60);line-height:1.4}
-.ent-result{font-family:var(--sans);font-size:.82rem;font-weight:300;color:rgba(80,208,80,.8);line-height:1.45}
+.ent-icon{width:14px;text-align:center;font-size:.7rem;flex-shrink:0;opacity:.7;padding-top:1px}
+.ent-row-label{font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;color:var(--w20);text-transform:uppercase;width:64px;flex-shrink:0;padding-top:2px}
+.ent-row-val{font-family:var(--sans);font-size:.78rem;font-weight:300;color:var(--w60);line-height:1.4}
+.ent-result{font-family:var(--sans);font-size:.76rem;font-weight:300;color:rgba(80,208,80,.8);line-height:1.4}
 .ent-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--red));transition:width .5s cubic-bezier(.4,0,.2,1)}
 .ent-card:hover .ent-bar{width:100%}
 @media(max-width:960px){.ent-grid{grid-template-columns:repeat(2,1fr)}}
@@ -627,7 +668,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 @media(max-width:768px){#entregados{padding:72px 20px}}
 
 /* ── VEHÍCULOS ENTREGADOS — slider idéntico a portfolio ── */
-.ent-slider{position:relative;aspect-ratio:4/3;overflow:hidden}
+.ent-slider{position:relative;aspect-ratio:16/9;overflow:hidden}
 .ent-track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1)}
 .ent-slide{min-width:100%;width:100%;height:100%;flex-shrink:0;flex-grow:0}
 .ent-slide img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.4,0,.2,1)}
@@ -760,7 +801,7 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
   <a href="#" class="n-logo"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_200/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd" style="height:52px;width:auto;display:block"></a>
   <ul class="n-links">
     <li><a href="#srv">Servicios</a></li>
-    <li><a href="#sim">Simulador</a></li>
+    <li><a href="#sim">Configura tu Vehículo</a></li>
     <li><a href="#gal">Galería</a></li>
     <li><a href="#about">Nosotros</a></li>
     <li><a href="#faq">FAQ</a></li>
@@ -775,22 +816,66 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
 <div id="mob-menu" aria-hidden="true">
   <div id="mob-menu-backdrop" onclick="closeMenu()"></div>
   <div class="mm-drawer">
+
     <div class="mm-header">
+      <span class="mm-title">ROCO4WD</span>
       <button class="mm-close" onclick="closeMenu()" aria-label="Cerrar menú">✕</button>
     </div>
+
     <div class="mm-inner">
       <ul class="mm-links">
         <li><a href="#srv" onclick="closeMenu()">Servicios</a></li>
-        <li><a href="#sim" onclick="closeMenu()">Simulador</a></li>
+        <li><a href="#sim" onclick="closeMenu()">Configura tu Vehículo</a></li>
         <li><a href="#gal" onclick="closeMenu()">Galería</a></li>
         <li><a href="#about" onclick="closeMenu()">Nosotros</a></li>
         <li><a href="#agenda" onclick="closeMenu()">Agendar Cita</a></li>
+        <li><a href="#" onclick="openContactModal(event)">Contacto</a></li>
       </ul>
     </div>
+
     <div class="mm-footer-wrap">
       <p class="mm-loc">Caracas · Venezuela · Av. de los Cortijos</p>
       <a href="https://www.instagram.com/roco4wd" target="_blank" class="mm-ig">@roco4wd</a>
     </div>
+
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div id="contact-modal" class="cmodal-overlay" onclick="closeContactModal(event)">
+  <div class="cmodal-box">
+    <button class="cmodal-close" onclick="closeContactModal()">✕</button>
+    <p class="cmodal-tag">CONTACTO</p>
+    <h2 class="cmodal-title">Roco<span>4wd</span></h2>
+
+    <div class="cmodal-block">
+      <span class="cmodal-label">📍 Ubicación</span>
+      <p class="cmodal-val">Av. de los Cortijos, Caracas<br><strong>A 2 min del C.C. Los Cortijos</strong></p>
+    </div>
+
+    <div class="cmodal-map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.5!2d-66.8456!3d10.4942!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a58e9a7a7a7a7%3A0x1234567890abcdef!2sAv.%20de%20los%20Cortijos%2C%20Caracas!5e0!3m2!1ses!2sve!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <div class="cmodal-block">
+      <span class="cmodal-label">🕐 Horario</span>
+      <p class="cmodal-val">
+        <strong>Lun – Vie:</strong> 8:00 AM – 6:00 PM<br>
+        <strong>Sábados:</strong> 8:00 AM – 2:00 PM<br>
+        Dom: Solo emergencias por WhatsApp
+      </p>
+    </div>
+
+    <div class="cmodal-block">
+      <span class="cmodal-label">📱 Contacto directo</span>
+      <p class="cmodal-val">
+        <a href="https://wa.me/584140248764" target="_blank">WhatsApp: +58 414 0248764</a><br>
+        <a href="https://instagram.com/roco4wd" target="_blank">Instagram: @roco4wd</a><br>
+        <a href="https://tiktok.com/@roco4wd" target="_blank">TikTok: @roco4wd</a>
+      </p>
+    </div>
+
+    <a href="https://wa.me/584140248764" target="_blank" class="cmodal-wa">⚡ Escribir por WhatsApp</a>
   </div>
 </div>
 
@@ -1760,6 +1845,22 @@ function heroIn(){
 // NAV
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('s',scrollY>60));
 
+// NAV hide on scroll down / show on scroll up (mobile only)
+(function(){
+  let lastY = 0;
+  window.addEventListener('scroll', () => {
+    if(window.innerWidth > 960) return;
+    const nav = document.getElementById('nav');
+    const curY = window.scrollY;
+    if(curY > lastY && curY > 80) {
+      nav.style.transform = 'translateY(-100%)';
+    } else {
+      nav.style.transform = 'translateY(0)';
+    }
+    lastY = curY;
+  }, {passive: true});
+})();
+
 // SCROLL REVEALS
 document.querySelectorAll('.fu').forEach(el=>{
   gsap.fromTo(el,{opacity:0,y:44},{opacity:1,y:0,duration:.95,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 88%',once:true}});
@@ -2071,6 +2172,30 @@ proactiveTimer=setTimeout(()=>{
 },40000);
 
 
+// MOBILE MENU TABS
+function mmTab(btn, panelId){
+  document.querySelectorAll('.mm-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mm-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// CONTACT MODAL
+function openContactModal(e){
+  if(e) e.preventDefault();
+  closeMenu();
+  document.getElementById('contact-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeContactModal(e){
+  if(e && e.target!==document.getElementById('contact-modal')) return;
+  document.getElementById('contact-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closeContactModal();
+});
+
 // HAMBURGER MENU
 function toggleMenu(){
   const menu=document.getElementById('mob-menu');
@@ -2093,6 +2218,9 @@ function closeMenu(){
   btn.classList.remove('open');
   menu.setAttribute('aria-hidden','true');
   document.body.style.overflow='';
+  // Reset tabs
+  document.querySelectorAll('.mm-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+  document.querySelectorAll('.mm-panel').forEach((p,i) => p.classList.toggle('active', i===0));
 }
 
 // AGENDA
