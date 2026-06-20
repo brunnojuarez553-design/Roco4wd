@@ -225,13 +225,11 @@ nav.s{padding:10px 60px;background:rgba(6,6,6,.92);backdrop-filter:blur(24px);bo
 @media(max-width:600px){.pw{grid-template-columns:1fr}}
 
 /* WHY */
-#why{background:var(--ink);overflow:hidden}
-.why-w{display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:center}
-.why-vis{position:relative;height:580px}
-.why-bg{position:absolute;top:0;left:0;right:40px;bottom:40px;background:linear-gradient(rgba(10,10,10,.55),rgba(10,10,10,.55)),url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781843781/IMG_7964_dcpsqx.jpg') center/cover no-repeat,var(--ink2);border:1px solid var(--w06)}
-.why-ac{position:absolute;bottom:0;right:0;width:180px;height:140px;background:var(--red);opacity:.07}
-.why-giant{position:absolute;bottom:24px;left:24px;font-family:var(--serif);font-size:7rem;font-weight:300;color:rgba(240,237,232,.03);line-height:1;letter-spacing:-.02em}
-.why-ph{position:absolute;inset:18px 56px 56px 18px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.6rem;color:rgba(240,237,232,.1);letter-spacing:.12em;background:var(--ink3);border:1px solid var(--w06)}
+#why{background:var(--ink);overflow:hidden;position:relative}
+#why::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781843782/IMG_7963_h9fztw.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.07;z-index:0}
+#why::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,6,.7) 0%,rgba(6,6,6,.5) 50%,rgba(6,6,6,.7) 100%);z-index:1}
+#why .why-w{position:relative;z-index:2}
+.why-w{display:grid;grid-template-columns:1fr;gap:0;align-items:center;max-width:760px;margin:0 auto}
 .why-items{display:flex;flex-direction:column}
 .wi{display:flex;gap:22px;padding:26px 0;border-bottom:1px solid var(--w06);align-items:flex-start}
 .wi:first-child{border-top:1px solid var(--w06)}
@@ -382,7 +380,8 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 /* CONCIERGE */
 #cfab{position:fixed;bottom:32px;right:32px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:12px;pointer-events:none}
 #cc.o,#cfab-btn,.fab-proactive.show{pointer-events:auto}
-#cc{width:360px;background:var(--ink2);border:1px solid rgba(255,61,0,.2);box-shadow:0 24px 80px rgba(0,0,0,.7);display:flex;flex-direction:column;max-height:540px;opacity:0;transform:translateY(16px) scale(.97);transition:opacity .35s,transform .35s;pointer-events:none;visibility:hidden}
+#cc{width:360px;background:var(--ink2);border:1px solid rgba(255,61,0,.2);box-shadow:0 24px 80px rgba(0,0,0,.7);display:flex;flex-direction:column;max-height:540px;opacity:0;transform:translateY(16px) scale(.97);transition:opacity .35s,transform .35s;pointer-events:none;visibility:hidden;order:0}
+#cfab-btn{order:1}
 #cc.o{opacity:1;transform:none;pointer-events:auto;visibility:visible}
 .cc-h{padding:16px 18px;background:var(--ink3);border-bottom:1px solid var(--w06);display:flex;align-items:center;gap:12px}
 .cc-av{width:34px;height:34px;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--w);clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);flex-shrink:0}
@@ -417,8 +416,8 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 @keyframes fab-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .fab-tip{position:absolute;right:76px;top:50%;transform:translateY(-50%);background:var(--ink2);border:1px solid rgba(255,61,0,.25);color:var(--w60);font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;padding:7px 14px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .25s;border-radius:2px}
 #cfab-btn:hover .fab-tip{opacity:1}
-.fab-proactive{position:absolute;bottom:0;right:calc(100% + 14px);transform:translateX(8px);background:var(--ink2);border:1px solid rgba(255,61,0,.35);box-shadow:0 8px 28px rgba(0,0,0,.5);color:var(--w);font-family:var(--sans);font-size:.8rem;font-weight:400;line-height:1.3;padding:11px 16px;white-space:nowrap;border-radius:4px;opacity:0;pointer-events:none;transition:opacity .4s ease,transform .4s ease;z-index:201;max-width:200px}
-.fab-proactive.show{opacity:1;transform:translateX(0);pointer-events:auto;cursor:pointer}
+.fab-proactive{position:absolute;right:calc(100% + 14px);top:50%;transform:translateY(-50%) translateX(8px);background:var(--ink2);border:1px solid rgba(255,61,0,.35);box-shadow:0 8px 28px rgba(0,0,0,.5);color:var(--w);font-family:var(--sans);font-size:.8rem;font-weight:400;line-height:1.3;padding:11px 16px;white-space:nowrap;border-radius:4px;opacity:0;pointer-events:none;transition:opacity .4s ease,transform .4s ease;z-index:201;max-width:200px}
+.fab-proactive.show{opacity:1;transform:translateY(-50%) translateX(0);pointer-events:auto;cursor:pointer}
 .fab-proactive::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:6px solid var(--ink2)}
 .typing{display:flex;gap:4px;padding:10px 14px;background:var(--ink3);border-left:2px solid var(--red);align-self:flex-start}
 .cc-wa-btn{margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;background:#1faa4f;color:#fff;font-family:var(--sans);font-weight:500;font-size:.82rem;text-decoration:none;padding:11px 16px;border-radius:3px;transition:background .2s,transform .2s;box-shadow:0 4px 16px rgba(31,170,79,.25)}
@@ -488,7 +487,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   .pc:hover .pc-slide img{transform:none}
   .pc-prev,.pc-next{opacity:1!important;width:44px;height:44px;font-size:1rem;clip-path:none;border-radius:3px;background:rgba(6,6,6,.82)}
   .sg{grid-template-columns:1fr 1fr}
-  .ba-l,.sim-w,.why-w,.ag-w,.ab-grid{grid-template-columns:1fr}
+  .ba-l,.sim-w,.ag-w,.ab-grid{grid-template-columns:1fr}
   .sim-panel{min-height:auto;padding:28px 20px}
   .sim-go{touch-action:manipulation}
   .gg{columns:2}
@@ -501,9 +500,9 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   #cfab-btn{width:60px;height:60px}
   #cfab-btn img{width:46px}
   .fab-tip{right:68px;max-width:calc(100vw - 110px);white-space:normal}
-  .fab-proactive{right:calc(100% + 14px);bottom:0;max-width:calc(100vw - 120px);white-space:normal;transform:translateX(8px)}
-  .fab-proactive.show{transform:translateX(0)}
-  .why-bg{background:var(--ink2)}
+  .fab-proactive{right:calc(100% + 14px);top:50%;transform:translateY(-50%) translateX(8px);max-width:calc(100vw - 120px);white-space:normal}
+  .fab-proactive.show{transform:translateY(-50%) translateX(0)}
+  #why::before{background-attachment:scroll}
   body{cursor:auto}
   #cur,#cur-r{display:none}
   /* Fondos superpuestos más visibles en mobile */
@@ -526,6 +525,9 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 
 /* FAQ */
 #faq{background:var(--ink2);position:relative;overflow:hidden}
+#faq::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781839179/IMG_7953_qzbuxi.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.07;z-index:0}
+#faq::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.7) 0%,rgba(14,14,14,.5) 50%,rgba(14,14,14,.7) 100%);z-index:1}
+#faq .fu,#faq .faq-grid{position:relative;z-index:2}
 #faq::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(255,61,0,.05) 0%,transparent 65%);pointer-events:none}
 .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:80px}
 .faq-item{background:var(--ink3);border:1px solid var(--w06);padding:28px 32px;cursor:pointer;transition:border-color .3s,background .3s;position:relative}
@@ -545,17 +547,195 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 
 /* ABOUT HERO IMAGE */
 .ab-hero{width:100%;margin-top:60px;position:relative;overflow:hidden}
-.ab-hero img{width:100%;height:clamp(280px,45vw,600px);object-fit:cover;object-position:center;display:block;filter:brightness(.88)}
+.ab-hero img{width:100%;height:clamp(280px,45vw,600px);object-fit:cover;object-position:center 70%;display:block;filter:brightness(.88)}
 .ab-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,var(--ink2) 100%)}
 .ab-hero-label{position:absolute;bottom:28px;left:40px;font-family:var(--mono);font-size:.55rem;letter-spacing:.22em;color:rgba(240,237,232,.45);text-transform:uppercase;z-index:2}
 @media(max-width:768px){
   .ab-hero img{height:clamp(220px,60vw,400px)}
   .ab-hero-label{left:20px;bottom:20px}
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ENTERPRISE PREMIUM ADDITIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── FLOATING CTA BAR ── */
+#float-cta{
+  position:fixed;bottom:0;left:0;right:0;z-index:180;
+  background:rgba(6,6,6,.96);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,61,0,.2);
+  padding:14px 60px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  transform:translateY(100%);
+  transition:transform .55s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;
+}
+#float-cta.visible{transform:translateY(0);pointer-events:auto}
+.fcta-text{font-family:var(--serif);font-size:1.1rem;font-weight:300;color:var(--w);letter-spacing:.02em;flex:1}
+.fcta-text em{color:var(--red);font-style:italic}
+.fcta-btns{display:flex;gap:10px;align-items:center;flex-shrink:0}
+@media(max-width:768px){
+  #float-cta{padding:12px 16px;flex-direction:column;gap:10px;text-align:center}
+  .fcta-text{font-size:.92rem}
+  .fcta-btns{width:100%;justify-content:center}
+}
+
+/* ── TRUST METRICS ── */
+#trust-metrics{background:var(--ink2);position:relative;overflow:hidden;padding:100px 60px}
+#trust-metrics::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(255,61,0,.06) 0%,transparent 70%);pointer-events:none}
+#trust-metrics::after{content:'';position:absolute;top:0;left:60px;right:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,61,0,.3),transparent)}
+.tm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(240,237,232,.04);margin-top:72px;position:relative}
+.tm-card{background:var(--ink2);padding:52px 36px;position:relative;overflow:hidden;transition:background .4s;cursor:default}
+.tm-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,61,0,.04) 0%,transparent 60%);opacity:0;transition:opacity .4s}
+.tm-card:hover{background:var(--ink3)}
+.tm-card:hover::before{opacity:1}
+.tm-num{font-family:var(--serif);font-size:clamp(3rem,5vw,4.8rem);font-weight:300;color:var(--w);line-height:1;margin-bottom:10px;letter-spacing:-.02em}
+.tm-num .count-val{display:inline-block}
+.tm-num em{font-style:normal;color:var(--red)}
+.tm-label{font-family:var(--sans);font-size:.88rem;font-weight:400;color:var(--w60);line-height:1.5;margin-bottom:8px}
+.tm-sublabel{font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;color:rgba(255,61,0,.5);text-transform:uppercase}
+.tm-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .6s cubic-bezier(.4,0,.2,1)}
+.tm-card:hover .tm-bar{width:100%}
+@media(max-width:960px){.tm-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.tm-grid{grid-template-columns:1fr}}
+@media(max-width:768px){#trust-metrics{padding:72px 20px}}
+
+/* ── VEHÍCULOS ENTREGADOS ── */
+#entregados{background:var(--ink);position:relative;overflow:hidden;padding:120px 60px}
+#entregados::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781843782/IMG_7963_h9fztw.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
+#entregados::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,6,.7) 0%,rgba(6,6,6,.5) 50%,rgba(6,6,6,.7) 100%);z-index:1}
+#entregados .fu,#entregados .ent-grid{position:relative;z-index:2}
+.ent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:80px;background:var(--w06)}
+.ent-card{background:var(--ink2);position:relative;overflow:hidden;cursor:default;transition:background .35s;border:1px solid transparent;transition:border-color .4s}
+.ent-card:hover{border-color:rgba(255,61,0,.18)}
+.ent-body{padding:22px 24px 24px;position:relative;z-index:3}
+.ent-model{font-family:var(--serif);font-size:1.25rem;font-weight:400;color:var(--w);margin-bottom:5px;line-height:1.15}
+.ent-service{font-family:var(--mono);font-size:.52rem;letter-spacing:.13em;color:var(--gold-l);text-transform:uppercase;margin-bottom:16px}
+.ent-meta{display:flex;flex-direction:column;gap:0}
+.ent-row{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--w06)}
+.ent-row:last-child{border-bottom:none}
+.ent-icon{width:16px;text-align:center;font-size:.75rem;flex-shrink:0;opacity:.7;padding-top:1px}
+.ent-row-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.15em;color:var(--w20);text-transform:uppercase;width:72px;flex-shrink:0;padding-top:2px}
+.ent-row-val{font-family:var(--sans);font-size:.84rem;font-weight:300;color:var(--w60);line-height:1.4}
+.ent-result{font-family:var(--sans);font-size:.82rem;font-weight:300;color:rgba(80,208,80,.8);line-height:1.45}
+.ent-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--red));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.ent-card:hover .ent-bar{width:100%}
+@media(max-width:960px){.ent-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.ent-grid{grid-template-columns:1fr}}
+@media(max-width:768px){#entregados{padding:72px 20px}}
+
+/* ── VEHÍCULOS ENTREGADOS — slider idéntico a portfolio ── */
+.ent-slider{position:relative;aspect-ratio:4/3;overflow:hidden}
+.ent-track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.ent-slide{min-width:100%;width:100%;height:100%;flex-shrink:0;flex-grow:0}
+.ent-slide img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.ent-card:hover .ent-slide img{transform:scale(1.05)}
+.ent-vign{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,.92) 0%,rgba(6,6,6,.3) 45%,transparent 100%);pointer-events:none;z-index:2}
+.ent-prev,.ent-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(6,6,6,.75);border:1px solid rgba(255,61,0,.3);color:var(--w);width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.65rem;cursor:pointer;z-index:4;opacity:0;transition:opacity .3s,background .2s;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.ent-prev{left:10px}
+.ent-next{right:10px}
+.ent-card:hover .ent-prev,.ent-card:hover .ent-next{opacity:1}
+.ent-prev:hover,.ent-next:hover{background:var(--red);border-color:var(--red)}
+.ent-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:4}
+.ent-dot{width:4px;height:4px;border-radius:50%;background:rgba(240,237,232,.3);transition:background .3s,transform .3s;cursor:pointer}
+.ent-dot.on{background:var(--red);transform:scale(1.4)}
+.ent-count{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:rgba(240,237,232,.5);background:rgba(6,6,6,.6);padding:3px 8px;z-index:4}
+.ent-status{position:absolute;top:14px;left:14px;z-index:4;font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;background:rgba(80,208,80,.12);border:1px solid rgba(80,208,80,.35);color:#50d060;padding:4px 10px}
+/* Mobile — igual que .pc en portfolio */
+@media(max-width:960px){
+  .ent-grid{gap:0}
+  .ent-card{border-radius:0;border:none;border-bottom:2px solid var(--ink)}
+  .ent-slider{aspect-ratio:1/1;width:100%}
+  .ent-track{width:100%;height:100%;display:flex;flex-wrap:nowrap;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+  .ent-slide{min-width:100%;width:100%;height:100%;flex-shrink:0;flex-grow:0}
+  .ent-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  .ent-card:hover .ent-slide img{transform:none}
+  .ent-prev,.ent-next{opacity:1!important;width:44px;height:44px;font-size:1rem;clip-path:none;border-radius:3px;background:rgba(6,6,6,.82)}
+}
+.ent-body{padding:26px 28px 32px;position:relative}
+.ent-model{font-family:var(--serif);font-size:1.25rem;font-weight:400;color:var(--w);margin-bottom:5px;line-height:1.15}
+.ent-service{font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:var(--red);text-transform:uppercase;margin-bottom:18px}
+.ent-meta{display:flex;flex-direction:column;gap:8px}
+.ent-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--w06)}
+.ent-row:last-child{border-bottom:none}
+.ent-icon{width:16px;text-align:center;font-size:.75rem;flex-shrink:0;opacity:.7}
+.ent-row-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.15em;color:var(--w20);text-transform:uppercase;width:80px;flex-shrink:0}
+.ent-row-val{font-family:var(--sans);font-size:.84rem;font-weight:300;color:var(--w60);line-height:1.4}
+.ent-result{font-family:var(--sans);font-size:.82rem;font-weight:300;color:rgba(80,208,80,.8);line-height:1.45}
+.ent-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--red));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.ent-card:hover .ent-bar{width:100%}
+@media(max-width:960px){.ent-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.ent-grid{grid-template-columns:1fr}.#entregados{padding:80px 20px}}
+
+/* ── MARCAS AUTOMOTRICES ── */
+#car-brands{background:var(--ink);padding:96px 60px;position:relative;overflow:hidden}
+#car-brands::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(154,122,58,.04) 0%,transparent 60%);pointer-events:none}
+.cb-header{text-align:center;margin-bottom:72px}
+.cb-eyebrow{font-family:var(--mono);font-size:.6rem;letter-spacing:.3em;color:var(--red);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:16px}
+.cb-eyebrow::before,.cb-eyebrow::after{content:'';width:40px;height:1px;background:rgba(255,61,0,.3)}
+.cb-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.5rem);font-weight:300;color:rgba(240,237,232,.2);letter-spacing:.04em}
+.cb-title em{color:rgba(240,237,232,.5);font-style:normal}
+.cb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--w06);margin-top:8px}
+.cb-brand{background:var(--ink2);padding:40px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:background .35s;cursor:default;position:relative;overflow:hidden}
+.cb-brand::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(154,122,58,.06) 0%,transparent 60%);opacity:0;transition:opacity .4s}
+.cb-brand:hover{background:var(--ink3)}
+.cb-brand:hover::before{opacity:1}
+.cb-brand svg{width:48px;height:32px;fill:rgba(240,237,232,.15);transition:fill .35s}
+.cb-brand:hover svg{fill:rgba(240,237,232,.72)}
+.cb-brand-name{font-family:var(--mono);font-size:.55rem;letter-spacing:.22em;color:rgba(240,237,232,.2);text-transform:uppercase;transition:color .35s;text-align:center}
+.cb-brand:hover .cb-brand-name{color:rgba(240,237,232,.6)}
+.cb-grid-row2{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--w06);margin-top:1px}
+@media(max-width:960px){.cb-grid,.cb-grid-row2{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:600px){.cb-grid,.cb-grid-row2{grid-template-columns:repeat(2,1fr)}.#car-brands{padding:72px 20px}}
+
+/* ── PREMIUM MICRO ANIMATIONS ── */
+@keyframes shimmer{
+  0%{background-position:-400px 0}
+  100%{background-position:400px 0}
+}
+.sc:hover .sn{color:rgba(240,237,232,1)}
+.wi:hover .wt-t{color:var(--red);transition:color .3s}
+.btn-p,.btn-g,.f-sub{letter-spacing:.22em}
+/* Refined button interactions */
+.btn-p{will-change:transform}
+.btn-g{will-change:transform}
+/* Smoother section transitions */
+section{will-change:opacity}
+/* Refined nav */
+nav.s{box-shadow:0 1px 40px rgba(0,0,0,.5)}
+/* Better card depth on services */
+.sc{box-shadow:none;transition:background .4s,box-shadow .4s}
+.sc:hover{box-shadow:0 8px 40px rgba(0,0,0,.4)}
+/* Better footer */
+footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
+/* Fluid testimonial/FAQ spacing improvements */
+.faq-item{transition:background .3s,border-color .3s,box-shadow .3s}
+.faq-item:hover:not(.open){border-color:rgba(240,237,232,.08);box-shadow:0 4px 24px rgba(0,0,0,.3)}
+/* Improve heading hierarchy */
+.st{line-height:.95}
+/* Better mobile button sizing */
+@media(max-width:768px){
+  .btn-p,.btn-g{padding:16px 24px;font-size:.65rem}
+  .sp{padding:80px 20px}
+  .ent-grid,.cb-grid,.cb-grid-row2{grid-template-columns:1fr}
+  .tm-grid{grid-template-columns:repeat(2,1fr)}
+  #entregados,#trust-metrics,#car-brands{padding:72px 20px}
+}
 </style>
 </head>
 <body>
 <div id="cur"></div><div id="cur-r"></div>
+
+<!-- FLOATING CTA BAR -->
+<div id="float-cta">
+  <span class="fcta-text">¿Listo para <em>mejorar tu vehículo?</em></span>
+  <div class="fcta-btns">
+    <a href="#agenda" class="btn-p" onclick="document.getElementById('float-cta').classList.remove('visible')">⚡ Agendar Inspección</a>
+    <button class="btn-g" style="background:rgba(255,90,20,.18);border-color:rgba(255,90,20,.45);color:rgba(255,200,160,.9);" onclick="openC();document.getElementById('float-cta').classList.remove('visible')">◆ Hablar con Concierge IA</button>
+  </div>
+</div>
 
 <!-- LOADER -->
 <div id="loader">
@@ -631,7 +811,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
       <p class="h-desc" id="hdesc">Mecánica, detailing, repuestos, personalización y performance en un solo lugar. Con los más altos estándares de la industria automotriz.</p>
       <div class="h-btns" id="hbtns">
         <a href="#agenda" class="btn-p">⚡ Agendar Inspección</a>
-        <button class="btn-g" onclick="openC()">✦ Roco Assistant</button>
+        <a href="#sim" class="btn-g" style="background:rgba(255,90,20,.18);border-color:rgba(255,90,20,.45);color:rgba(255,200,160,.9);">⚙ Configura tu Vehículo</a>
       </div>
     </div>
   </div>
@@ -643,8 +823,101 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="mq-wrap"><div class="mq-track"><div class="mq-item">Mecánica General</div><div class="mq-item">Detailing Premium</div><div class="mq-item">Pulido Nanocerámico</div><div class="mq-item">PPF</div><div class="mq-item">Suspensión</div><div class="mq-item">Sonido Hi-Fi</div><div class="mq-item">Pantallas Digitales</div><div class="mq-item">Cauchos Premium</div><div class="mq-item">Rines Exclusivos</div><div class="mq-item">Iluminación LED</div><div class="mq-item">Latonería & Pintura</div><div class="mq-item">Repuestos Originales</div><div class="mq-item">Mecánica General</div><div class="mq-item">Detailing Premium</div><div class="mq-item">Pulido Nanocerámico</div><div class="mq-item">PPF</div><div class="mq-item">Suspensión</div><div class="mq-item">Sonido Hi-Fi</div><div class="mq-item">Pantallas Digitales</div><div class="mq-item">Cauchos Premium</div><div class="mq-item">Rines Exclusivos</div><div class="mq-item">Iluminación LED</div><div class="mq-item">Latonería & Pintura</div><div class="mq-item">Repuestos Originales</div></div></div>
+<!-- MARQUEE -->\n<div class="mq-wrap"><div class="mq-track"><div class="mq-item">Mecánica General</div><div class="mq-item">Detailing Premium</div><div class="mq-item">Pulido Nanocerámico</div><div class="mq-item">PPF</div><div class="mq-item">Suspensión</div><div class="mq-item">Sonido Hi-Fi</div><div class="mq-item">Pantallas Digitales</div><div class="mq-item">Cauchos Premium</div><div class="mq-item">Rines Exclusivos</div><div class="mq-item">Iluminación LED</div><div class="mq-item">Latonería & Pintura</div><div class="mq-item">Repuestos Originales</div><div class="mq-item">Mecánica General</div><div class="mq-item">Detailing Premium</div><div class="mq-item">Pulido Nanocerámico</div><div class="mq-item">PPF</div><div class="mq-item">Suspensión</div><div class="mq-item">Sonido Hi-Fi</div><div class="mq-item">Pantallas Digitales</div><div class="mq-item">Cauchos Premium</div><div class="mq-item">Rines Exclusivos</div><div class="mq-item">Iluminación LED</div><div class="mq-item">Latonería & Pintura</div><div class="mq-item">Repuestos Originales</div></div></div>
+
+<!-- VEHÍCULOS RECIENTEMENTE ENTREGADOS -->
+<section id="entregados">
+  <div class="fu">
+    <p class="ey">Últimas entregas</p>
+    <h2 class="st">Vehículos<br><em>entregados.</em></h2>
+    <p class="sd" style="margin-top:16px">Resultados reales. Cada entrega habla por sí sola.</p>
+  </div>
+  <div class="ent-grid fu">
+
+    <!-- JAC T9 -->
+    <div class="ent-card">
+      <div class="ent-slider">
+        <div class="ent-track">
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7982_mwpl3t.jpg" alt="JAC T9" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7983_y7gpwf.jpg" alt="JAC T9" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7984_axmcic.jpg" alt="JAC T9" loading="lazy"></div>
+        </div>
+        <div class="ent-vign"></div>
+        <button class="ent-prev" onclick="slideEnt(this,-1)">‹</button>
+        <button class="ent-next" onclick="slideEnt(this,1)">›</button>
+        <div class="ent-dots"></div>
+        <div class="ent-count">1 / 3</div>
+        <div class="ent-status">● Entregado</div>
+      </div>
+      <div class="ent-body">
+        <div class="ent-model">JAC T9</div>
+        <div class="ent-service">Build Completo — Defensa Viper · Nitto Ridge · OME · PPF · Kenwood</div>
+        <div class="ent-meta">
+          <div class="ent-row"><span class="ent-icon">⏱</span><span class="ent-row-label">Tiempo</span><span class="ent-row-val">7 días</span></div>
+          <div class="ent-row"><span class="ent-icon">✦</span><span class="ent-row-label">Resultado</span><span class="ent-result">Transformación integral · Off-road ready con audio y protección premium</span></div>
+        </div>
+      </div>
+      <div class="ent-bar"></div>
+    </div>
+
+    <!-- Toyota Hilux Revo -->
+    <div class="ent-card">
+      <div class="ent-slider">
+        <div class="ent-track">
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912428/IMG_7986_aol0bf.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7989_w0oylf.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7987_zzua6f.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7993_yfdus4.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912428/IMG_7991_v9rcdd.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912428/IMG_7990_qqrx4y.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+        </div>
+        <div class="ent-vign"></div>
+        <button class="ent-prev" onclick="slideEnt(this,-1)">‹</button>
+        <button class="ent-next" onclick="slideEnt(this,1)">›</button>
+        <div class="ent-dots"></div>
+        <div class="ent-count">1 / 6</div>
+        <div class="ent-status">● Entregado</div>
+      </div>
+      <div class="ent-body">
+        <div class="ent-model">Toyota Hilux Revo</div>
+        <div class="ent-service">ARB · Nitto Trail Grappler · PPF + Cerámica · OME MT64 · Vossen</div>
+        <div class="ent-meta">
+          <div class="ent-row"><span class="ent-icon">⏱</span><span class="ent-row-label">Tiempo</span><span class="ent-row-val">6 días</span></div>
+          <div class="ent-row"><span class="ent-icon">✦</span><span class="ent-row-label">Resultado</span><span class="ent-result">Máxima tracción + protección de pintura · Presencia premium garantizada</span></div>
+        </div>
+      </div>
+      <div class="ent-bar"></div>
+    </div>
+
+    <!-- Toyota Land Cruiser -->
+    <div class="ent-card">
+      <div class="ent-slider">
+        <div class="ent-track">
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7924_y2egua.jpg" alt="Toyota Land Cruiser" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7925_n7eypm.jpg" alt="Toyota Land Cruiser" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7926_zp3jqa.jpg" alt="Toyota Land Cruiser" loading="lazy"></div>
+          <div class="ent-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781839163/IMG_7927_gwjk14.jpg" alt="Toyota Land Cruiser" loading="lazy"></div>
+        </div>
+        <div class="ent-vign"></div>
+        <button class="ent-prev" onclick="slideEnt(this,-1)">‹</button>
+        <button class="ent-next" onclick="slideEnt(this,1)">›</button>
+        <div class="ent-dots"></div>
+        <div class="ent-count">1 / 4</div>
+        <div class="ent-status">● Entregado</div>
+      </div>
+      <div class="ent-body">
+        <div class="ent-model">Toyota Land Cruiser</div>
+        <div class="ent-service">Lift Kit + Parachoque ARB + Winche + JL Audio + PPF</div>
+        <div class="ent-meta">
+          <div class="ent-row"><span class="ent-icon">⏱</span><span class="ent-row-label">Tiempo</span><span class="ent-row-val">6 días</span></div>
+          <div class="ent-row"><span class="ent-icon">✦</span><span class="ent-row-label">Resultado</span><span class="ent-result">Build completo off-road · Audio JL instalado sin cables visibles</span></div>
+        </div>
+      </div>
+      <div class="ent-bar"></div>
+    </div>
+
+  </div>
+</section>
 
 <!-- QUIÉNES SOMOS -->
 <section id="about" class="sp">
@@ -1168,6 +1441,73 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
       <div class="pc-bar"></div>
     </div>
 
+    <!-- 11. JAC T9 -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7982_mwpl3t.jpg" alt="JAC T9" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7983_y7gpwf.jpg" alt="JAC T9" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7984_axmcic.jpg" alt="JAC T9" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 3</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">JAC T9</div>
+        <div class="pc-year">Build Completo</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Defensa Viper + Carelos</span>
+          <span class="pc-tag">Cauchos Nitto Ridge 285/70/17</span>
+          <span class="pc-tag">Rines Fuel Off-Road</span>
+          <span class="pc-tag">Suspensión OME Nitrocharger</span>
+          <span class="pc-tag">Blackout plásticos</span>
+          <span class="pc-tag">Parachoque Viper trasero</span>
+          <span class="pc-tag">Tapa Duracover 100</span>
+          <span class="pc-tag">Estribos Viper doble</span>
+          <span class="pc-tag">PPF · Ahumado 3M</span>
+          <span class="pc-tag">Sonido Kenwood Excelon</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
+    <!-- 12. Toyota Hilux Revo -->
+    <div class="pc">
+      <div class="pc-slider">
+        <div class="pc-track">
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912428/IMG_7986_aol0bf.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7989_w0oylf.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7987_zzua6f.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912429/IMG_7993_yfdus4.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912428/IMG_7991_v9rcdd.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+          <div class="pc-slide"><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781912428/IMG_7990_qqrx4y.jpg" alt="Toyota Hilux Revo" loading="lazy"></div>
+        </div>
+        <div class="pc-vign"></div>
+        <button class="pc-prev" onclick="slide(this,-1)">‹</button>
+        <button class="pc-next" onclick="slide(this,1)">›</button>
+        <div class="pc-dots"></div>
+        <div class="pc-count">1 / 6</div>
+      </div>
+      <div class="pc-info">
+        <div class="pc-model">Toyota Hilux Revo</div>
+        <div class="pc-year">Off Road Premium Build</div>
+        <div class="pc-tags">
+          <span class="pc-tag">Cauchos Nitto Trail Grappler</span>
+          <span class="pc-tag">Parachoque ARB + Faros Solís</span>
+          <span class="pc-tag">PPF + Nano Cerámica</span>
+          <span class="pc-tag">Tapa COVERLOCK</span>
+          <span class="pc-tag">Skid Plate ARB</span>
+          <span class="pc-tag">Suspensión OME MT64</span>
+          <span class="pc-tag">Black Out</span>
+          <span class="pc-tag">Rines Vossen</span>
+        </div>
+      </div>
+      <div class="pc-bar"></div>
+    </div>
+
   </div>
 </section>
 
@@ -1175,12 +1515,6 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 <!-- WHY -->
 <section id="why" class="sp">
   <div class="why-w">
-    <div class="why-vis fu">
-      <div class="why-bg"></div>
-      <div class="why-ac"></div>
-      <div class="why-giant">R4</div>
-      <img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_900/v1781843782/IMG_7963_h9fztw.jpg" alt="Roco4wd" style="position:absolute;inset:18px 56px 56px 18px;width:calc(100% - 74px);height:calc(100% - 74px);object-fit:cover;display:block;">
-    </div>
     <div>
       <div class="fu"><p class="ey">La diferencia</p><h2 class="st">¿Por qué<br>vuelven<br><em>siempre?</em></h2></div>
       <div class="why-items fu">
@@ -1303,8 +1637,10 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
     <div class="cc-suggs" id="csuggs"><button class="cc-s" onclick="qs(this)">¿Cuánto dura la cerámica?</button><button class="cc-s" onclick="qs(this)">Suspensión para Hilux</button><button class="cc-s" onclick="qs(this)">¿Qué es el PPF?</button><button class="cc-s" onclick="qs(this)">Pantalla para mi carro</button></div>
     <div class="cc-ir"><input class="cc-inp" id="cinp" placeholder="Escribe tu consulta…" onkeydown="if(event.key==='Enter')sendC()"><button class="cc-send" onclick="sendC()">➤</button></div>
   </div>
-  <button id="cfab-btn" onclick="toggleC()"><span class="fab-tip">ROCO ASSISTANT</span><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_120/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd"></button>
-  <div class="fab-proactive" id="fabProactive" onclick="openC();hideProactive()">Estoy para ayudarte 👋</div>
+  <div style="position:relative;display:flex;align-items:center;justify-content:flex-end">
+    <div class="fab-proactive" id="fabProactive" onclick="openC();hideProactive()">Estoy para ayudarte 👋</div>
+    <button id="cfab-btn" onclick="toggleC()"><span class="fab-tip">ROCO ASSISTANT</span><img src="https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_120/v1781840260/IMG_7962_jox5fh_3_cqxc4k.png" alt="Roco4wd"></button>
+  </div>
 </div>
 
 <script>
@@ -1785,10 +2121,146 @@ function toggleFaq(item){
     item.querySelector('.faq-icon').textContent='−';
   }
 }
-// FAQ scroll animation
-gsap.utils.toArray('.faq-item').forEach((el,i)=>{
-  gsap.from(el,{opacity:0,y:30,duration:.6,delay:(i%2)*.12,ease:'power2.out',
-    scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}});
+// ── FLOATING CTA BAR ──────────────────────────────────────────────────────
+(function(){
+  const bar = document.getElementById('float-cta');
+  const footer = document.querySelector('footer');
+  if(!bar || !footer) return;
+  let barVisible = false;
+  function updateBar(){
+    const scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    const footerTop = footer.getBoundingClientRect().top;
+    const atFooter = footerTop < window.innerHeight;
+    const shouldShow = scrollPct > 0.35 && !atFooter;
+    if(shouldShow !== barVisible){
+      barVisible = shouldShow;
+      bar.classList.toggle('visible', shouldShow);
+    }
+  }
+  window.addEventListener('scroll', updateBar, {passive:true});
+})();
+
+// ── ANIMATED COUNTERS ─────────────────────────────────────────────────────
+(function(){
+  function animateCounter(el){
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1800;
+    const start = performance.now();
+    function step(now){
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const val = Math.floor(ease * target);
+      if(target >= 1000){
+        el.textContent = (val >= 1000 ? (val / 1000).toFixed(val >= 10000 ? 0 : 0) + '.' + String(Math.floor((val % 1000)/100)) + 'K' : val) + suffix;
+        if(target === 10000) el.textContent = (val >= 1000 ? Math.floor(val/1000) + '.' + String(Math.floor((val%1000)/100)) + 'K' : val) + suffix;
+      } else {
+        el.textContent = val + suffix;
+      }
+      if(progress < 1) requestAnimationFrame(step);
+      else el.textContent = (target >= 10000 ? '10K' : target) + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+
+  const counters = document.querySelectorAll('.count-val[data-target]');
+  if(!counters.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting && !entry.target._counted){
+        entry.target._counted = true;
+        animateCounter(entry.target);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.3});
+  counters.forEach(c => obs.observe(c));
+})();
+
+// ── ENTREGADOS SLIDERS ────────────────────────────────────────────────────
+function initEntSliders(){
+  document.querySelectorAll('.ent-slider').forEach(slider => {
+    const track = slider.querySelector('.ent-track');
+    const slides = slider.querySelectorAll('.ent-slide');
+    const dotsEl = slider.querySelector('.ent-dots');
+    const countEl = slider.querySelector('.ent-count');
+    const n = slides.length;
+    let cur = 0;
+
+    // Build dots
+    dotsEl.innerHTML = '';
+    slides.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'ent-dot' + (i === 0 ? ' on' : '');
+      d.onclick = () => goTo(i);
+      dotsEl.appendChild(d);
+    });
+
+    function goTo(i){
+      cur = (i + n) % n;
+      track.style.transform = `translateX(-${cur * 100}%)`;
+      slider.querySelectorAll('.ent-dot').forEach((d, j) => d.classList.toggle('on', j === cur));
+      countEl.textContent = `${cur + 1} / ${n}`;
+    }
+
+    slider._go = goTo;
+    slider._cur = () => cur;
+    slider._n = n;
+
+    // Touch swipe
+    let tx = 0, ty = 0, swiping = false;
+    slider.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; swiping = false; }, { passive: true });
+    slider.addEventListener('touchmove', e => {
+      const dx = Math.abs(e.touches[0].clientX - tx), dy = Math.abs(e.touches[0].clientY - ty);
+      if(dx > dy && dx > 10) swiping = true;
+    }, { passive: true });
+    slider.addEventListener('touchend', e => {
+      if(!swiping) return;
+      const dx = tx - e.changedTouches[0].clientX;
+      if(Math.abs(dx) > 40) goTo(cur + (dx > 0 ? 1 : -1));
+      swiping = false;
+    }, { passive: true });
+  });
+}
+
+function slideEnt(btn, dir){
+  if(event && event.stopPropagation) event.stopPropagation();
+  const slider = btn.closest('.ent-slider');
+  if(slider && slider._go) slider._go(slider._cur() + dir);
+}
+
+initEntSliders();
+
+// ── ENTREGADOS SCROLL REVEAL ───────────────────────────────────────────────
+document.querySelectorAll('.ent-card').forEach((card, i) => {
+  gsap.fromTo(card,
+    {opacity:0, y:40},
+    {opacity:1, y:0, duration:.7, delay:(i%3)*.1, ease:'power2.out',
+      scrollTrigger:{trigger:card, start:'top 90%', once:true}
+    }
+  );
+});
+
+// ── TRUST METRICS REVEAL ──────────────────────────────────────────────────
+document.querySelectorAll('.tm-card').forEach((card, i) => {
+  gsap.fromTo(card,
+    {opacity:0, y:30},
+    {opacity:1, y:0, duration:.65, delay:i*.08, ease:'power2.out',
+      scrollTrigger:{trigger:card, start:'top 88%', once:true}
+    }
+  );
+});
+
+// ── CAR BRANDS REVEAL ─────────────────────────────────────────────────────
+document.querySelectorAll('.cb-brand').forEach((el, i) => {
+  gsap.fromTo(el,
+    {opacity:0, y:20},
+    {opacity:1, y:0, duration:.5, delay:i*.06, ease:'power2.out',
+      scrollTrigger:{trigger:el, start:'top 90%', once:true}
+    }
+  );
 });
 
 </script>
