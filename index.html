@@ -320,7 +320,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
 
 /* SHOWROOM */
 #showroom{background:var(--ink2);position:relative;overflow:hidden}
-#showroom::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781839189/IMG_7942_azf1pa.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.06;z-index:0}
+#showroom::before{content:'';position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dpiavcukm/image/upload/f_auto,q_auto,w_1920/v1781839182/IMG_7956_oxqx5k.jpg');background-size:cover;background-position:center;background-attachment:fixed;opacity:.12;z-index:0}
 #showroom::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,14,14,.6) 0%,rgba(14,14,14,.4) 50%,rgba(14,14,14,.6) 100%);z-index:1;box-shadow:inset 0 1px 0 0 rgba(154,122,58,.6)}
 #showroom .fu,#showroom .sh-intro,#showroom .sh-mosaic,#showroom .sh-bottom{position:relative;z-index:2}
 .sh-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px}
@@ -549,7 +549,7 @@ footer{background:#040404;padding:80px 60px 36px;border-top:1px solid var(--w06)
   body{cursor:auto}
   #cur,#cur-r{display:none}
   /* Fondos superpuestos más visibles en mobile */
-  #srv::before,#sim::before,#about::before,#showroom::before{opacity:.22;background-attachment:scroll}
+  #srv::before,#sim::before,#about::before,#showroom::before,#entregados::before{opacity:.22;background-attachment:scroll}
   /* Botones touch */
   .btn-p,.btn-g,.f-sub,.sh-cta,.n-book,.n-ham,.cc-send,.cc-s,.sv-close,.mm-close{touch-action:manipulation}
   /* Swipe en el phone del video showroom */
@@ -1720,9 +1720,9 @@ footer{box-shadow:inset 0 1px 0 rgba(154,122,58,.15)}
 <div id="cfab">
   <div id="cc">
     <div class="cc-h"><div class="cc-av">R</div><div><div class="cc-nm">Roco Assistant</div><div class="cc-st">● En línea · Especialista Automotriz</div></div><button class="cc-x" onclick="closeC()">✕</button></div>
-    <div class="cc-msgs" id="cmsgs"><div class="cm b"><div class="cm-b">Hola, soy <strong>Roco Assistant</strong> — tu especialista automotriz. ¿En qué puedo orientarte hoy? Mecánica, detailing, PPF, suspensión, sonido, cauchos y más.</div><span class="cm-t">AHORA</span></div></div>
+    <div class="cc-msgs" id="cmsgs"><div class="cm b"><div class="cm-b">Hola 👋 Soy <strong>Roco Assistant</strong>, tu especialista automotriz. ¿Con quién tengo el gusto?</div><span class="cm-t">AHORA</span></div></div>
     <div class="cc-suggs" id="csuggs"><button class="cc-s" onclick="qs(this)">¿Cuánto dura la cerámica?</button><button class="cc-s" onclick="qs(this)">Suspensión para Hilux</button><button class="cc-s" onclick="qs(this)">¿Qué es el PPF?</button><button class="cc-s" onclick="qs(this)">Pantalla para mi carro</button></div>
-    <div class="cc-ir"><input class="cc-inp" id="cinp" placeholder="Escribe tu consulta…" onkeydown="if(event.key==='Enter')sendC()"><button class="cc-send" onclick="sendC()">➤</button></div>
+    <div class="cc-ir"><input class="cc-inp" id="cinp" placeholder="Tu nombre…" onkeydown="if(event.key==='Enter')sendC()"><button class="cc-send" onclick="sendC()">➤</button></div>
   </div>
   <div style="position:relative;display:flex;align-items:center;justify-content:flex-end">
     <div class="fab-proactive" id="fabProactive" onclick="openC();hideProactive()">Estoy para ayudarte 👋</div>
@@ -2030,17 +2030,20 @@ function cotSim(){
 // CONCIERGE
 let copen=false;
 let cBusy=false;
+let clientName='';
+let nameAsked=true; // el primer mensaje ya pide el nombre
 const WA_NUM='584140248764';
 const CHAT_ENDPOINT='/api/chat';
 const hist=[];
 function toggleC(){copen?closeC():openC()}
 function openC(){copen=true;const el=document.getElementById('cc');el.classList.add('o');hideProactive()}
 function closeC(){copen=false;const el=document.getElementById('cc');el.classList.remove('o')}
-function addM(role,txt){
+function addM(role,txt,isHtml){
   const ms=document.getElementById('cmsgs'),d=document.createElement('div');
   d.className=`cm ${role==='user'?'u':'b'}`;
   const t=new Date().toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'});
-  d.innerHTML=`<div class="cm-b">${escapeHtml(txt)}</div><span class="cm-t">${t}</span>`;
+  const content=isHtml?txt:escapeHtml(txt);
+  d.innerHTML=`<div class="cm-b">${content}</div><span class="cm-t">${t}</span>`;
   ms.appendChild(d);ms.scrollTop=ms.scrollHeight;
 }
 function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
@@ -2080,7 +2083,24 @@ async function sendC(){
   const inp=document.getElementById('cinp'),txt=inp.value.trim();
   if(!txt)return;inp.value='';
   document.getElementById('csuggs').style.display='none';
-  addM('user',txt);hist.push({role:'user',content:txt});
+  addM('user',txt);
+
+  // ── CAPTURA DE NOMBRE ─────────────────────────────────────────────────────
+  if(nameAsked && !clientName){
+    // Tomar la primera palabra/nombre limpio
+    clientName = txt.split(/[\s,!.]+/)[0];
+    clientName = clientName.charAt(0).toUpperCase() + clientName.slice(1).toLowerCase();
+    nameAsked = false;
+    inp.placeholder = 'Escribe tu consulta…';
+    // Responder con saludo personalizado y abrir el flujo normal
+    setTimeout(()=>{
+      addM('bot', `Bienvenido, <strong>${clientName}</strong> 🙌 ¿En qué puedo ayudarte hoy? Mecánica, detailing, PPF, suspensión, sonido, cauchos y más.`, true);
+    }, 400);
+    return;
+  }
+  // ─────────────────────────────────────────────────────────────────────────
+
+  hist.push({role:'user',content:txt});
   showT();setBusy(true);
 
   // Pedido explícito de hablar con un humano → handoff directo
@@ -2088,7 +2108,7 @@ async function sendC(){
   if(HUMAN_KEYS.some(k=>lowTxt.includes(k))){
     hideT();setBusy(false);
     addM('bot','Claro, te conecto con un asesor ahora mismo:');
-    showHandoffCTA({vehiculo:'',servicio:'',nombre:'',whatsapp:'',resumen:''},true);
+    showHandoffCTA({vehiculo:'',servicio:'',nombre:clientName,whatsapp:'',resumen:''},true);
     return;
   }
 
@@ -2098,7 +2118,7 @@ async function sendC(){
     const r=await fetch(CHAT_ENDPOINT,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:hist}),
+      body:JSON.stringify({messages:hist, clientName}),
       signal:ctrl.signal
     });
     clearTimeout(tId);
@@ -2112,6 +2132,7 @@ async function sendC(){
     }
     const handoff=extractHandoff(rep);
     if(handoff){
+      if(!handoff.nombre) handoff.nombre = clientName;
       rep=rep.split('<<<HANDOFF>>>')[0].trim();
       if(rep){addM('bot',rep);hist.push({role:'assistant',content:rep});}
       showHandoffCTA(handoff);
@@ -2127,7 +2148,7 @@ async function sendC(){
       hist.push({role:'assistant',content:local});
     }else{
       addM('bot','No tengo el detalle exacto de eso a mano, pero un asesor puede ayudarte directo:');
-      showHandoffCTA({vehiculo:'',servicio:'',nombre:'',whatsapp:'',resumen:''},true);
+      showHandoffCTA({vehiculo:'',servicio:'',nombre:clientName,whatsapp:'',resumen:''},true);
     }
   }
 }
